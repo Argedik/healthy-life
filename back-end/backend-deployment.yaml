@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: beslenme-backend
+  template:
+    metadata:
+      labels:
+        app: beslenme-backend
+    spec:
+      containers:
+        - name: beslenme-backend
+          image: your-dockerhub-username/beslenme-backend
+          ports:
+            - containerPort: 8080
