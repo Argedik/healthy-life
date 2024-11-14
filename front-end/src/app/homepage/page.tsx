@@ -1,32 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
+// interface BesinVerisi {
+// 	tarih: string;
+// 	kalori: number;
+// }
+import style from './style.module.scss';
 
-interface BesinVerisi {
-	tarih: string;
-	kalori: number;
-}
-
-const HomePage: React.FC = () => {
-	const [veriler, setVeriler] = useState<BesinVerisi[]>([]);
-
-	useEffect(() => {
-		axios.get('http://localhost:8080/besin-verileri').then((response) => {
-			setVeriler(response.data);
-		});
-	}, []);
-
+const Example: React.FC = () => {
 	return (
-		<div>
-			<h1>Besin Değerleri Grafiği</h1>
-			<LineChart width={600} height={300} data={veriler}>
-				<Line type="monotone" dataKey="kalori" stroke="#8884d8" />
-				<XAxis dataKey="tarih" />
-				<YAxis />
-				<Tooltip />
-			</LineChart>
+		<div className={`${style.container}`}>
+			<div id="item-1" className={`${style.item1}`}>
+				item - 1
+			</div>
+			<div id="item-2">item - 2</div>
+			<div id="item-3">item - 3</div>
+			<div id="item-4">item - 4</div>
 		</div>
 	);
 };
 
-export default HomePage;
+export default Example;
