@@ -4,13 +4,13 @@ mod components;
 #[function_component(App)]
 fn app() -> Html {
   html! {
-    <> 
+    <>
       <components::NavBar />
       <components::HomePage />
     </>
   }
 }
 
-fn main (){
+fn main() {
   yew::Renderer::<App>::new().render();
 }

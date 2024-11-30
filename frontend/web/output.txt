@@ -1,0 +1,647 @@
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/Cargo.toml
+Dosya İçeriği:
+[package]
+name="web_app"
+version="0.1.0"
+edition="2021"
+
+[dependencies]
+yew = { version = "0.21", features = ["csr"] }
+wasm-bindgen = "0.2"
+serde = { version = "1.0", features = ["derive"]}
+reqwasm = "0.5"
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/Dockerfile
+Dosya İçeriği:
+# Rust'ın en son resmi Docker imajını kullanıyoruz.
+FROM rust:latest
+
+# Çalışma dizini
+WORKDIR /app
+
+#  WebAssembly hedefini ekliyoruz.
+RUN rustup target add wasm32-unknown-unknown
+
+# Trunk'ı kuruyoruz.
+RUN cargo install trunk
+
+# Bağımlılıkları önbelleğe almak için Cargo.toml ve Cargo.lock dosyalarını kopyala
+COPY Cargo.toml Cargo.lock ./
+
+# Bağımlılıkları indirme
+RUN mkdir src
+RUN echo "fn main() {}" > src/main.rs
+
+#Bağımlılıkları indiriyoruz.
+RUN cargo fetch
+
+# Kaynak kodunu kopyala
+COPY . .
+
+# 0.0.0.0 adresinden dinlemek için Trunk'ı çalıştır
+CMD ["trunk", "serve", "--address", "0.0.0.0", "--port", "8080", "--public-url", "/"]
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/index.html
+Dosya İçeriği:
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Sağlık Uygulaması</title>
+	</head>
+	<body>
+		<div id="root"></div>
+		<script type="module">
+			import init from './web_app.js';
+			init();
+		</script>
+	</body>
+</html>
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/output.txt
+Dosya İçeriği:
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/Cargo.toml
+Dosya İçeriği:
+[package]
+name="web_app"
+version="0.1.0"
+edition="2021"
+
+[dependencies]
+yew = { version = "0.21", features = ["csr"] }
+wasm-bindgen = "0.2"
+serde = { version = "1.0", features = ["derive"]}
+reqwasm = "0.5"
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/Dockerfile
+Dosya İçeriği:
+# Rust'ın en son resmi Docker imajını kullanıyoruz.
+FROM rust:latest
+
+# Çalışma dizini
+WORKDIR /app
+
+#  WebAssembly hedefini ekliyoruz.
+RUN rustup target add wasm32-unknown-unknown
+
+# Trunk'ı kuruyoruz.
+RUN cargo install trunk
+
+# Bağımlılıkları önbelleğe almak için Cargo.toml ve Cargo.lock dosyalarını kopyala
+COPY Cargo.toml Cargo.lock ./
+
+# Bağımlılıkları indirme
+RUN mkdir src
+RUN echo "fn main() {}" > src/main.rs
+
+#Bağımlılıkları indiriyoruz.
+RUN cargo fetch
+
+# Kaynak kodunu kopyala
+COPY . .
+
+# 0.0.0.0 adresinden dinlemek için Trunk'ı çalıştır
+CMD ["trunk", "serve", "--address", "0.0.0.0", "--port", "8080", "--public-url", "/"]
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/index.html
+Dosya İçeriği:
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Sağlık Uygulaması</title>
+	</head>
+	<body>
+		<div id="root"></div>
+		<script type="module">
+			import init from './web_app.js';
+			init();
+		</script>
+	</body>
+</html>
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/output.txt
+Dosya İçeriği:
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/Cargo.toml
+Dosya İçeriği:
+[package]
+name="web_app"
+version="0.1.0"
+edition="2021"
+
+[dependencies]
+yew = { version = "0.21", features = ["csr"] }
+wasm-bindgen = "0.2"
+serde = { version = "1.0", features = ["derive"]}
+reqwasm = "0.5"
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/Dockerfile
+Dosya İçeriği:
+# Rust'ın en son resmi Docker imajını kullanıyoruz.
+FROM rust:latest
+
+# Çalışma dizini
+WORKDIR /app
+
+#  WebAssembly hedefini ekliyoruz.
+RUN rustup target add wasm32-unknown-unknown
+
+# Trunk'ı kuruyoruz.
+RUN cargo install trunk
+
+# Bağımlılıkları önbelleğe almak için Cargo.toml ve Cargo.lock dosyalarını kopyala
+COPY Cargo.toml Cargo.lock ./
+
+# Bağımlılıkları indirme
+RUN mkdir src
+RUN echo "fn main() {}" > src/main.rs
+
+#Bağımlılıkları indiriyoruz.
+RUN cargo fetch
+
+# Kaynak kodunu kopyala
+COPY . .
+
+# 0.0.0.0 adresinden dinlemek için Trunk'ı çalıştır
+CMD ["trunk", "serve", "--address", "0.0.0.0", "--port", "8080", "--public-url", "/"]
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/index.html
+Dosya İçeriği:
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Sağlık Uygulaması</title>
+	</head>
+	<body>
+		<div id="root"></div>
+		<script type="module">
+			import init from './web_app.js';
+			init();
+		</script>
+	</body>
+</html>
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/output.txt
+Dosya İçeriği:
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/Cargo.toml
+Dosya İçeriği:
+[package]
+name="web_app"
+version="0.1.0"
+edition="2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+yew = { version = "0.21", features = ["csr"] }
+wasm-bindgen = "0.2"
+serde = { version = "1.0", features = ["derive"]}
+reqwasm = "0.5"
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/Dockerfile
+Dosya İçeriği:
+# Rust'ın en son resmi Docker imajını kullanıyoruz.
+FROM rust:latest
+
+# Çalışma dizini
+WORKDIR /app
+
+#  WebAssembly hedefini ekliyoruz.
+RUN rustup target add wasm32-unknown-unknown
+
+# Trunk'ı kuruyoruz.
+RUN cargo install trunk
+
+# Bağımlılıkları önbelleğe almak için Cargo.toml ve Cargo.lock dosyalarını kopyala
+COPY Cargo.toml Cargo.lock ./
+
+# Bağımlılıkları indirme
+RUN mkdir src
+RUN echo "fn main() {}" > src/lib.rs
+
+#Bağımlılıkları indiriyoruz.
+RUN cargo fetch
+
+# Kaynak kodunu kopyala
+COPY . .
+
+# 0.0.0.0 adresinden dinlemek için Trunk'ı çalıştır
+CMD ["trunk", "serve", "--address", "0.0.0.0", "--port", "8080", "--public-url", "/"]
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/index.html
+Dosya İçeriği:
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Sağlık Uygulaması</title>
+	</head>
+	<body>
+		<div id="root"></div>
+		<script type="module">
+			import init from './web_app.js';
+			init();
+		</script>
+	</body>
+</html>
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/output.txt
+Dosya İçeriği:
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/Cargo.toml
+Dosya İçeriği:
+[package]
+name="web_app"
+version="0.1.0"
+edition="2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+yew = { version = "0.21", features = ["csr"] }
+wasm-bindgen = "0.2"
+serde = { version = "1.0", features = ["derive"]}
+reqwasm = "0.5"
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/Dockerfile
+Dosya İçeriği:
+# Rust'ın en son resmi Docker imajını kullanıyoruz.
+FROM rust:latest
+
+# Çalışma dizini
+WORKDIR /app
+
+#  WebAssembly hedefini ekliyoruz.
+RUN rustup target add wasm32-unknown-unknown
+
+# OpenSSL bağımlılıkları ekliyoruz.
+RUN apt-get update && apt-get install -y libssl-dev pkg-config
+
+# Trunk'ı kuruyoruz.
+RUN cargo install trunk
+
+# Bağımlılıkları önbelleğe almak için Cargo.toml ve Cargo.lock dosyalarını kopyala
+COPY Cargo.toml Cargo.lock ./
+
+# Bağımlılıkları indirme
+RUN mkdir src
+RUN echo "fn main() {}" > src/lib.rs
+
+#Bağımlılıkları indiriyoruz.
+RUN cargo fetch
+
+# Kaynak kodunu kopyala
+COPY . .
+
+# 0.0.0.0 adresinden dinlemek için Trunk'ı çalıştır
+CMD ["trunk", "serve", "--address", "0.0.0.0", "--port", "8080", "--public-url", "/"]
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/index.html
+Dosya İçeriği:
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Sağlık Uygulaması</title>
+	</head>
+	<body>
+		<div id="root"></div>
+		<script type="module">
+			import init from './web_app.js';
+			init();
+		</script>
+	</body>
+</html>
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/output.txt
+Dosya İçeriği:
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/home_page.rs
+Dosya İçeriği:
+use yew::prelude::*;
+
+#[function_component(HomePage)]
+pub fn nav_bar() -> Html {
+  html! {
+    <div>
+      <h1>{ "Sağlık Uygulamasına Hoş Geldiniz!" }</h1>
+    </div>
+  }
+}
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/mod.rs
+Dosya İçeriği:
+pub mod nav_bar;
+pub mod home_page;
+
+pub use nav_bar::NavBar;
+pub use home_page::HomePage;
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/nav_bar.rs
+Dosya İçeriği:
+use yew::prelude::*;
+
+#[function_component(NavBar)]
+pub fn nav_bar() -> Html {
+  html! {
+    <nav>
+      <ul>
+        <li>
+          <a href="/"> {"Ana Sayfa"} </a>
+        </li>
+        <li>
+          <a href="/stats"> {"İstatistikler"} </a>
+        </li>
+      </ul>
+    </nav>
+  }
+}
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/lib.rs
+Dosya İçeriği:
+use yew::prelude::*;
+mod components;
+
+#[function_component(App)]
+fn app() -> Html {
+  html! {
+    <> 
+      <components::NavBar />
+      <components::HomePage />
+    </>
+  }
+}
+
+fn main (){
+  yew::Renderer::<App>::new().render();
+}
+
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/home_page.rs
+Dosya İçeriği:
+use yew::prelude::*;
+
+#[function_component(HomePage)]
+pub fn nav_bar() -> Html {
+  html! {
+    <div>
+      <h1>{ "Sağlık Uygulamasına Hoş Geldiniz!" }</h1>
+    </div>
+  }
+}
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/mod.rs
+Dosya İçeriği:
+pub mod nav_bar;
+pub mod home_page;
+
+pub use nav_bar::NavBar;
+pub use home_page::HomePage;
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/nav_bar.rs
+Dosya İçeriği:
+use yew::prelude::*;
+
+#[function_component(NavBar)]
+pub fn nav_bar() -> Html {
+  html! {
+    <nav>
+      <ul>
+        <li>
+          <a href="/"> {"Ana Sayfa"} </a>
+        </li>
+        <li>
+          <a href="/stats"> {"İstatistikler"} </a>
+        </li>
+      </ul>
+    </nav>
+  }
+}
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/lib.rs
+Dosya İçeriği:
+use yew::prelude::*;
+mod components;
+
+#[function_component(App)]
+fn app() -> Html {
+  html! {
+    <> 
+      <components::NavBar />
+      <components::HomePage />
+    </>
+  }
+}
+
+fn main (){
+  yew::Renderer::<App>::new().render();
+}
+
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/home_page.rs
+Dosya İçeriği:
+use yew::prelude::*;
+
+#[function_component(HomePage)]
+pub fn nav_bar() -> Html {
+  html! {
+    <div>
+      <h1>{ "Sağlık Uygulamasına Hoş Geldiniz!" }</h1>
+    </div>
+  }
+}
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/mod.rs
+Dosya İçeriği:
+pub mod nav_bar;
+pub mod home_page;
+
+pub use nav_bar::NavBar;
+pub use home_page::HomePage;
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/nav_bar.rs
+Dosya İçeriği:
+use yew::prelude::*;
+
+#[function_component(NavBar)]
+pub fn nav_bar() -> Html {
+  html! {
+    <nav>
+      <ul>
+        <li>
+          <a href="/"> {"Ana Sayfa"} </a>
+        </li>
+        <li>
+          <a href="/stats"> {"İstatistikler"} </a>
+        </li>
+      </ul>
+    </nav>
+  }
+}
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/main.rs
+Dosya İçeriği:
+use yew::prelude::*;
+mod components;
+
+#[function_component(App)]
+fn app() -> Html {
+  html! {
+    <>
+      <components::NavBar />
+      <components::HomePage />
+    </>
+  }
+}
+
+fn main() {
+  yew::Renderer::<App>::new().render();
+}
+
+
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/home_page.rs
+Dosya İçeriği:
+use yew::prelude::*;
+
+#[function_component(HomePage)]
+pub fn home_page() -> Html {
+  html! {
+    <div>
+      <h1>{ "Sağlık Uygulamasına Hoş Geldiniz!" }</h1>
+    </div>
+  }
+}
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/mod.rs
+Dosya İçeriği:
+pub mod nav_bar;
+pub mod home_page;
+
+pub use nav_bar::NavBar;
+pub use home_page::HomePage;
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/nav_bar.rs
+Dosya İçeriği:
+use yew::prelude::*;
+
+#[function_component(NavBar)]
+pub fn nav_bar() -> Html {
+  html! {
+    <nav>
+      <ul>
+        <li>
+          <a href="/"> {"Ana Sayfa"} </a>
+        </li>
+        <li>
+          <a href="/stats"> {"İstatistikler"} </a>
+        </li>
+      </ul>
+    </nav>
+  }
+}
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/main.rs
+Dosya İçeriği:
+use yew::prelude::*;
+mod components;
+
+#[function_component(App)]
+fn app() -> Html {
+  html! {
+    <>
+      <components::NavBar />
+      <components::HomePage />
+    </>
+  }
+}
+
+fn main() {
+  yew::Renderer::<App>::new().render();
+}
+
+
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/home_page.rs
+Dosya İçeriği:
+use yew::prelude::*;
+
+#[function_component(HomePage)]
+pub fn home_page() -> Html {
+  html! {
+    <div>
+      <h1>{ "Sağlık Uygulamasına Hoş Geldiniz!" }</h1>
+    </div>
+  }
+}
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/mod.rs
+Dosya İçeriği:
+pub mod nav_bar;
+pub mod home_page;
+
+pub use nav_bar::NavBar;
+pub use home_page::HomePage;
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/nav_bar.rs
+Dosya İçeriği:
+use yew::prelude::*;
+
+#[function_component(NavBar)]
+pub fn nav_bar() -> Html {
+  html! {
+    <nav>
+      <ul>
+        <li>
+          <a href="/"> {"Ana Sayfa"} </a>
+        </li>
+        <li>
+          <a href="/stats"> {"İstatistikler"} </a>
+        </li>
+      </ul>
+    </nav>
+  }
+}
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/main.rs
+Dosya İçeriği:
+use yew::prelude::*;
+mod components;
+
+#[function_component(App)]
+fn app() -> Html {
+  html! {
+    <>
+      <components::NavBar />
+      <components::HomePage />
+    </>
+  }
+}
+
+fn main() {
+  yew::Renderer::<App>::new().render();
+}
+
+
