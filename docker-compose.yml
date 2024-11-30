@@ -1,18 +1,20 @@
-version: '3'
+version: '3.8'
 services:
-  nutrition_service:
-    build: ./backend/nutrition_service
+  web:
+    build:
+      context: ./frontend/web
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend/web:/app
     ports:
-      - '8081:8081'
-    depends_on:
-      - redis
-  web_app:
-    build: ./frontend/web_app
-    ports:
-      - '8000:80'
-    depends_on:
-      - nutrition_service
-  redis:
-    image: 'redis:alpine'
-    ports:
-      - '6379:6379'
+      - '8080:8080'
+  # web_app:
+  #   build: ./frontend/web_app
+  #   ports:
+  #     - '8000:80'
+  #   depends_on:
+  #     - nutrition_service
+  # redis:
+  #   image: 'redis:alpine'
+  #   ports:
+  #     - '6379:6379'
