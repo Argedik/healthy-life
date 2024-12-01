@@ -8,7 +8,7 @@ WORKDIR /app
 RUN rustup target add wasm32-unknown-unknown
 
 # Trunk'ı kuruyoruz.
-RUN cargo install trunk
+RUN cargo install trunk cargo-watch
 
 # Bağımlılıkları önbelleğe almak için Cargo.toml ve Cargo.lock dosyalarını kopyala
 COPY Cargo.toml Cargo.lock ./

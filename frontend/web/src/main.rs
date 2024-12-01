@@ -7,6 +7,7 @@ fn app() -> Html {
     <>
       <components::NavBar />
       <components::HomePage />
+      <components::Card />
     </>
   }
 }

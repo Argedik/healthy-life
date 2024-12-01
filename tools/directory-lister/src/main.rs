@@ -30,7 +30,6 @@ fn main() {
         writeln!(output_file, "Dosya Yolu: {}", file_path).unwrap();
         writeln!(output_file, "Dosya İçeriği:\n{}\n", content).unwrap();
     }
-
     println!("Çıktılar '{}' dosyasına yazıldı.", output_file_path);
 }
 
