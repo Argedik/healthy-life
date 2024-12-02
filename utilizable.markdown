@@ -101,3 +101,9 @@ yield
 **Array Type** Birden fazla değerden oluşan bir koleksiyona sahip olmanın bir başka yolu da dizidir. Tuple'ın aksine, bir dizinin her elemanı aynı türde olmalıdır. Sabit uzunluktadır. *(let a: [i32; 5] = [1, 2, 3, 4, 5]; let a = [1, 2, 3, 4, 5]; let first = a[0];)*
 
 ***Threads*** **Race condition**, **Deadlock**, **Channels**
+
+***Docker*** 
+*docker-compose up --build* Tüm servisleri çalıştırır.
+*docker-compose up --build web* sadece web servisini çalıştırır.
+*docker ps -a* tüm çalışan container ları listeler
+*docker start <container-id>* belirli container durduysa tekrar başlatır

@@ -4,10 +4,10 @@ services:
     build:
       context: ./frontend/web
       dockerfile: Dockerfile
-    volumes:
-      - ./frontend/web:/app
     ports:
       - '8080:8080'
+    volumes:
+      - ./frontend/web:/app:rw,delegated
   # web_app:
   #   build: ./frontend/web_app
   #   ports:

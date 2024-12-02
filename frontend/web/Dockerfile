@@ -20,8 +20,12 @@ RUN echo "fn main() {}" > src/main.rs
 #Bağımlılıkları indiriyoruz.
 RUN cargo fetch
 
-# Kaynak kodunu kopyala
+# Tüm projeyş kopyala
 COPY . .
 
-# 0.0.0.0 adresinden dinlemek için Trunk'ı çalıştır
-CMD ["trunk", "serve", "--address", "0.0.0.0", "--port", "8080", "--public-url", "/"]
+# Port açıyoruz.
+EXPOSE 8080
+
+# Projeyi anlık olarak dinleyebilen kodlar
+CMD ["cargo", "watch", "-w", "src", "-s", "trunk serve --address 0.0.0.0 --port 8080 --public-url /"]
+

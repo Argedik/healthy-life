@@ -1,0 +1,9 @@
+[build]
+output = "dist"
+watcher_ignore = [
+    "dist/*",       # trunk'ın kendi build çıktıları
+    "target/*",     # Rust'ın derleme çıktıları
+    ".git/*",       # Git dosyaları
+    "Dockerfile",   # Docker dosyaları
+    "docker-compose.yml" # Compose dosyaları
+]

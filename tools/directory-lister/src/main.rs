@@ -15,6 +15,7 @@ fn main() {
     ignored.insert("incremental".to_string());
     ignored.insert(".git".to_string());
     ignored.insert(".gitignore".to_string());
+    ignored.insert("styles.css".to_string());
 
     list_files_only(root_path, root_path, &mut ignored, &mut output);
 
