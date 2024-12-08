@@ -16,6 +16,10 @@ fn main() {
     ignored.insert(".git".to_string());
     ignored.insert(".gitignore".to_string());
     ignored.insert("styles.css".to_string());
+    ignored.insert("output.txt".to_string());
+    ignored.insert("utilizable.html".to_string());
+    ignored.insert("utilizable.markdown".to_string());
+    ignored.insert("dist".to_string());
 
     list_files_only(root_path, root_path, &mut ignored, &mut output);
 

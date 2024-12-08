@@ -1,24 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rust WebAssembly</title>
-</head>
-<body>
-    <h1>Rust WebAssembly ile Web Sitesi</h1>
-    <button id="greet-btn">Selamla</button>
-    <script type="module">
-        import init, { greet } from './pkg/rust_web_example.js';
-
-        async function run() {
-            await init();
-            document.getElementById("greet-btn").addEventListener("click", () => {
-                alert(greet("Dünya"));
-            });
-        }
-
-        run();
-    </script>
-</body>
+<html lang="tr">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Besin Uygulaması</title>
+	</head>
+	<body>
+		<div id="app"></div>
+		<script type="module">
+			import init from './pkg/besin_uygulamasi_frontend.js';
+			init();
+		</script>
+	</body>
 </html>

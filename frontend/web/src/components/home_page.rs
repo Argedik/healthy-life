@@ -4,7 +4,7 @@ use yew::prelude::*;
 pub fn home_page() -> Html {
   html! {
     <div>
-      <h1>{ "Sağlık Uygulamasına Hoş Geldiniz!" }</h1>
+      <h1>{ "Sağlık Uygulamasına Hoş Geldiniz!asd" }</h1>
     </div>
   }
 }

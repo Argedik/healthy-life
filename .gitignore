@@ -1,1 +1,4 @@
-
+output.txt
+target
+Cargo.lock
+dist

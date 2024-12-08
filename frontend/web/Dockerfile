@@ -28,4 +28,3 @@ EXPOSE 8080
 
 # Projeyi anlık olarak dinleyebilen kodlar
 CMD ["cargo", "watch", "-w", "src", "-s", "trunk serve --address 0.0.0.0 --port 8080 --public-url /"]
-
