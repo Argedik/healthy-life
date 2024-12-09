@@ -11,7 +11,7 @@ edition="2021"
 
 [dependencies]
 yew = { version = "0.21", features = ["csr"] }
-wasm-bindgen = "0.2"
+wasm-bindgen = "0.2.9"
 serde = { version = "1.0", features = ["derive"]}
 reqwasm = "0.5"
 stylist = "0.13"
@@ -48,23 +48,22 @@ COPY . .
 EXPOSE 8080
 
 # Projeyi anlık olarak dinleyebilen kodlar
-CMD ["trunk", "serve", "--address", "0.0.0.0", "--port", "8080", "--public-url", "/"]
-
+CMD ["trunk", "serve", "--watch", "--address", "0.0.0.0", "--port", "8080", "--public-url", "/"]
 
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/index.html
 Dosya İçeriği:
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 	<head>
-		<meta charset="utf-8" />
-		<title>Sağlık Uygulaması</title>
-		<link rel="stylesheet" href="./styles.css" />
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Besin Uygulaması</title>
 	</head>
 	<body>
-		<div id="root"></div>
+		<div id="app"></div>
 		<script type="module">
-			import init from './web_app.js';
+			import init from './pkg/besin_uygulamasi_frontend.js';
 			init();
 		</script>
 	</body>
@@ -99,7 +98,7 @@ use yew::prelude::*;
 pub fn home_page() -> Html {
   html! {
     <div>
-      <h1>{ "Sağlık Uygulamasına Hoş Geldiniz!" }</h1>
+      <h1>{ "Sağlık Uygulamasına Hoş Geldiniz!asd" }</h1>
     </div>
   }
 }
@@ -153,6 +152,90 @@ fn app() -> Html {
 fn main() {
   yew::Renderer::<App>::new().render();
 }
+
+
+
+// use yew::prelude::*;
+// use serde::{Deserialize, Serialize};
+// use reqwasm::http::Request;
+
+// #[derive(Serialize, Deserialize, Clone, PartialEq)]
+// struct Food {
+//     id: i64,
+//     name: String,
+//     calories: i32,
+// }
+
+// #[function_component(App)]
+// fn app() -> Html {
+//     let foods = use_state(Vec::<Food>::new);
+
+//     {
+//         let foods = foods.clone();
+//         use_effect_with_deps(
+//             move |_| {
+//                 wasm_bindgen_futures::spawn_local(async move {
+//                     let fetched_foods = Request::get("http://localhost:8080/foods")
+//                         .send()
+//                         .await
+//                         .unwrap()
+//                         .json::<Vec<Food>>()
+//                         .await
+//                         .unwrap();
+//                     foods.set(fetched_foods);
+//                 });
+//                 || ()
+//             },
+//             (),
+//         );
+//     }
+
+//     let name = use_state(String::new);
+//     let calories = use_state(String::new);
+
+//     let on_add_food = {
+//         let name = name.clone();
+//         let calories = calories.clone();
+//         let foods = foods.clone();
+//         Callback::from(move |_| {
+//             let name_value = name.to_string();
+//             let calories_value: i32 = calories.to_string().parse().unwrap_or(0);
+
+//             wasm_bindgen_futures::spawn_local(async move {
+//                 let new_food = Food {
+//                     id: 0,
+//                     name: name_value.clone(),
+//                     calories: calories_value,
+//                 };
+
+//                 Request::post("http://localhost:8080/foods")
+//                     .header("Content-Type", "application/json")
+//                     .body(serde_json::to_string(&new_food).unwrap())
+//                     .send()
+//                     .await
+//                     .unwrap();
+
+//                 let updated_foods = Request::get("http://localhost:8080/foods")
+//                     .send()
+//                     .await
+//                     .unwrap()
+//                     .json::<Vec<Food>>()
+//                     .await
+//                     .unwrap();
+//                 foods.set(updated_foods);
+//             });
+//         })
+//     };
+
+//     html! {
+//         <div>
+//             <h1>{"Besin Uygulaması"}</h1>
+//             <input placeholder="Besin Adı" oninput={Callback::from(move |e: InputData| name.set(e.value))} />
+//             <input placeholder="Kalori" oninput={Callback::from(move |e: InputData| calories.set(e.value))} />
+//             <button onclick={on_add_food}>{"Ekle"}</button>
+//         </div>
+//     }
+// }
 
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/Trunk.toml
