@@ -7,3 +7,11 @@ watcher_ignore = [
     "Dockerfile",   # Docker dosyaları
     "docker-compose.yml" # Compose dosyaları
 ]
+
+[scss]
+input = "static/styles/_globals.scss"
+output = "dist/_globals.css"
+
+[[build.hook]]
+command = "sass"
+args = ["static/styles:dist/styles", "--no-source-map", "--style=compressed"]

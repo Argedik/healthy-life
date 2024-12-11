@@ -107,3 +107,7 @@ yield
 *docker-compose up --build web* sadece web servisini çalıştırır.
 *docker ps -a* tüm çalışan container ları listeler
 *docker start <container-id>* belirli container durduysa tekrar başlatır
+
+
+***trunk***
+trunk serve --adress 0.0.0.0 --port 8081

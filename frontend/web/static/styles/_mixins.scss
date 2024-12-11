@@ -1,0 +1,37 @@
+@import './_variables';
+
+@mixin flexCenter {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+@mixin respond-to($breakpoint) {
+	$breakpoints: (
+		xs: $breakpoint-xs,
+		sm: $breakpoint-sm,
+		md: $breakpoint-md,
+		lg: $breakpoint-lg,
+	);
+	@if $breakpoint == xs {
+		@media (max-width: $breakpoint-xs) {
+			@content;
+		}
+	} @else if $breakpoint == sm {
+		@media (max-width: $breakpoint-sm) {
+			@content;
+		}
+	} @else if $breakpoint == md {
+		@media (max-width: $breakpoint-md) {
+			@content;
+		}
+	} @else if $breakpoint == lg {
+		@media (max-width: $breakpoint-lg) {
+			@content;
+		}
+	}
+
+	@media (max-width: map-get($breakpoints, $breakpoint)) {
+		@content;
+	}
+}
