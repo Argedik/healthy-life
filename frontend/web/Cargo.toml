@@ -4,8 +4,14 @@ version="0.1.0"
 edition="2021"
 
 [dependencies]
+# react js benzeri bir yapıya sahip wasm kullanarak tarayıcıda çalışan eklendi.
 yew = { version = "0.21", features = ["csr"] }
+
 wasm-bindgen = "0.2.99"
+# Serde , Rust dilinde veri serileştirme ve seriyi çözme (deserialization) işlemlerini yapar.
 serde = { version = "1.0.216", features = ["derive"]}
+
+# Reqwasm, web tarayıcısında HTTP istekleri yapmak için kullanılan bir kütüphanedir. Fetch API'yi sarmalar ve Rust ile web tabanlı REST API çağrıları yapmanızı sağlar.
 reqwasm = "0.5"
-stylist = "0.13"
+# web-sys ve wasm-bindgen sayesinde target klasörü içine wasm dosyalarımız oluşturuluyor
+web-sys = { version = "0.3", features = ["Window", "Document", "Element"] }

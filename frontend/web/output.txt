@@ -10,12 +10,17 @@ version="0.1.0"
 edition="2021"
 
 [dependencies]
+# react js benzeri bir yapıya sahip wasm kullanarak tarayıcıda çalışan eklendi.
 yew = { version = "0.21", features = ["csr"] }
-wasm-bindgen = "0.2.99"
-serde = { version = "1.0", features = ["derive"]}
-reqwasm = "0.5"
-stylist = "0.13"
 
+wasm-bindgen = "0.2.99"
+# Serde , Rust dilinde veri serileştirme ve seriyi çözme (deserialization) işlemlerini yapar.
+serde = { version = "1.0.216", features = ["derive"]}
+
+# Reqwasm, web tarayıcısında HTTP istekleri yapmak için kullanılan bir kütüphanedir. Fetch API'yi sarmalar ve Rust ile web tabanlı REST API çağrıları yapmanızı sağlar.
+reqwasm = "0.5"
+# web-sys ve wasm-bindgen sayesinde target klasörü içine wasm dosyalarımız oluşturuluyor
+web-sys = { version = "0.3", features = ["Window", "Document", "Element"] }
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/Dockerfile
 Dosya İçeriği:
@@ -54,7 +59,7 @@ Dosya İçeriği:
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="dist/_globals.css" />
+		<link data-trunk rel="scss" href="styles.scss" />
 		<title>Besin Uygulaması</title>
 	</head>
 	<body>
@@ -69,13 +74,31 @@ Dosya İçeriği:
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/card.rs
 Dosya İçeriği:
-use stylist::Style;
 use yew::prelude::*;
 
 #[function_component(Card)]
 pub fn card() -> Html {
+    // let style = style!(
+    //     r#"
+    //     body {
+    //         background-color: lightblue;
+    //         font-family: Arial, sans-serif;
+    //     }
+    //     .card {
+    //         padding: 20px;
+    //         border: 1px solid #ccc;
+    //         border-radius: 10px;
+    //         background-color: white;
+    //         max-width: 300px;
+    //         margin: auto;
+    //     }
+    //     "#
+    // )
+    // .expect("Failed to create style");
+    // <div class={style}>
+
     html! {
-        <div class="card">
+        <div>
             <div class="image-container">
                 <p>{ "Yemek resmi" }</p>
             </div>
@@ -91,12 +114,14 @@ pub fn card() -> Html {
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/home_page.rs
 Dosya İçeriği:
 use yew::prelude::*;
+  // <div class={css!("color: blue;")}>{"Hello blue!"}</div
 
 #[function_component(HomePage)]
 pub fn home_page() -> Html {
   html! {
     <div>
-      <h1>{ "Sağlık Uygulamasına Hoş Geldiniz!asd" }</h1>
+      <h1>{ "Sağlık Uygulamasına Hoş Geldiniz!" }</h1>
+      <div>{"Hello blue!"}</div>
     </div>
   }
 }
@@ -238,9 +263,9 @@ fn main() {
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/static/styles/_globals.scss
 Dosya İçeriği:
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-@import './_variables';
-@import '@styles/_mixins';
+// @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+// @import './_variables';
+// @import './_mixins';
 
 * {
 	box-sizing: border-box;
@@ -265,12 +290,13 @@ body {
 	color: $craft-color;
 	background-color: transparent;
 	margin: 0;
+	padding: 0;
 }
 
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/static/styles/_mixins.scss
 Dosya İçeriği:
-@import '@styles/_variables';
+@import './_variables';
 
 @mixin flexCenter {
 	display: flex;
@@ -343,9 +369,57 @@ $breakpoint-md: 992px; // Medium devices (tablets)
 $breakpoint-lg: 1200px; // Large devices (desktops)
 
 
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/styles.scss
+Dosya İçeriği:
+body {
+	font-family: Arial, sans-serif;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	margin: 0;
+	background-color: #f0f0f0;
+}
+
+.card {
+	width: 200px;
+	background-color: #e0e0e0;
+	border-radius: 15px;
+	overflow: hidden;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.image-container {
+	height: 150px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #fff;
+}
+
+.image-container p {
+	margin: 0;
+	color: #333;
+	font-weight: bold;
+}
+
+.info-container {
+	padding: 15px;
+	text-align: center;
+	background-color: #f9f9f9;
+}
+
+.info-container p {
+	margin: 5px 0;
+	color: #666;
+	font-size: 14px;
+}
+
+
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/Trunk.toml
 Dosya İçeriği:
 [build]
+# cargo trunk ya da trunk serve ile proje başlatıldığında oluşturulacak klasör ve dosyaların kaydedileceği dizin
 output = "dist"
 watcher_ignore = [
     "dist/*",       # trunk'ın kendi build çıktıları
@@ -355,9 +429,10 @@ watcher_ignore = [
     "docker-compose.yml" # Compose dosyaları
 ]
 
-[scss]
-input = "static/styles/_globals.scss"
-output = "dist/_globals.css"
+# trunk serve komutunun 127.0.0.1 adresinde ve 8080 portunda çalışmasını sağlıyoruz
+[serve]
+addresses = ["127.0.0.1"]
+port = 8080
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/versel.json
 Dosya İçeriği:

@@ -1,4 +1,5 @@
 [build]
+# cargo trunk ya da trunk serve ile proje başlatıldığında oluşturulacak klasör ve dosyaların kaydedileceği dizin
 output = "dist"
 watcher_ignore = [
     "dist/*",       # trunk'ın kendi build çıktıları
@@ -8,10 +9,7 @@ watcher_ignore = [
     "docker-compose.yml" # Compose dosyaları
 ]
 
-[scss]
-input = "static/styles/_globals.scss"
-output = "dist/_globals.css"
-
-[[build.hook]]
-command = "sass"
-args = ["static/styles:dist/styles", "--no-source-map", "--style=compressed"]
+# trunk serve komutunun 127.0.0.1 adresinde ve 8080 portunda çalışmasını sağlıyoruz
+[serve]
+addresses = ["127.0.0.1"]
+port = 8080
