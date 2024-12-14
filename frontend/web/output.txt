@@ -72,12 +72,20 @@ Dosya İçeriği:
 </html>
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/card.rs
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/card/Card.html
+Dosya İçeriği:
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/card/Card.scss
+Dosya İçeriği:
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/card/card_view.rs
 Dosya İçeriği:
 use yew::prelude::*;
 
 #[function_component(Card)]
-pub fn card() -> Html {
+pub fn card_view() -> Html {
     // let style = style!(
     //     r#"
     //     body {
@@ -111,13 +119,29 @@ pub fn card() -> Html {
 }
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/home_page.rs
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/card/mod.rs
+Dosya İçeriği:
+pub mod card_view;
+pub use card_view::Card;
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/home_page/HomePage.html
+Dosya İçeriği:
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/home_page/HomePage.scss
+Dosya İçeriği:
+.homepage {
+	/* HomePage bileşen stilini buraya ekleyin */
+}
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/home_page/home_page.rs
 Dosya İçeriği:
 use yew::prelude::*;
   // <div class={css!("color: blue;")}>{"Hello blue!"}</div
 
 #[function_component(HomePage)]
-pub fn home_page() -> Html {
+pub fn home_page_component() -> Html {
   html! {
     <div>
       <h1>{ "Sağlık Uygulamasına Hoş Geldiniz!" }</h1>
@@ -125,6 +149,11 @@ pub fn home_page() -> Html {
     </div>
   }
 }
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/home_page/mod.rs
+Dosya İçeriği:
+pub mod home_page;
+pub use home_page::HomePage;
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/mod.rs
 Dosya İçeriği:
@@ -134,14 +163,28 @@ pub mod card;
 
 pub use nav_bar::NavBar;
 pub use home_page::HomePage;
-pub use card::Card; 
+pub use card::Card;
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/nav_bar.rs
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/nav_bar/mod.rs
+Dosya İçeriği:
+pub mod nav_bar;
+pub use nav_bar::NavBar;
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/nav_bar/Navbar.html
+Dosya İçeriği:
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/nav_bar/NavBar.scss
+Dosya İçeriği:
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/nav_bar/nav_bar.rs
 Dosya İçeriği:
 use yew::prelude::*;
 
 #[function_component(NavBar)]
-pub fn nav_bar() -> Html {
+pub fn nav_bar_component() -> Html {
   html! {
     <nav>
       <ul>
@@ -161,13 +204,15 @@ Dosya İçeriği:
 use yew::prelude::*;
 mod components;
 
+use components::{NavBar, HomePage, Card};
+
 #[function_component(App)]
 fn app() -> Html {
   html! {
     <>
-      <components::NavBar />
-      <components::HomePage />
-      <components::Card />
+      <NavBar />
+      <HomePage />
+      <Card />
     </>
   }
 }
@@ -175,91 +220,6 @@ fn app() -> Html {
 fn main() {
   yew::Renderer::<App>::new().render();
 }
-
-
-
-// use yew::prelude::*;
-// use serde::{Deserialize, Serialize};
-// use reqwasm::http::Request;
-
-// #[derive(Serialize, Deserialize, Clone, PartialEq)]
-// struct Food {
-//     id: i64,
-//     name: String,
-//     calories: i32,
-// }
-
-// #[function_component(App)]
-// fn app() -> Html {
-//     let foods = use_state(Vec::<Food>::new);
-
-//     {
-//         let foods = foods.clone();
-//         use_effect_with_deps(
-//             move |_| {
-//                 wasm_bindgen_futures::spawn_local(async move {
-//                     let fetched_foods = Request::get("http://localhost:8080/foods")
-//                         .send()
-//                         .await
-//                         .unwrap()
-//                         .json::<Vec<Food>>()
-//                         .await
-//                         .unwrap();
-//                     foods.set(fetched_foods);
-//                 });
-//                 || ()
-//             },
-//             (),
-//         );
-//     }
-
-//     let name = use_state(String::new);
-//     let calories = use_state(String::new);
-
-//     let on_add_food = {
-//         let name = name.clone();
-//         let calories = calories.clone();
-//         let foods = foods.clone();
-//         Callback::from(move |_| {
-//             let name_value = name.to_string();
-//             let calories_value: i32 = calories.to_string().parse().unwrap_or(0);
-
-//             wasm_bindgen_futures::spawn_local(async move {
-//                 let new_food = Food {
-//                     id: 0,
-//                     name: name_value.clone(),
-//                     calories: calories_value,
-//                 };
-
-//                 Request::post("http://localhost:8080/foods")
-//                     .header("Content-Type", "application/json")
-//                     .body(serde_json::to_string(&new_food).unwrap())
-//                     .send()
-//                     .await
-//                     .unwrap();
-
-//                 let updated_foods = Request::get("http://localhost:8080/foods")
-//                     .send()
-//                     .await
-//                     .unwrap()
-//                     .json::<Vec<Food>>()
-//                     .await
-//                     .unwrap();
-//                 foods.set(updated_foods);
-//             });
-//         })
-//     };
-
-//     html! {
-//         <div>
-//             <h1>{"Besin Uygulaması"}</h1>
-//             <input placeholder="Besin Adı" oninput={Callback::from(move |e: InputData| name.set(e.value))} />
-//             <input placeholder="Kalori" oninput={Callback::from(move |e: InputData| calories.set(e.value))} />
-//             <button onclick={on_add_food}>{"Ekle"}</button>
-//         </div>
-//     }
-// }
-
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/static/styles/_globals.scss
 Dosya İçeriği:

@@ -4,6 +4,4 @@ pub mod card;
 
 pub use nav_bar::NavBar;
 pub use home_page::HomePage;
-pub use card::Card; 
-pub mod HomePage;
-pub use HomePage::HomePage;
+pub use card::Card;

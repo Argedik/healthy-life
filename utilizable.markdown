@@ -110,4 +110,23 @@ yield
 
 
 ***trunk***
+*kendisinde scss desteği var. html dosyasına dahil ettiğimiz css dosyasının tag attributlerine data-trunk eklememiz ve rel attribütüne scss yazmamız yeterli*
 trunk serve --adress 0.0.0.0 --port 8081
+cargo install --force trunk *trunk'ı güncelle*
+cargo install --force wasm-bindgen-cli
+rustup update *rust'ı güncelle*
+rustup target list --installed *rustup target add wasm32-unknown-unknown ile wasm dosya yolunun olup olmadığını kontrol et*
+--open bu seçenek ile çalıştırıldıktan sonra otomatik browserı açıyor
+--watch belirtilen dosyalarda değişiklik yaptıldığında otomatik build almasını sağlıyor
+clean
+***Trunk.toml***
+
+
+
+***Cargo***
+clean
+
+***Cargo.toml***
+**web-sys** dist klasörüne wasm ve html dosyası oluşturuluyor.
+
+

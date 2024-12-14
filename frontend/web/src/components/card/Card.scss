@@ -1,0 +1,34 @@
+.card {
+	width: 200px;
+	background-color: teal;
+	border-radius: 15px;
+	overflow: hidden;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	margin: 20px auto;
+
+	.image-container {
+		height: 150px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: #fff;
+
+		p {
+			margin: 0;
+			color: #333;
+			font-weight: bold;
+		}
+	}
+
+	.info-container {
+		padding: 15px;
+		text-align: center;
+		background-color: #f9f9f9;
+
+		p {
+			margin: 5px 0;
+			color: #666;
+			font-size: 14px;
+		}
+	}
+}

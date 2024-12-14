@@ -21,6 +21,7 @@ fn main() {
     ignored.insert("utilizable.html".to_string());
     ignored.insert("utilizable.markdown".to_string());
     ignored.insert("dist".to_string());
+    ignored.insert("create_component.ps1".to_string());
 
     list_files_only(root_path, root_path, &mut ignored, &mut output);
 

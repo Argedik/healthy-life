@@ -1,7 +1,7 @@
 use yew::prelude::*;
 
 #[function_component(Card)]
-pub fn card() -> Html {
+pub fn card_view() -> Html {
     // let style = style!(
     //     r#"
     //     body {

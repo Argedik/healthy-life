@@ -1,7 +1,7 @@
 use yew::prelude::*;
 
 #[function_component(NavBar)]
-pub fn nav_bar() -> Html {
+pub fn nav_bar_component() -> Html {
   html! {
     <nav>
       <ul>
