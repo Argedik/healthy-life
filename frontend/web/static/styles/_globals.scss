@@ -8,7 +8,12 @@
 }
 
 html {
-	font-size: 16px; // 1rem = 16px
+	font-size: 16px;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	font-family: 'Poppins', sans-serif;
 
 	@include respond-to(sm) {
 		font-size: 15px;
@@ -20,6 +25,8 @@ html {
 }
 
 body {
+	width: 100%;
+	height: 100%;
 	line-height: 1.5;
 	font-family: 'Poppins', sans-serif;
 	color: $craft-color;

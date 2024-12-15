@@ -1,83 +1,92 @@
+html,
+body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	font-family: 'Poppins', sans-serif;
+}
+
 .container {
 	position: relative;
-	width: 500px; /* Görselin boyutuna göre ayarlayın */
-	height: 500px;
-	margin: auto;
+	width: 100vw; /* Ekran genişliği */
+	height: 100vh; /* Ekran yüksekliği */
+	overflow: hidden; /* Taşan alanları gizler */
+}
 
-	.food-image {
-		width: 100%;
-		border-radius: 50%; /* Daire şeklinde yapar */
-		border: 2px solid #2e8b57;
-	}
+.container img {
+	width: 100%; /* Genişlik tamamen ekranı kaplasın */
+	height: 100%; /* Yükseklik tamamen ekranı kaplasın */
+	object-fit: cover; /* Görseli kırparak sığdırır */
+	clip-path: inset(12% 19% 0% 6%); /* Üst, sağ, alt, sol kırpma değerleri */
+}
 
-	.label {
-		position: absolute;
-		background-color: #fff;
-		padding: 5px 10px;
-		border-radius: 5px;
-		font-weight: bold;
-		color: #01303b;
-	}
+.label {
+	position: absolute;
+	background-color: #fff;
+	padding: 5px 10px;
+	border-radius: 5px;
+	font-weight: bold;
+	color: #01303b;
+	text-decoration: none;
+	box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+	transition: background-color 0.3s ease, color 0.3s ease;
+	cursor: pointer;
 
-	/* Label Pozisyonları */
-	.tahil {
-		top: 10%;
-		left: 60%;
-	}
-	.dolap {
-		top: 20%;
-		left: 10%;
-	}
-	.gunluk-menu {
-		top: 40%;
-		left: 5%;
-	}
-	.ozel-ogun {
-		bottom: 20%;
-		left: 10%;
-	}
-	.saglikli-diyet {
-		bottom: 5%;
-		left: 40%;
-	}
-
-	/* Çizgiler */
-	.line {
-		position: absolute;
-		width: 50px;
-		height: 2px;
+	&:hover {
 		background-color: #2e8b57;
+		color: #fff;
 	}
+}
 
-	.tahil-line {
-		top: 15%;
-		left: 50%;
-		transform: rotate(45deg);
-	}
-	.dolap-line {
-		top: 25%;
-		left: 20%;
-	}
-	.gunluk-menu-line {
-		top: 45%;
-		left: 15%;
-	}
-	.ozel-ogun-line {
-		bottom: 25%;
-		left: 20%;
-	}
-	.saglikli-diyet-line {
-		bottom: 10%;
-		left: 45%;
-	}
+/* Label Pozisyonları */
+.tahil {
+	top: 10%;
+	left: 60%;
+}
+.dolap {
+	top: 20%;
+	left: 10%;
+}
+.gunluk-menu {
+	top: 40%;
+	left: 5%;
+}
+.ozel-ogun {
+	bottom: 20%;
+	left: 10%;
+}
+.saglikli-diyet {
+	bottom: 5%;
+	left: 40%;
+}
 
-	.title {
-		position: absolute;
-		bottom: 10%;
-		left: 20%;
-		font-size: 20px;
-		color: #01303b;
-		text-align: center;
-		font-weight: bold;
-	}
+/* Çizgiler */
+.line {
+	position: absolute;
+	width: 50px;
+	height: 2px;
+	background-color: #2e8b57;
+}
+
+.tahil-line {
+	top: 15%;
+	left: 50%;
+	transform: rotate(45deg);
+}
+.dolap-line {
+	top: 25%;
+	left: 20%;
+}
+.gunluk-menu-line {
+	top: 45%;
+	left: 15%;
+}
+.ozel-ogun-line {
+	bottom: 25%;
+	left: 20%;
+}
+.saglikli-diyet-line {
+	bottom: 10%;
+	left: 45%;
 }

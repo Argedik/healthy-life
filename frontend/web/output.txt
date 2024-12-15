@@ -60,7 +60,7 @@ Dosya İçeriği:
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link data-trunk rel="copy-dir" href="static" />
-		<!-- <link data-trunk rel="scss" href="./static/styles/index.scss" /> -->
+		<link data-trunk rel="scss" href="./static/styles/index.scss" />
 		<title>Besin Uygulaması</title>
 	</head>
 	<body>
@@ -494,9 +494,9 @@ watcher_ignore = [
 addresses = ["127.0.0.1"]
 port = 8080
 
-[[copy]]
-source = "static"
-dest = "dist"
+# [[copy]]
+# source = "static"
+# dest = "."
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/versel.json
 Dosya İçeriği:

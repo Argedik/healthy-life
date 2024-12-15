@@ -7,9 +7,9 @@ use components::{NavBar, HomePage, Card};
 fn app() -> Html {
   html! {
     <>
-      <NavBar />
+      // <NavBar />
       <HomePage />
-      <Card />
+      // <Card />
     </>
   }
 }
