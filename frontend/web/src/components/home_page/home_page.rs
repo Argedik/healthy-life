@@ -3,10 +3,11 @@ use yew::prelude::*;
 
 #[function_component(HomePage)]
 pub fn home_page_component() -> Html {
+  let html_content = include_str!("home_page.html"); 
+
   html! {
-    <div>
-      <h1>{ "Sağlık Uygulamasına Hoş Geldiniz!" }</h1>
-      <div>{"Hello blue!"}</div>
-    </div>
+      <div>
+          { Html::from_html_unchecked(html_content.into()) }
+      </div>
   }
 }

@@ -59,25 +59,67 @@ Dosya İçeriği:
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link data-trunk rel="scss" href="styles.scss" />
+		<link data-trunk rel="copy-dir" href="static" />
+		<!-- <link data-trunk rel="scss" href="./static/styles/index.scss" /> -->
 		<title>Besin Uygulaması</title>
 	</head>
 	<body>
 		<div id="app"></div>
-		<script type="module">
-			import init from './pkg/besin_uygulamasi_frontend.js';
-			init();
-		</script>
+		<script type="module"></script>
 	</body>
 </html>
+xz
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/card/Card.html
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/card/card.html
 Dosya İçeriği:
+<div class="card">
+	<div class="image-container">
+		<p>Yemek resmi</p>
+	</div>
+	<div class="info-container">
+		<p>Resim Açıklaması</p>
+		<p>Puanı, Maliyeti</p>
+	</div>
+</div>
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/card/Card.scss
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/card/card.scss
 Dosya İçeriği:
+.card {
+	width: 200px;
+	background-color: teal;
+	border-radius: 15px;
+	overflow: hidden;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	margin: 20px auto;
+
+	.image-container {
+		height: 150px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: #fff;
+
+		p {
+			margin: 0;
+			color: #333;
+			font-weight: bold;
+		}
+	}
+
+	.info-container {
+		padding: 15px;
+		text-align: center;
+		background-color: #f9f9f9;
+
+		p {
+			margin: 5px 0;
+			color: #666;
+			font-size: 14px;
+		}
+	}
+}
 
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/card/card_view.rs
@@ -86,34 +128,10 @@ use yew::prelude::*;
 
 #[function_component(Card)]
 pub fn card_view() -> Html {
-    // let style = style!(
-    //     r#"
-    //     body {
-    //         background-color: lightblue;
-    //         font-family: Arial, sans-serif;
-    //     }
-    //     .card {
-    //         padding: 20px;
-    //         border: 1px solid #ccc;
-    //         border-radius: 10px;
-    //         background-color: white;
-    //         max-width: 300px;
-    //         margin: auto;
-    //     }
-    //     "#
-    // )
-    // .expect("Failed to create style");
-    // <div class={style}>
-
+    let card_container = include_str!("card.html");
     html! {
         <div>
-            <div class="image-container">
-                <p>{ "Yemek resmi" }</p>
-            </div>
-            <div class="info-container">
-                <p>{ "Resim Açıklaması" }</p>
-                <p>{ "Puanı, Maliyeti" }</p>
-            </div>
+            { Html::from_html_unchecked(card_container.into()) }
         </div>
     }
 }
@@ -124,15 +142,41 @@ Dosya İçeriği:
 pub mod card_view;
 pub use card_view::Card;
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/home_page/HomePage.html
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/components.scss
 Dosya İçeriği:
+@use './card/card.scss' as *;
+@use './home_page/home_page.scss' as *;
+@use './nav_bar/nav_bar.scss' as *;
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/home_page/HomePage.scss
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/home_page/home_page.html
 Dosya İçeriği:
-.homepage {
-	/* HomePage bileşen stilini buraya ekleyin */
-}
+<div class="container">
+	<!-- Sebze Meyve Fotoğrafı -->
+	<img
+		src="/static/images/home-page/home-page.png"
+		alt="Sağlıklı Beslenme"
+		class="food-image"
+	/>
+
+	<!-- Yazılar ve Çizgiler -->
+	<div class="label tahil">Tahıl sonucuna göre</div>
+	<div class="line tahil-line"></div>
+
+	<div class="label dolap">Dolapta ne var?</div>
+	<div class="line dolap-line"></div>
+
+	<div class="label gunluk-menu">Günün Menüsü</div>
+	<div class="line gunluk-menu-line"></div>
+
+	<div class="label ozel-ogun">Özel öğün beslenmesi</div>
+	<div class="line ozel-ogun-line"></div>
+
+	<div class="label saglikli-diyet">Sağlıklı diyetler</div>
+	<div class="line saglikli-diyet-line"></div>
+
+	<div class="title">SAĞLIK, DOĞRU BESLENMEYLE BAŞLAR.</div>
+</div>
 
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/home_page/home_page.rs
@@ -142,13 +186,101 @@ use yew::prelude::*;
 
 #[function_component(HomePage)]
 pub fn home_page_component() -> Html {
+  let html_content = include_str!("home_page.html"); 
+
   html! {
-    <div>
-      <h1>{ "Sağlık Uygulamasına Hoş Geldiniz!" }</h1>
-      <div>{"Hello blue!"}</div>
-    </div>
+      <div>
+          { Html::from_html_unchecked(html_content.into()) }
+      </div>
   }
 }
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/home_page/home_page.scss
+Dosya İçeriği:
+.container {
+	position: relative;
+	width: 500px; /* Görselin boyutuna göre ayarlayın */
+	height: 500px;
+	margin: auto;
+
+	.food-image {
+		width: 100%;
+		border-radius: 50%; /* Daire şeklinde yapar */
+		border: 2px solid #2e8b57;
+	}
+
+	.label {
+		position: absolute;
+		background-color: #fff;
+		padding: 5px 10px;
+		border-radius: 5px;
+		font-weight: bold;
+		color: #01303b;
+	}
+
+	/* Label Pozisyonları */
+	.tahil {
+		top: 10%;
+		left: 60%;
+	}
+	.dolap {
+		top: 20%;
+		left: 10%;
+	}
+	.gunluk-menu {
+		top: 40%;
+		left: 5%;
+	}
+	.ozel-ogun {
+		bottom: 20%;
+		left: 10%;
+	}
+	.saglikli-diyet {
+		bottom: 5%;
+		left: 40%;
+	}
+
+	/* Çizgiler */
+	.line {
+		position: absolute;
+		width: 50px;
+		height: 2px;
+		background-color: #2e8b57;
+	}
+
+	.tahil-line {
+		top: 15%;
+		left: 50%;
+		transform: rotate(45deg);
+	}
+	.dolap-line {
+		top: 25%;
+		left: 20%;
+	}
+	.gunluk-menu-line {
+		top: 45%;
+		left: 15%;
+	}
+	.ozel-ogun-line {
+		bottom: 25%;
+		left: 20%;
+	}
+	.saglikli-diyet-line {
+		bottom: 10%;
+		left: 45%;
+	}
+
+	.title {
+		position: absolute;
+		bottom: 10%;
+		left: 20%;
+		font-size: 20px;
+		color: #01303b;
+		text-align: center;
+		font-weight: bold;
+	}
+}
+
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/home_page/mod.rs
 Dosya İçeriği:
@@ -171,11 +303,7 @@ Dosya İçeriği:
 pub mod nav_bar;
 pub use nav_bar::NavBar;
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/nav_bar/Navbar.html
-Dosya İçeriği:
-
-
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/nav_bar/NavBar.scss
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/nav_bar/nav_bar.html
 Dosya İçeriği:
 
 
@@ -199,6 +327,10 @@ pub fn nav_bar_component() -> Html {
   }
 }
 
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/nav_bar/nav_bar.scss
+Dosya İçeriği:
+
+
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/main.rs
 Dosya İçeriği:
 use yew::prelude::*;
@@ -221,11 +353,25 @@ fn main() {
   yew::Renderer::<App>::new().render();
 }
 
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/static/images/home-page/home-page.png
+Dosya İçeriği:
+Dosya okunamadı veya metin dosyası değil.
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/static/styles/index.scss
+Dosya İçeriği:
+@use './_variables' as *;
+@use './_mixins' as *;
+@use './_globals' as *;
+@use './typography' as *;
+
+@use '../../src/components/components.scss' as *;
+
+
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/static/styles/_globals.scss
 Dosya İçeriği:
-// @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-// @import './_variables';
-// @import './_mixins';
+@use './_variables' as *;
+@use './_mixins' as *;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 * {
 	box-sizing: border-box;
@@ -256,7 +402,8 @@ body {
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/static/styles/_mixins.scss
 Dosya İçeriği:
-@import './_variables';
+@use './_variables' as *;
+@use 'sass:map';
 
 @mixin flexCenter {
 	display: flex;
@@ -289,7 +436,7 @@ Dosya İçeriği:
 		}
 	}
 
-	@media (max-width: map-get($breakpoints, $breakpoint)) {
+	@media (max-width: map.get($breakpoints, $breakpoint)) {
 		@content;
 	}
 }
@@ -329,53 +476,6 @@ $breakpoint-md: 992px; // Medium devices (tablets)
 $breakpoint-lg: 1200px; // Large devices (desktops)
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/styles.scss
-Dosya İçeriği:
-body {
-	font-family: Arial, sans-serif;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100vh;
-	margin: 0;
-	background-color: #f0f0f0;
-}
-
-.card {
-	width: 200px;
-	background-color: #e0e0e0;
-	border-radius: 15px;
-	overflow: hidden;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.image-container {
-	height: 150px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background-color: #fff;
-}
-
-.image-container p {
-	margin: 0;
-	color: #333;
-	font-weight: bold;
-}
-
-.info-container {
-	padding: 15px;
-	text-align: center;
-	background-color: #f9f9f9;
-}
-
-.info-container p {
-	margin: 5px 0;
-	color: #666;
-	font-size: 14px;
-}
-
-
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/Trunk.toml
 Dosya İçeriği:
 [build]
@@ -394,6 +494,10 @@ watcher_ignore = [
 addresses = ["127.0.0.1"]
 port = 8080
 
+[[copy]]
+source = "static"
+dest = "dist"
+
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/versel.json
 Dosya İçeriği:
 {
@@ -408,5 +512,18 @@ Dosya İçeriği:
 		}
 	]
 }
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/webpack.config.js
+Dosya İçeriği:
+const path = require('path');
+
+module.exports = {
+	resolve: {
+		alias: {
+			'@images': path.resolve(__dirname, 'static/images'),
+		},
+	},
+};
 
 

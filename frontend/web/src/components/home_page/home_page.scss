@@ -1,3 +1,83 @@
-.homepage {
-	/* HomePage bileşen stilini buraya ekleyin */
+.container {
+	position: relative;
+	width: 500px; /* Görselin boyutuna göre ayarlayın */
+	height: 500px;
+	margin: auto;
+
+	.food-image {
+		width: 100%;
+		border-radius: 50%; /* Daire şeklinde yapar */
+		border: 2px solid #2e8b57;
+	}
+
+	.label {
+		position: absolute;
+		background-color: #fff;
+		padding: 5px 10px;
+		border-radius: 5px;
+		font-weight: bold;
+		color: #01303b;
+	}
+
+	/* Label Pozisyonları */
+	.tahil {
+		top: 10%;
+		left: 60%;
+	}
+	.dolap {
+		top: 20%;
+		left: 10%;
+	}
+	.gunluk-menu {
+		top: 40%;
+		left: 5%;
+	}
+	.ozel-ogun {
+		bottom: 20%;
+		left: 10%;
+	}
+	.saglikli-diyet {
+		bottom: 5%;
+		left: 40%;
+	}
+
+	/* Çizgiler */
+	.line {
+		position: absolute;
+		width: 50px;
+		height: 2px;
+		background-color: #2e8b57;
+	}
+
+	.tahil-line {
+		top: 15%;
+		left: 50%;
+		transform: rotate(45deg);
+	}
+	.dolap-line {
+		top: 25%;
+		left: 20%;
+	}
+	.gunluk-menu-line {
+		top: 45%;
+		left: 15%;
+	}
+	.ozel-ogun-line {
+		bottom: 25%;
+		left: 20%;
+	}
+	.saglikli-diyet-line {
+		bottom: 10%;
+		left: 45%;
+	}
+
+	.title {
+		position: absolute;
+		bottom: 10%;
+		left: 20%;
+		font-size: 20px;
+		color: #01303b;
+		text-align: center;
+		font-weight: bold;
+	}
 }

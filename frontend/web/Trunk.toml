@@ -13,3 +13,7 @@ watcher_ignore = [
 [serve]
 addresses = ["127.0.0.1"]
 port = 8080
+
+# [[copy]]
+# source = "static"
+# dest = "."

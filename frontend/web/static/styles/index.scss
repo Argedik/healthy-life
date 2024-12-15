@@ -1,4 +1,6 @@
-@import './_globals';
-@import './_mixins';
-@import './_variables';
-@import './typography';
+@use './_variables' as *;
+@use './_mixins' as *;
+@use './_globals' as *;
+@use './typography' as *;
+
+@use '../../src/components/components.scss' as *;
