@@ -9,16 +9,20 @@ body {
 
 .container {
 	position: relative;
-	width: 100vw; /* Ekran genişliği */
-	height: 100vh; /* Ekran yüksekliği */
+	width: 100%; /* Ekran genişliği */
+	height: 100%; /* Ekran yüksekliği */
 	overflow: hidden; /* Taşan alanları gizler */
 }
 
 .container img {
-	width: 100%; /* Genişlik tamamen ekranı kaplasın */
-	height: 100%; /* Yükseklik tamamen ekranı kaplasın */
+	width: 100%; /* Genişlik, yüksekliğe göre ayarlanır */
+	height: 100%; /* Ekran yüksekliğini tamamen kaplar */
 	object-fit: cover; /* Görseli kırparak sığdırır */
-	clip-path: inset(12% 19% 0% 6%); /* Üst, sağ, alt, sol kırpma değerleri */
+	position: absolute;
+	top: -1rem;
+	left: -1rem;
+	clip-path: inset(12% 19% 0% 6%);
+	transform: scale(1.7, 1.2);
 }
 
 .label {
