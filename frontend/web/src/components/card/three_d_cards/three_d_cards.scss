@@ -1,0 +1,92 @@
+.three-d-list-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	background: linear-gradient(
+		45deg,
+		var(--tertiary-color),
+		var(--primary-color)
+	);
+}
+
+.three-d-list-container ul {
+	position: relative;
+	transform-style: preserve-3d;
+	perspective: 31rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	transition: 0.5s;
+}
+
+.three-d-list-container ul li {
+	position: relative;
+	list-style: none;
+	width: 28rem;
+	height: 6rem;
+	padding: 1rem;
+	background: var(--secondary-color);
+	gap: 1.25rem;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	border-radius: 0.5rem;
+	box-shadow: 0 -15px 25px rgba(0, 0, 0, 0.25);
+	transition: 0.5s;
+	transition-delay: calc(var(--i) * 0.05s);
+}
+
+.three-d-list-container ul li:nth-child(1) {
+	transform: translateZ(-5rem) translateY(1.25rem);
+	opacity: 0.6;
+}
+
+.three-d-list-container ul li:nth-child(3) {
+	transform: translateZ(5rem) translateY(-2rem);
+	background: var(--tertiary-color);
+}
+
+.three-d-list-container ul li:nth-child(4) {
+	transform: translateZ(10rem) translateY(-5rem);
+	background: var(--tertiary-color);
+}
+
+.three-d-list-container ul:hover {
+	gap: 2rem;
+}
+
+.three-d-list-container ul:hover li {
+	opacity: 1;
+	background: var(--tertiary-color);
+	transform: translateZ(0) translateY(0);
+}
+
+.three-d-list-container ul li img {
+	max-width: 4.5rem;
+}
+
+ul li .content {
+	width: 100%;
+	cursor: pointer;
+}
+
+ul li .content h4 {
+	font-weight: 600;
+	color: var(--tertiary-color);
+}
+
+ul li .content p {
+	position: relative;
+	color: var(--primary-color);
+	line-height: 1rem;
+	width: 100%;
+}
+
+ul li .content span {
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: 0, 75rem;
+	color: var(--secondary-color);
+}
