@@ -2,13 +2,15 @@ use yew::prelude::*;
 mod components;
 
 use components::{NavBar, HomePage, Card};
+use components::fridge_content::FridgeContent;
 
 #[function_component(App)]
 fn app() -> Html {
   html! {
     <>
       // <NavBar />
-      <HomePage />
+      // <HomePage />
+      <FridgeContent />
       // <Card />
     </>
   }

@@ -68,7 +68,6 @@ Dosya İçeriği:
 		<script type="module"></script>
 	</body>
 </html>
-xz
 
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/card/card.html
@@ -142,6 +141,223 @@ Dosya İçeriği:
 pub mod card_view;
 pub use card_view::Card;
 
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/card/three_d_cards/mod.rs
+Dosya İçeriği:
+pub mod three_d_cards_view;
+pub use three_d_cards_view::*;
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/card/three_d_cards/three_d_cards.scss
+Dosya İçeriği:
+.three-d-list-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	background: linear-gradient(
+		45deg,
+		var(--tertiary-color),
+		var(--primary-color)
+	);
+}
+
+.three-d-list-container ul {
+	position: relative;
+	transform-style: preserve-3d;
+	perspective: 31rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	transition: 0.5s;
+}
+
+.three-d-list-container ul li {
+	position: relative;
+	list-style: none;
+	width: 28rem;
+	height: 6rem;
+	padding: 1rem;
+	background: var(--secondary-color);
+	gap: 1.25rem;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	border-radius: 0.5rem;
+	box-shadow: 0 -15px 25px rgba(0, 0, 0, 0.25);
+	transition: 0.5s;
+	transition-delay: calc(var(--i) * 0.05s);
+}
+
+.three-d-list-container ul li:nth-child(1) {
+	transform: translateZ(-5rem) translateY(1.25rem);
+	opacity: 0.6;
+}
+
+.three-d-list-container ul li:nth-child(3) {
+	transform: translateZ(5rem) translateY(-2rem);
+	background: var(--tertiary-color);
+}
+
+.three-d-list-container ul li:nth-child(4) {
+	transform: translateZ(10rem) translateY(-5rem);
+	background: var(--tertiary-color);
+}
+
+.three-d-list-container ul:hover {
+	gap: 2rem;
+}
+
+.three-d-list-container ul:hover li {
+	opacity: 1;
+	background: var(--tertiary-color);
+	transform: translateZ(0) translateY(0);
+}
+
+.three-d-list-container ul li img {
+	max-width: 4.5rem;
+}
+
+ul li .content {
+	width: 100%;
+	cursor: pointer;
+}
+
+ul li .content h4 {
+	font-weight: 600;
+	color: var(--tertiary-color);
+}
+
+ul li .content p {
+	position: relative;
+	color: var(--primary-color);
+	line-height: 1rem;
+	width: 100%;
+}
+
+ul li .content span {
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: 0, 75rem;
+	color: var(--secondary-color);
+}
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/card/three_d_cards/three_d_cards_view.html
+Dosya İçeriği:
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<div class="three-d-list-container">
+			<ul>
+				<li style="--i: 1">
+					<img
+						src="https://fastly.picsum.photos/id/123/400/200.jpg?hmac=bjWqtYzEF3fJaLLsW59yPr3QH9Cmu8rGPUK8nBKlCTM"
+					/>
+					<div class="content">
+						<h4></h4>
+						<p>
+							Lorem ipsum dolor sit amet<br />
+							consectetur adipisicing elit.
+						</p>
+					</div>
+				</li>
+				<li style="--i: 2">
+					<img
+						src="https://fastly.picsum.photos/id/588/400/200.jpg?hmac=cx5Kq84rDLT0Dc2dYYSoZP3PCROBKPayd1dAVtEyx44"
+					/>
+					<div class="content">
+						<h4></h4>
+						<p>
+							Lorem ipsum dolor sit amet<br />
+							consectetur adipisicing elit.
+						</p>
+					</div>
+				</li>
+				<li style="--i: 3">
+					<img
+						src="https://fastly.picsum.photos/id/275/400/200.jpg?hmac=iJ3-rO7j2MiwDCAHDOcoVH3q_5J0Z4ry0rTg3QWyG2s"
+					/>
+					<div class="content">
+						<h4></h4>
+						<p>
+							Lorem ipsum dolor sit amet<br />
+							consectetur adipisicing elit.
+						</p>
+					</div>
+				</li>
+				<li style="--i: 4">
+					<img
+						src="https://fastly.picsum.photos/id/851/400/200.jpg?hmac=Yk7CGS-p0BQhvfjGvjue86sS6ja03oKw0JKPMR4ImWI"
+					/>
+					<div class="content">
+						<h4></h4>
+						<p>
+							Lorem ipsum dolor sit amet<br />
+							consectetur adipisicing elit.
+						</p>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div id="embeddedContent"></div>
+		<script src="js/index.js"></script>
+	</body>
+</html>
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/card/three_d_cards/three_d_cards_view.rs
+Dosya İçeriği:
+use std::fs;
+use std::io::{self, Write};
+use std::path::Path;
+
+// fn main() {
+//     match embed_content("../header/basic/index.html") {
+//         Ok(_) => println!("Content embedded successfully!"),
+//         Err(e) => eprintln!("Error: {:?}", e),
+//     }
+// }
+
+fn embed_content(file_path: &str) -> io::Result<()> {
+    let content = fs::read_to_string(file_path)?;
+    inject_html("embeddedContent", &content)?;
+    
+    add_stylesheet("../header/basic/css/style.css")?;
+    add_script("../header/basic/js/index.js")?;
+    Ok(())
+}
+
+fn inject_html(element_id: &str, content: &str) -> io::Result<()> {
+    println!("Injecting HTML to element with id '{}':\n{}", element_id, content);
+    Ok(())
+}
+
+fn add_stylesheet(file_path: &str) -> io::Result<()> {
+    if Path::new(file_path).exists() {
+        println!("Linking stylesheet: {}", file_path);
+        Ok(())
+    } else {
+        Err(io::Error::new(io::ErrorKind::NotFound, "Stylesheet not found"))
+    }
+}
+
+fn add_script(file_path: &str) -> io::Result<()> {
+    if Path::new(file_path).exists() {
+        println!("Linking script: {}", file_path);
+        Ok(())
+    } else {
+        Err(io::Error::new(io::ErrorKind::NotFound, "Script not found"))
+    }
+}
+
+
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/components.scss
 Dosya İçeriği:
 @use './card/card.scss' as *;
@@ -152,30 +368,14 @@ Dosya İçeriği:
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/home_page/home_page.html
 Dosya İçeriği:
 <div class="container">
-	<!-- Sebze Meyve Fotoğrafı -->
-	<img
-		src="/static/images/home-page/home-page.png"
-		alt="Sağlıklı Beslenme"
-		class="food-image"
-	/>
-
-	<!-- Yazılar ve Çizgiler -->
-	<div class="label tahil">Tahıl sonucuna göre</div>
-	<div class="line tahil-line"></div>
-
-	<div class="label dolap">Dolapta ne var?</div>
-	<div class="line dolap-line"></div>
-
-	<div class="label gunluk-menu">Günün Menüsü</div>
-	<div class="line gunluk-menu-line"></div>
-
-	<div class="label ozel-ogun">Özel öğün beslenmesi</div>
-	<div class="line ozel-ogun-line"></div>
-
-	<div class="label saglikli-diyet">Sağlıklı diyetler</div>
-	<div class="line saglikli-diyet-line"></div>
-
-	<div class="title">SAĞLIK, DOĞRU BESLENMEYLE BAŞLAR.</div>
+	<img src="/static/images/home-page/home-page.png" alt="Home Page Image" />
+	<a href="/analysis-result" class="label analysis-result"
+		>Tahıl sonucuna göre</a
+	>
+	<a href="/fridge-content" class="label fridge-content">Dolapta ne var?</a>
+	<a href="/daily-menu" class="label daily-menu">Günün Menüsü</a>
+	<a href="/special-meal" class="label special-meal">Özel öğün beslenmesi</a>
+	<a href="/healthy-diets" class="label healthy-diets">Sağlıklı diyetler</a>
 </div>
 
 
@@ -197,88 +397,71 @@ pub fn home_page_component() -> Html {
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/home_page/home_page.scss
 Dosya İçeriği:
+html,
+body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	font-family: 'Poppins', sans-serif;
+}
+
+div:has(.container) {
+	height: 100%;
+	width: 100%;
+}
+
 .container {
 	position: relative;
-	width: 500px; /* Görselin boyutuna göre ayarlayın */
-	height: 500px;
-	margin: auto;
+	width: 100%; /* Ekran genişliği */
+	height: 100%; /* Ekran yüksekliği */
+	overflow: hidden; /* Taşan alanları gizler */
+}
 
-	.food-image {
-		width: 100%;
-		border-radius: 50%; /* Daire şeklinde yapar */
-		border: 2px solid #2e8b57;
-	}
+.container img {
+	width: 100%; /* Genişlik, yüksekliğe göre ayarlanır */
+	height: 100%; /* Ekran yüksekliğini tamamen kaplar */
+	object-fit: cover; /* Görseli kırparak sığdırır */
+	position: absolute;
+}
 
-	.label {
-		position: absolute;
-		background-color: #fff;
-		padding: 5px 10px;
-		border-radius: 5px;
-		font-weight: bold;
-		color: #01303b;
-	}
+.label {
+	position: absolute;
+	padding: 5px 10px;
+	font-weight: bold;
+	color: white;
+	text-decoration: none;
+	transition: background-color 0.3s ease, color 0.3s ease;
+	cursor: pointer;
+	border-radius: 5px;
 
-	/* Label Pozisyonları */
-	.tahil {
-		top: 10%;
-		left: 60%;
-	}
-	.dolap {
-		top: 20%;
-		left: 10%;
-	}
-	.gunluk-menu {
-		top: 40%;
-		left: 5%;
-	}
-	.ozel-ogun {
-		bottom: 20%;
-		left: 10%;
-	}
-	.saglikli-diyet {
-		bottom: 5%;
-		left: 40%;
-	}
-
-	/* Çizgiler */
-	.line {
-		position: absolute;
-		width: 50px;
-		height: 2px;
+	&:hover {
 		background-color: #2e8b57;
+		color: #fff;
+		box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
 	}
+}
 
-	.tahil-line {
-		top: 15%;
-		left: 50%;
-		transform: rotate(45deg);
-	}
-	.dolap-line {
-		top: 25%;
-		left: 20%;
-	}
-	.gunluk-menu-line {
-		top: 45%;
-		left: 15%;
-	}
-	.ozel-ogun-line {
-		bottom: 25%;
-		left: 20%;
-	}
-	.saglikli-diyet-line {
-		bottom: 10%;
-		left: 45%;
-	}
-
-	.title {
-		position: absolute;
-		bottom: 10%;
-		left: 20%;
-		font-size: 20px;
-		color: #01303b;
-		text-align: center;
-		font-weight: bold;
-	}
+/* Label Positions */
+.analysis-result {
+	top: 5.3%;
+	left: 50.5%;
+}
+.fridge-content {
+	top: 15.5%;
+	left: 27.8%;
+}
+.daily-menu {
+	top: 31%;
+	left: 17%;
+}
+.special-meal {
+	bottom: 48.8%;
+	left: 13.6%;
+}
+.healthy-diets {
+	bottom: 32.2%;
+	left: 17.2%;
 }
 
 
@@ -342,9 +525,9 @@ use components::{NavBar, HomePage, Card};
 fn app() -> Html {
   html! {
     <>
-      <NavBar />
+      // <NavBar />
       <HomePage />
-      <Card />
+      // <Card />
     </>
   }
 }
@@ -379,7 +562,12 @@ Dosya İçeriği:
 }
 
 html {
-	font-size: 16px; // 1rem = 16px
+	font-size: 16px;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	font-family: 'Poppins', sans-serif;
 
 	@include respond-to(sm) {
 		font-size: 15px;
@@ -391,6 +579,8 @@ html {
 }
 
 body {
+	width: 100%;
+	height: 100%;
 	line-height: 1.5;
 	font-family: 'Poppins', sans-serif;
 	color: $craft-color;

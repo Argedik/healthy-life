@@ -7,6 +7,11 @@ body {
 	font-family: 'Poppins', sans-serif;
 }
 
+div:has(.container) {
+	height: 100%;
+	width: 100%;
+}
+
 .container {
 	position: relative;
 	width: 100%; /* Ekran genişliği */
@@ -19,78 +24,43 @@ body {
 	height: 100%; /* Ekran yüksekliğini tamamen kaplar */
 	object-fit: cover; /* Görseli kırparak sığdırır */
 	position: absolute;
-	top: -1rem;
-	left: -1rem;
-	clip-path: inset(12% 19% 0% 6%);
-	transform: scale(1.7, 1.2);
 }
 
 .label {
 	position: absolute;
-	background-color: #fff;
 	padding: 5px 10px;
-	border-radius: 5px;
 	font-weight: bold;
-	color: #01303b;
+	color: white;
 	text-decoration: none;
-	box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
 	transition: background-color 0.3s ease, color 0.3s ease;
 	cursor: pointer;
+	border-radius: 5px;
 
 	&:hover {
 		background-color: #2e8b57;
 		color: #fff;
+		box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
 	}
 }
 
-/* Label Pozisyonları */
-.tahil {
-	top: 10%;
-	left: 60%;
+/* Label Positions */
+.analysis-result {
+	top: 5.3%;
+	left: 50.5%;
 }
-.dolap {
-	top: 20%;
-	left: 10%;
+.fridge-content {
+	top: 15.5%;
+	left: 27.8%;
 }
-.gunluk-menu {
-	top: 40%;
-	left: 5%;
+.daily-menu {
+	top: 31%;
+	left: 17%;
 }
-.ozel-ogun {
-	bottom: 20%;
-	left: 10%;
+.special-meal {
+	bottom: 48.8%;
+	left: 13.6%;
 }
-.saglikli-diyet {
-	bottom: 5%;
-	left: 40%;
-}
-
-/* Çizgiler */
-.line {
-	position: absolute;
-	width: 50px;
-	height: 2px;
-	background-color: #2e8b57;
-}
-
-.tahil-line {
-	top: 15%;
-	left: 50%;
-	transform: rotate(45deg);
-}
-.dolap-line {
-	top: 25%;
-	left: 20%;
-}
-.gunluk-menu-line {
-	top: 45%;
-	left: 15%;
-}
-.ozel-ogun-line {
-	bottom: 25%;
-	left: 20%;
-}
-.saglikli-diyet-line {
-	bottom: 10%;
-	left: 45%;
+.healthy-diets {
+	bottom: 32.2%;
+	left: 17.2%;
 }
