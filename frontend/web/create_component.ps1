@@ -1,14 +1,14 @@
 Param(
+    # [Parameter(Mandatory = $true)]
+    # [string]$DosyaIsmi, 
+
     [Parameter(Mandatory = $true)]
-    [string]$DosyaIsmi,
-    
-    [Parameter(Mandatory = $true)]
-    [string]$KlasorIsmi
+    [string]$DosyaIsmi
 )
 
 $ProjectRoot = "C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web"
 $ScreensPath = Join-Path $ProjectRoot "src/screens"
-$TargetFolder = Join-Path $ScreensPath $KlasorIsmi
+$TargetFolder = Join-Path $ScreensPath $DosyaIsmi
 
 $htmlFile = Join-Path $TargetFolder "$DosyaIsmi.html"
 $scssFile = Join-Path $TargetFolder "$DosyaIsmi.scss"
@@ -19,13 +19,14 @@ $screensScssFile = Join-Path $ScreensPath "screens.scss"
 
 # Klasör oluştur
 if (!(Test-Path $TargetFolder)) {
-    Write-Host "[$KlasorIsmi] klasörü bulunamadı, oluşturuluyor..."
+    Write-Host "[$DosyaIsmi] klasörü bulunamadı, oluşturuluyor..."
     New-Item -ItemType Directory -Path $TargetFolder | Out-Null
 } else {
-    Write-Host "[$KlasorIsmi] klasörü zaten mevcut."
+    Write-Host "[$DosyaIsmi] klasörü zaten mevcut."
 }
 
-Write-Host "[$KlasorIsmi] dizinine giriliyor..."
+Write-Host "[$DosyaIsmi] dizinine giriliyor..."
+$CurrentLocation = Get-Location
 Set-Location $TargetFolder
 
 # HTML Dosyası
@@ -113,8 +114,8 @@ if (!(Test-Path $rootModFile)) {
 }
 
 $rootModContent = (Get-Content $rootModFile)
-$rootPubModLine = "pub mod $KlasorIsmi;"
-$rootPubUseLine = "pub use $KlasorIsmi::$DosyaIsmi;"
+$rootPubModLine = "pub mod $DosyaIsmi;"
+$rootPubUseLine = "pub use $DosyaIsmi::$DosyaIsmi;"
 
 if ($rootModContent -notcontains $rootPubModLine) {
     Add-Content $rootModFile $rootPubModLine
@@ -137,12 +138,13 @@ if (!(Test-Path $screensScssFile)) {
 }
 
 $screensScssContent = (Get-Content $screensScssFile)
-$useStatement = "@use './$KlasorIsmi/$DosyaIsmi.scss' as *;"
+$useStatement = "@use './$DosyaIsmi/$DosyaIsmi.scss' as *;"
 if ($screensScssContent -notcontains $useStatement) {
     Add-Content $screensScssFile $useStatement
-    Write-Host "screens.scss dosyasına '@use './$KlasorIsmi/$DosyaIsmi.scss' as *;' eklendi."
+    Write-Host "screens.scss dosyasına '@use './$DosyaIsmi/$DosyaIsmi.scss' as *;' eklendi."
 } else {
-    Write-Host "screens.scss dosyasında '@use './$KlasorIsmi/$DosyaIsmi.scss' as *;' zaten mevcut."
+    Write-Host "screens.scss dosyasında '@use './$DosyaIsmi/$DosyaIsmi.scss' as *;' zaten mevcut."
 }
 
-Write-Host "İşlem tamamlandı: '$DosyaIsmi' bileşeni '$KlasorIsmi' klasöründe oluşturuldu ya da güncellendi."
+Write-Host "İşlem tamamlandı: '$DosyaIsmi' bileşeni '$DosyaIsmi' klasöründe oluşturuldu ya da güncellendi."
+Set-Location $CurrentLocation
