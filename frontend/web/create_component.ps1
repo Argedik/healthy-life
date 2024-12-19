@@ -1,66 +1,148 @@
-# create_component.ps1
-
-param (
-    [Parameter(Mandatory=$true)]
-    [string]$ComponentName
+Param(
+    [Parameter(Mandatory = $true)]
+    [string]$DosyaIsmi,
+    
+    [Parameter(Mandatory = $true)]
+    [string]$KlasorIsmi
 )
 
-# Bileşen klasörünü oluştur
-$componentDir = "src/components/$ComponentName"
-if (-Not (Test-Path -Path $componentDir)) {
-    New-Item -ItemType Directory -Force -Path $componentDir | Out-Null
+$ProjectRoot = "C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web"
+$ScreensPath = Join-Path $ProjectRoot "src/screens"
+$TargetFolder = Join-Path $ScreensPath $KlasorIsmi
+
+$htmlFile = Join-Path $TargetFolder "$DosyaIsmi.html"
+$scssFile = Join-Path $TargetFolder "$DosyaIsmi.scss"
+$rsFile = Join-Path $TargetFolder "$DosyaIsmi.rs"
+$modFile = Join-Path $TargetFolder "mod.rs"
+$rootModFile = Join-Path $ScreensPath "mod.rs"
+$screensScssFile = Join-Path $ScreensPath "screens.scss"
+
+# Klasör oluştur
+if (!(Test-Path $TargetFolder)) {
+    Write-Host "[$KlasorIsmi] klasörü bulunamadı, oluşturuluyor..."
+    New-Item -ItemType Directory -Path $TargetFolder | Out-Null
 } else {
-    Write-Output "Klasör zaten mevcut: $componentDir"
+    Write-Host "[$KlasorIsmi] klasörü zaten mevcut."
 }
 
-# Rust dosyası oluştur
-$rustContent = @"
+Write-Host "[$KlasorIsmi] dizinine giriliyor..."
+Set-Location $TargetFolder
+
+# HTML Dosyası
+if (Test-Path $htmlFile) {
+    Write-Host "[$DosyaIsmi.html] dosyası zaten mevcut."
+} else {
+    $htmlContent = @"
+<div class="$($DosyaIsmi)-container">
+    <h1>$DosyaIsmi Component</h1>
+</div>
+"@
+    $htmlContent | Out-File $htmlFile -Encoding UTF8
+    Write-Host "[$DosyaIsmi.html] dosyası oluşturuldu."
+}
+
+# SCSS Dosyası
+if (Test-Path $scssFile) {
+    Write-Host "[$DosyaIsmi.scss] dosyası zaten mevcut."
+} else {
+    $scssContent = @"
+.$($DosyaIsmi)-container {
+    background-color: #f0f0f0;
+    padding: 20px;
+    h1 {
+        color: #333;
+    }
+}
+"@
+    $scssContent | Out-File $scssFile -Encoding UTF8
+    Write-Host "[$DosyaIsmi.scss] dosyası oluşturuldu."
+}
+
+# RS Dosyası
+if (Test-Path $rsFile) {
+    Write-Host "[$DosyaIsmi.rs] dosyası zaten mevcut."
+} else {
+    # Dosya ismini fonksiyon adına küçük harfle çeviriyoruz.
+    $fnName = ($DosyaIsmi.ToLower() + "_component")
+
+    $rsContent = @"
 use yew::prelude::*;
 
-#[function_component($ComponentName)]
-pub fn $($ComponentName.ToLower())() -> Html {
+#[function_component($DosyaIsmi)]
+pub fn $fnName() -> Html {
+    let html_content = include_str!("$DosyaIsmi.html"); 
     html! {
-        <div class=\"$($ComponentName.ToLower())\">
-            <p>{ \"$ComponentName Bileşeni\" }</p>
+        <div>
+            { Html::from_html_unchecked(html_content.into()) }
         </div>
     }
 }
 "@
-$rustFilePath = "$componentDir/$ComponentName.rs"
-Set-Content -Path $rustFilePath -Value $rustContent
-Write-Output "Rust dosyası oluşturuldu: $rustFilePath"
-
-# SCSS dosyası oluştur
-$scssContent = @"
-.$($ComponentName.ToLower()) {
-    /* $ComponentName bileşen stilini buraya ekleyin */
+    $rsContent | Out-File $rsFile -Encoding UTF8
+    Write-Host "[$DosyaIsmi.rs] dosyası oluşturuldu."
 }
-"@
-$scssFilePath = "$componentDir/$ComponentName.scss"
-Set-Content -Path $scssFilePath -Value $scssContent
-Write-Output "SCSS dosyası oluşturuldu: $scssFilePath"
 
-# mod.rs dosyasını güncelle
-$modPath = "src/components/mod.rs"
-$useStatement = "pub mod $ComponentName;`npub use $ComponentName::$ComponentName;"
-if (-not (Select-String -Path $modPath -Pattern "pub mod $ComponentName;")) {
-    Add-Content -Path $modPath -Value "`n$useStatement"
-    Write-Output "mod.rs dosyasına ekleme yapıldı: $ComponentName"
+# mod.rs düzenle
+if (!(Test-Path $modFile)) {
+    Write-Host "[$modFile] bulunamadı, oluşturuluyor..."
+    New-Item -ItemType File -Path $modFile | Out-Null
+}
+
+$modContent = (Get-Content $modFile)
+$pubModLine = "pub mod $DosyaIsmi;"
+$pubUseLine = "pub use $DosyaIsmi::$DosyaIsmi;"
+
+if ($modContent -notcontains $pubModLine) {
+    Add-Content $modFile $pubModLine
+    Write-Host "mod.rs dosyasına '$pubModLine' eklendi."
 } else {
-    Write-Output "mod.rs dosyasında zaten mevcut: $ComponentName"
+    Write-Host "mod.rs dosyasında '$pubModLine' zaten mevcut."
 }
 
-# index.html içinde SCSS dosyasını dahil et
-$indexPath = "index.html"
-$linkTag = "<link data-trunk rel=`"scss`" href=`"components/$ComponentName/$ComponentName.scss`" />"
-if (-not (Select-String -Path $indexPath -Pattern [regex]::Escape($linkTag))) {
-    # `<head>` etiketinden sonra ekle
-    $indexContent = Get-Content -Path $indexPath
-    $newContent = $indexContent -replace '(</head>)', "    $linkTag`n`$1"
-    Set-Content -Path $indexPath -Value $newContent
-    Write-Output "index.html dosyasına SCSS linki eklendi: $linkTag"
+if ($modContent -notcontains $pubUseLine) {
+    Add-Content $modFile $pubUseLine
+    Write-Host "mod.rs dosyasına '$pubUseLine' eklendi."
 } else {
-    Write-Output "index.html dosyasında zaten mevcut: $linkTag"
+    Write-Host "mod.rs dosyasında '$pubUseLine' zaten mevcut."
 }
 
-Write-Output "Bileşen '$ComponentName' başarıyla oluşturuldu."
+# screens klasörünün mod.rs dosyasına ekleme
+if (!(Test-Path $rootModFile)) {
+    Write-Host "[screens/mod.rs] bulunamadı, oluşturuluyor..."
+    New-Item -ItemType File -Path $rootModFile | Out-Null
+}
+
+$rootModContent = (Get-Content $rootModFile)
+$rootPubModLine = "pub mod $KlasorIsmi;"
+$rootPubUseLine = "pub use $KlasorIsmi::$DosyaIsmi;"
+
+if ($rootModContent -notcontains $rootPubModLine) {
+    Add-Content $rootModFile $rootPubModLine
+    Write-Host "screens/mod.rs dosyasına '$rootPubModLine' eklendi."
+} else {
+    Write-Host "screens/mod.rs dosyasında '$rootPubModLine' zaten mevcut."
+}
+
+if ($rootModContent -notcontains $rootPubUseLine) {
+    Add-Content $rootModFile $rootPubUseLine
+    Write-Host "screens/mod.rs dosyasına '$rootPubUseLine' eklendi."
+} else {
+    Write-Host "screens/mod.rs dosyasında '$rootPubUseLine' zaten mevcut."
+}
+
+# screens.scss içine @use ekle
+if (!(Test-Path $screensScssFile)) {
+    Write-Host "[screens.scss] bulunamadı, oluşturuluyor..."
+    New-Item -ItemType File -Path $screensScssFile | Out-Null
+}
+
+$screensScssContent = (Get-Content $screensScssFile)
+$useStatement = "@use './$KlasorIsmi/$DosyaIsmi.scss' as *;"
+if ($screensScssContent -notcontains $useStatement) {
+    Add-Content $screensScssFile $useStatement
+    Write-Host "screens.scss dosyasına '@use './$KlasorIsmi/$DosyaIsmi.scss' as *;' eklendi."
+} else {
+    Write-Host "screens.scss dosyasında '@use './$KlasorIsmi/$DosyaIsmi.scss' as *;' zaten mevcut."
+}
+
+Write-Host "İşlem tamamlandı: '$DosyaIsmi' bileşeni '$KlasorIsmi' klasöründe oluşturuldu ya da güncellendi."

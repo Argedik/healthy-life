@@ -1,73 +1,89 @@
-use serde_json::json;
-use crate::models::FridgeItem;
-use reqwest::Client;
-use std::fs;
-use google_service_auth::{ServiceAccountAuthenticator};
+use anyhow::Result;
+use crate::google_sheets_client::get_sheets_client;
+use crate::models::fridge_item::FridgeItem;
+use google_sheets4::api::ValueRange;
 
-pub struct GoogleSheetsService {
-    spreadsheet_id: String,
-    client: Client,
-    token: String,
+// Verileri sheetten çek
+pub async fn get_fridge_items_from_sheet(spreadsheet_id: &str) -> Result<Vec<FridgeItem>> {
+    let hub = get_sheets_client().await?;
+    let range = "Sheet1!A2:C";
+
+    let (_, resp) = hub.spreadsheets().values_get(spreadsheet_id, range)
+        .doit().await?;
+
+    let values = match resp.values {
+        Some(vals) => vals,
+        None => return Ok(vec![]),
+    };
+
+    let mut items = Vec::new();
+    for row in values {
+        if row.len() < 3 {
+            continue;
+        }
+        let number = row[0].parse::<u32>().unwrap_or(0);
+        let image_url = row[1].clone();
+        let title = row[2].clone();
+        items.push(FridgeItem {
+            number,
+            image_url,
+            title,
+        });
+    }
+
+    Ok(items)
 }
 
-impl GoogleSheetsService {
-    pub async fn new(spreadsheet_id: &str) -> anyhow::Result<Self> {
-        // credentials.json path
-        let creds = fs::read_to_string("utils/credentials.json")?;
-        let authenticator = ServiceAccountAuthenticator::from_json(&creds)?;
-        let token = authenticator
-            .authorize(&["https://www.googleapis.com/auth/spreadsheets"])
-            .await?;
+// Yeni bir satır ekle (Create)
+pub async fn add_fridge_item(spreadsheet_id: &str, item: FridgeItem) -> Result<()> {
+    let hub = get_sheets_client().await?;
+    let range = "Sheet1!A2:C";
 
-        Ok(Self {
-            spreadsheet_id: spreadsheet_id.to_string(),
-            client: Client::new(),
-            token: token.to_string(),
-        })
-    }
+    let values = vec![
+        vec![item.number.to_string(), item.image_url, item.title]
+    ];
 
-    pub async fn get_fridge_items(&self) -> anyhow::Result<Vec<FridgeItem>> {
-        let range = "Sheet1!A:C"; // A=number, B=image_url, C=title
-        let url = format!(
-            "https://sheets.googleapis.com/v4/spreadsheets/{}/values/{}",
-            self.spreadsheet_id, range
-        );
+    let value_range = ValueRange {
+        values: Some(values),
+        ..ValueRange::default()
+    };
 
-        let resp: serde_json::Value = self.client
-            .get(&url)
-            .bearer_auth(&self.token)
-            .send()
-            .await?
-            .json()
-            .await?;
+    hub.spreadsheets().values_append(value_range, spreadsheet_id, range)
+        .value_input_option("RAW")
+        .doit().await?;
 
-        if let Some(values) = resp.get("values").and_then(|v| v.as_array()) {
-            // İlk satır header varsayılırsa onu atla
-            // ama biz direk ilk satırda veri varsa headersiz devam edebiliriz.
-            // Burada varsayılan olarak ilk satırın da veri olduğunu düşünüyoruz.
-            // Eğer ilk satır başlık ise values[1..] şeklinde iterate edebilirsiniz.
+    Ok(())
+}
 
-            let mut items = Vec::new();
-            for row in values.iter().skip(1) {
-                if let Some(arr) = row.as_array() {
-                    let number = arr.get(0).and_then(|v| v.as_str()).unwrap_or("0").parse::<u32>().unwrap_or(0);
-                    let image_url = arr.get(1).and_then(|v| v.as_str()).unwrap_or("").to_string();
-                    let title = arr.get(2).and_then(|v| v.as_str()).unwrap_or("").to_string();
+// Var olan bir satırı güncelle (Update)
+// Bu örnekte satır numarasını biliyor olmamız gerekir. Mesela Sheet1!A3:C3 aralığını güncelliyoruz.
+pub async fn update_fridge_item(spreadsheet_id: &str, row: u32, item: FridgeItem) -> Result<()> {
+    let hub = get_sheets_client().await?;
+    let range = format!("Sheet1!A{}:C{}", row, row);
 
-                    items.push(FridgeItem {
-                        number,
-                        image_url,
-                        title,
-                    });
-                }
-            }
+    let values = vec![
+        vec![item.number.to_string(), item.image_url, item.title]
+    ];
 
-            Ok(items)
-        } else {
-            Ok(vec![])
-        }
-    }
+    let value_range = ValueRange {
+        values: Some(values),
+        ..ValueRange::default()
+    };
 
-    // CRUD’un diğer işlemleri (POST, PUT, DELETE) de benzer şekilde yazılabilir
-    // Şimdilik sadece GET örneği yeterli
+    hub.spreadsheets().values_update(value_range, spreadsheet_id, &range)
+        .value_input_option("RAW")
+        .doit().await?;
+
+    Ok(())
+}
+
+// Bir satırı silmek yerine clear ediyoruz (Delete benzeri).
+pub async fn clear_fridge_item(spreadsheet_id: &str, row: u32) -> Result<()> {
+    let hub = get_sheets_client().await?;
+    let range = format!("Sheet1!A{}:C{}", row, row);
+
+    hub.spreadsheets().values_clear(Default::default(), spreadsheet_id, &range)
+        .doit().await?;
+
+    Ok(())
 }

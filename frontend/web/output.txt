@@ -365,6 +365,10 @@ Dosya İçeriği:
 @use './nav_bar/nav_bar.scss' as *;
 
 
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/fridge_content/mod.rs
+Dosya İçeriği:
+
+
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/components/home_page/home_page.html
 Dosya İçeriği:
 <div class="container">
@@ -520,13 +524,15 @@ use yew::prelude::*;
 mod components;
 
 use components::{NavBar, HomePage, Card};
+use components::fridge_content::FridgeContent;
 
 #[function_component(App)]
 fn app() -> Html {
   html! {
     <>
       // <NavBar />
-      <HomePage />
+      // <HomePage />
+      <FridgeContent />
       // <Card />
     </>
   }
@@ -535,6 +541,14 @@ fn app() -> Html {
 fn main() {
   yew::Renderer::<App>::new().render();
 }
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/mod.rs
+Dosya İçeriği:
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/screens.scss
+Dosya İçeriği:
+
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/static/images/home-page/home-page.png
 Dosya İçeriği:

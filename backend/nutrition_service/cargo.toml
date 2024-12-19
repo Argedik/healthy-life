@@ -4,8 +4,20 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-reqwest = { version = "0.12.9", features = ["blocking", "json"] }
-serde = { version = "1.0.215", features = ["derive"] }
-tokio = { version = "1.42.0", features = ["macros", "rt-multi-thread"] }
+axum = "0.7"
+serde = {version = "1.0", features = ["derive"]}
 serde_json = "1.0"
-google-oauth = { version = "1" }
+sqlx = { version = "0.8.2", features = ["sqlite", "runtime-tokio-native-tls"] }
+redis = "0.27.6"
+anyhow = "1.0.94"
+tracing = "0.1.41"
+tracing-subscriber = "0.3"
+tokio = "1.42.0"
+
+
+# Google API'leri için gereken bağımlılıklar
+google-sheets4 = "6.0.0+20240621" # Versiyon örnektir, güncel versiyona bakın
+hyper = "1.5"
+hyper-rustls = "0.27"
+tower = "0.5.2"
+oauth2 = "4"
