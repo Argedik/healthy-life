@@ -1,2 +1,10 @@
-pub mod screens;
-pub use screens::test;
+pub mod analysis-result;
+pub use analysis-result::analysis-result;
+pub mod fridge-content;
+pub use fridge-content::fridge-content;
+pub mod daily-menu;
+pub use daily-menu::daily-menu;
+pub mod special-meal;
+pub use special-meal::special-meal;
+pub mod healthy-diets;
+pub use healthy-diets::healthy-diets;

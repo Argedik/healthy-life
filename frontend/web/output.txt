@@ -542,12 +542,222 @@ fn main() {
   yew::Renderer::<App>::new().render();
 }
 
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/analysis-result/analysis-result.html
+Dosya İçeriği:
+﻿<div class="analysis-result-container">
+    <h1>analysis-result Component</h1>
+</div>
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/analysis-result/analysis-result.rs
+Dosya İçeriği:
+﻿use yew::prelude::*;
+
+#[function_component(analysis-result)]
+pub fn analysis-result_component() -> Html {
+    let html_content = include_str!("analysis-result.html"); 
+    html! {
+        <div>
+            { Html::from_html_unchecked(html_content.into()) }
+        </div>
+    }
+}
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/analysis-result/analysis-result.scss
+Dosya İçeriği:
+﻿.analysis-result-container {
+    background-color: #f0f0f0;
+    padding: 20px;
+    h1 {
+        color: #333;
+    }
+}
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/analysis-result/mod.rs
+Dosya İçeriği:
+pub mod analysis-result;
+pub use analysis-result::analysis-result;
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/daily-menu/daily-menu.html
+Dosya İçeriği:
+﻿<div class="daily-menu-container">
+    <h1>daily-menu Component</h1>
+</div>
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/daily-menu/daily-menu.rs
+Dosya İçeriği:
+﻿use yew::prelude::*;
+
+#[function_component(daily-menu)]
+pub fn daily-menu_component() -> Html {
+    let html_content = include_str!("daily-menu.html"); 
+    html! {
+        <div>
+            { Html::from_html_unchecked(html_content.into()) }
+        </div>
+    }
+}
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/daily-menu/daily-menu.scss
+Dosya İçeriği:
+﻿.daily-menu-container {
+    background-color: #f0f0f0;
+    padding: 20px;
+    h1 {
+        color: #333;
+    }
+}
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/daily-menu/mod.rs
+Dosya İçeriği:
+pub mod daily-menu;
+pub use daily-menu::daily-menu;
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/fridge-content/fridge-content.html
+Dosya İçeriği:
+﻿<div class="fridge-content-container">
+    <h1>fridge-content Component</h1>
+</div>
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/fridge-content/fridge-content.rs
+Dosya İçeriği:
+﻿use yew::prelude::*;
+
+#[function_component(fridge-content)]
+pub fn fridge-content_component() -> Html {
+    let html_content = include_str!("fridge-content.html"); 
+    html! {
+        <div>
+            { Html::from_html_unchecked(html_content.into()) }
+        </div>
+    }
+}
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/fridge-content/fridge-content.scss
+Dosya İçeriği:
+﻿.fridge-content-container {
+    background-color: #f0f0f0;
+    padding: 20px;
+    h1 {
+        color: #333;
+    }
+}
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/fridge-content/mod.rs
+Dosya İçeriği:
+pub mod fridge-content;
+pub use fridge-content::fridge-content;
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/healthy-diets/healthy-diets.html
+Dosya İçeriği:
+﻿<div class="healthy-diets-container">
+    <h1>healthy-diets Component</h1>
+</div>
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/healthy-diets/healthy-diets.rs
+Dosya İçeriği:
+﻿use yew::prelude::*;
+
+#[function_component(healthy-diets)]
+pub fn healthy-diets_component() -> Html {
+    let html_content = include_str!("healthy-diets.html"); 
+    html! {
+        <div>
+            { Html::from_html_unchecked(html_content.into()) }
+        </div>
+    }
+}
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/healthy-diets/healthy-diets.scss
+Dosya İçeriği:
+﻿.healthy-diets-container {
+    background-color: #f0f0f0;
+    padding: 20px;
+    h1 {
+        color: #333;
+    }
+}
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/healthy-diets/mod.rs
+Dosya İçeriği:
+pub mod healthy-diets;
+pub use healthy-diets::healthy-diets;
+
+
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/mod.rs
 Dosya İçeriği:
+pub mod analysis-result;
+pub use analysis-result::analysis-result;
+pub mod fridge-content;
+pub use fridge-content::fridge-content;
+pub mod daily-menu;
+pub use daily-menu::daily-menu;
+pub mod special-meal;
+pub use special-meal::special-meal;
+pub mod healthy-diets;
+pub use healthy-diets::healthy-diets;
 
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/screens.scss
 Dosya İçeriği:
+@use './analysis-result/analysis-result.scss' as *;
+@use './fridge-content/fridge-content.scss' as *;
+@use './daily-menu/daily-menu.scss' as *;
+@use './special-meal/special-meal.scss' as *;
+@use './healthy-diets/healthy-diets.scss' as *;
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/special-meal/mod.rs
+Dosya İçeriği:
+pub mod special-meal;
+pub use special-meal::special-meal;
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/special-meal/special-meal.html
+Dosya İçeriği:
+﻿<div class="special-meal-container">
+    <h1>special-meal Component</h1>
+</div>
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/special-meal/special-meal.rs
+Dosya İçeriği:
+﻿use yew::prelude::*;
+
+#[function_component(special-meal)]
+pub fn special-meal_component() -> Html {
+    let html_content = include_str!("special-meal.html"); 
+    html! {
+        <div>
+            { Html::from_html_unchecked(html_content.into()) }
+        </div>
+    }
+}
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/special-meal/special-meal.scss
+Dosya İçeriği:
+﻿.special-meal-container {
+    background-color: #f0f0f0;
+    padding: 20px;
+    h1 {
+        color: #333;
+    }
+}
 
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/static/images/home-page/home-page.png
