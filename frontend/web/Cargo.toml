@@ -15,3 +15,4 @@ serde = { version = "1.0.216", features = ["derive"]}
 reqwasm = "0.5"
 # web-sys ve wasm-bindgen sayesinde target klasörü içine wasm dosyalarımız oluşturuluyor
 web-sys = { version = "0.3", features = ["Window", "Document", "Element"] }
+wasm-bindgen-futures = "0.4"

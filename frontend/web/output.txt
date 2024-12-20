@@ -522,9 +522,10 @@ Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/mai
 Dosya İçeriği:
 use yew::prelude::*;
 mod components;
+mod screens;
 
 use components::{NavBar, HomePage, Card};
-use components::fridge_content::FridgeContent;
+use screens::fridge_content_view::FridgeContent;
 
 #[function_component(App)]
 fn app() -> Html {
@@ -542,20 +543,20 @@ fn main() {
   yew::Renderer::<App>::new().render();
 }
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/analysis-result/analysis-result.html
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/analysis_result/analysis_result.html
 Dosya İçeriği:
-﻿<div class="analysis-result-container">
-    <h1>analysis-result Component</h1>
+﻿<div class="analysis_result-container">
+    <h1>analysis_result Component</h1>
 </div>
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/analysis-result/analysis-result.rs
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/analysis_result/analysis_result.rs
 Dosya İçeriği:
 ﻿use yew::prelude::*;
 
-#[function_component(analysis-result)]
-pub fn analysis-result_component() -> Html {
-    let html_content = include_str!("analysis-result.html"); 
+#[function_component(AnalysisResult)]
+pub fn analysis_result_component() -> Html {
+    let html_content = include_str!("analysis_result.html"); 
     html! {
         <div>
             { Html::from_html_unchecked(html_content.into()) }
@@ -564,9 +565,9 @@ pub fn analysis-result_component() -> Html {
 }
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/analysis-result/analysis-result.scss
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/analysis_result/analysis_result.scss
 Dosya İçeriği:
-﻿.analysis-result-container {
+﻿.analysis_result-container {
     background-color: #f0f0f0;
     padding: 20px;
     h1 {
@@ -575,26 +576,26 @@ Dosya İçeriği:
 }
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/analysis-result/mod.rs
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/analysis_result/mod.rs
 Dosya İçeriği:
-pub mod analysis-result;
-pub use analysis-result::analysis-result;
+pub mod analysis_result;
+pub use analysis_result::AnalysisResult;
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/daily-menu/daily-menu.html
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/daily_menu/daily_menu.html
 Dosya İçeriği:
-﻿<div class="daily-menu-container">
-    <h1>daily-menu Component</h1>
+﻿<div class="daily_menu-container">
+    <h1>daily_menu Component</h1>
 </div>
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/daily-menu/daily-menu.rs
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/daily_menu/daily_menu.rs
 Dosya İçeriği:
 ﻿use yew::prelude::*;
 
-#[function_component(daily-menu)]
-pub fn daily-menu_component() -> Html {
-    let html_content = include_str!("daily-menu.html"); 
+#[function_component(DailyMenu)]
+pub fn daily_menu_component() -> Html {
+    let html_content = include_str!("daily_menu.html"); 
     html! {
         <div>
             { Html::from_html_unchecked(html_content.into()) }
@@ -603,9 +604,9 @@ pub fn daily-menu_component() -> Html {
 }
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/daily-menu/daily-menu.scss
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/daily_menu/daily_menu.scss
 Dosya İçeriği:
-﻿.daily-menu-container {
+﻿.daily_menu-container {
     background-color: #f0f0f0;
     padding: 20px;
     h1 {
@@ -614,26 +615,164 @@ Dosya İçeriği:
 }
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/daily-menu/mod.rs
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/daily_menu/mod.rs
 Dosya İçeriği:
-pub mod daily-menu;
-pub use daily-menu::daily-menu;
+pub mod daily_menu;
+pub use daily_menu::DailyMenu;
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/fridge-content/fridge-content.html
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/fridge_content/fridge_content.html
 Dosya İçeriği:
-﻿<div class="fridge-content-container">
-    <h1>fridge-content Component</h1>
+﻿<div class="fridge-content-wrapper">
+	<h2>Dolapta ne var?</h2>
+	<div class="fridge-content-list">
+		<!-- Burada RS tarafında dinamik olarak liste render edilecek -->
+	</div>
 </div>
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/fridge-content/fridge-content.rs
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/fridge_content/fridge_content.scss
+Dosya İçeriği:
+﻿.fridge-content-wrapper {
+	padding: 20px;
+	background-color: #f0f0f0;
+	min-height: 100vh;
+
+	h2 {
+		color: #333;
+		margin-bottom: 20px;
+		font-size: 24px;
+		font-weight: bold;
+	}
+
+	.fridge-content-list {
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+	}
+
+	.fridge-item {
+		display: flex;
+		align-items: center;
+		background: white;
+		border-radius: 10px;
+		padding: 10px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+		.item-number {
+			font-weight: bold;
+			color: #2e8b57;
+			font-size: 20px;
+			margin-right: 20px;
+		}
+
+		.item-image {
+			width: 50px;
+			height: 50px;
+			margin-right: 20px;
+			border-radius: 8px;
+			overflow: hidden;
+
+			img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+		}
+
+		.item-title {
+			font-size: 18px;
+			color: #333;
+			flex: 1;
+		}
+	}
+}
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/fridge_content/fridge_content_view.rs
+Dosya İçeriği:
+﻿use yew::prelude::*;
+use serde::Deserialize;
+use reqwasm::http::Request;
+
+// Gelen verileri backend FridgeItem modeli ile eşleştiriyoruz
+#[derive(Debug, Clone, PartialEq, Deserialize)]
+struct FridgeItem {
+    number: u32,
+    image_url: String,
+    title: String,
+}
+
+#[function_component(FridgeContent)]
+pub fn fridge_content_view() -> Html {
+    // Bu örnekte sabit bir spreadsheet id kullanıyoruz.
+    // Gerçek uygulamada bunu prop, env veya başka bir yoldan alabilirsiniz.
+    let spreadsheet_id = "YOUR_SPREADSHEET_ID";
+
+    let items = use_state(|| Vec::<FridgeItem>::new());
+
+    {
+        let items = items.clone();
+        let spreadsheet_id = spreadsheet_id.to_string();
+
+        use_effect_with_deps(move |_| {
+            wasm_bindgen_futures::spawn_local(async move {
+                let url = format!("/fridge_items?spreadsheet_id={}", spreadsheet_id);
+                if let Ok(response) = Request::get(&url).send().await {
+                    if response.ok() {
+                        if let Ok(fetched_items) = response.json::<Vec<FridgeItem>>().await {
+                            items.set(fetched_items);
+                        }
+                    }
+                }
+            });
+            || ()
+        }, ());
+    }
+
+    let html_content = include_str!("fridge_content.html");
+    let rendered_list = items.iter().map(|item| {
+        html! {
+            <div class="fridge-item">
+                <div class="item-number">{ item.number }</div>
+                <div class="item-image">
+                    <img src={item.image_url.clone()} alt={item.title.clone()} />
+                </div>
+                <div class="item-title">{ &item.title }</div>
+            </div>
+        }
+    }).collect::<Html>();
+
+    html! {
+        <div>
+            { Html::from_html_unchecked(html_content.into()) }
+            <div class="fridge-content-list">
+                {rendered_list}
+            </div>
+        </div>
+    }
+}
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/fridge_content/mod.rs
+Dosya İçeriği:
+pub mod fridge_content_view;
+pub use fridge_content_view::FridgeContent;
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/healthy_diets/healthy_diets.html
+Dosya İçeriği:
+﻿<div class="healthy_diets-container">
+    <h1>healthy_diets Component</h1>
+</div>
+
+
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/healthy_diets/healthy_diets.rs
 Dosya İçeriği:
 ﻿use yew::prelude::*;
 
-#[function_component(fridge-content)]
-pub fn fridge-content_component() -> Html {
-    let html_content = include_str!("fridge-content.html"); 
+#[function_component(HealthyDiets)]
+pub fn healthy_diets_component() -> Html {
+    let html_content = include_str!("healthy_diets.html"); 
     html! {
         <div>
             { Html::from_html_unchecked(html_content.into()) }
@@ -642,9 +781,9 @@ pub fn fridge-content_component() -> Html {
 }
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/fridge-content/fridge-content.scss
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/healthy_diets/healthy_diets.scss
 Dosya İçeriği:
-﻿.fridge-content-container {
+﻿.healthy_diets-container {
     background-color: #f0f0f0;
     padding: 20px;
     h1 {
@@ -653,64 +792,25 @@ Dosya İçeriği:
 }
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/fridge-content/mod.rs
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/healthy_diets/mod.rs
 Dosya İçeriği:
-pub mod fridge-content;
-pub use fridge-content::fridge-content;
-
-
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/healthy-diets/healthy-diets.html
-Dosya İçeriği:
-﻿<div class="healthy-diets-container">
-    <h1>healthy-diets Component</h1>
-</div>
-
-
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/healthy-diets/healthy-diets.rs
-Dosya İçeriği:
-﻿use yew::prelude::*;
-
-#[function_component(healthy-diets)]
-pub fn healthy-diets_component() -> Html {
-    let html_content = include_str!("healthy-diets.html"); 
-    html! {
-        <div>
-            { Html::from_html_unchecked(html_content.into()) }
-        </div>
-    }
-}
-
-
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/healthy-diets/healthy-diets.scss
-Dosya İçeriği:
-﻿.healthy-diets-container {
-    background-color: #f0f0f0;
-    padding: 20px;
-    h1 {
-        color: #333;
-    }
-}
-
-
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/healthy-diets/mod.rs
-Dosya İçeriği:
-pub mod healthy-diets;
-pub use healthy-diets::healthy-diets;
+pub mod healthy_diets;
+pub use healthy_diets::HealthyDiets;
 
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/mod.rs
 Dosya İçeriği:
-pub mod analysis-result;
-pub use analysis-result::analysis-result;
-pub mod fridge-content;
-pub use fridge-content::fridge-content;
-pub mod daily-menu;
-pub use daily-menu::daily-menu;
-pub mod special-meal;
-pub use special-meal::special-meal;
-pub mod healthy-diets;
-pub use healthy-diets::healthy-diets;
+pub mod healthy_diets;
+pub mod special_meal;
+pub mod daily_menu;
+pub mod analysis_result;
+pub mod fridge_content;
 
+pub use analysis_result::analysis_result as other_analysis_result;
+pub use fridge_content_view::FridgeContent;
+pub use healthy_diets::healthy_diets as other_healthy_diets;
+pub use special_meal::special_meal as other_special_meal;
+pub use daily_menu::daily_menu as other_daily_menu;
 
 Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/screens.scss
 Dosya İçeriği:
@@ -719,28 +819,33 @@ Dosya İçeriği:
 @use './daily-menu/daily-menu.scss' as *;
 @use './special-meal/special-meal.scss' as *;
 @use './healthy-diets/healthy-diets.scss' as *;
+@use './healthy_diets/healthy_diets.scss' as *;
+@use './special_meal/special_meal.scss' as *;
+@use './daily_menu/daily_menu.scss' as *;
+@use './fridge_content/fridge_content.scss' as *;
+@use './analysis_result/analysis_result.scss' as *;
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/special-meal/mod.rs
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/special_meal/mod.rs
 Dosya İçeriği:
-pub mod special-meal;
-pub use special-meal::special-meal;
+pub mod special_meal;
+pub use special_meal::SpecialMenu;
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/special-meal/special-meal.html
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/special_meal/special_meal.html
 Dosya İçeriği:
-﻿<div class="special-meal-container">
-    <h1>special-meal Component</h1>
+﻿<div class="special_meal-container">
+    <h1>special_meal Component</h1>
 </div>
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/special-meal/special-meal.rs
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/special_meal/special_meal.rs
 Dosya İçeriği:
 ﻿use yew::prelude::*;
 
-#[function_component(special-meal)]
-pub fn special-meal_component() -> Html {
-    let html_content = include_str!("special-meal.html"); 
+#[function_component(SpecialMenu)]
+pub fn special_meal_component() -> Html {
+    let html_content = include_str!("special_meal.html"); 
     html! {
         <div>
             { Html::from_html_unchecked(html_content.into()) }
@@ -749,9 +854,9 @@ pub fn special-meal_component() -> Html {
 }
 
 
-Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/special-meal/special-meal.scss
+Dosya Yolu: C:/Users/enes.gedik/Desktop/fe/besin-uygulamasi/frontend/web/src/screens/special_meal/special_meal.scss
 Dosya İçeriği:
-﻿.special-meal-container {
+﻿.special_meal-container {
     background-color: #f0f0f0;
     padding: 20px;
     h1 {
