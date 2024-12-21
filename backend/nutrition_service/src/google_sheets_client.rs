@@ -1,30 +1,29 @@
-use anyhow::Result;
-use google_sheets4::oauth2::{InstalledFlowAuthenticator, InstalledFlowReturnMethod};
-use google_sheets4::Sheets;
+use google_sheets4::{Sheets, yup_oauth2, hyper, hyper_rustls, hyper_util};
+use yup_oauth2::{InstalledFlowAuthenticator, InstalledFlowReturnMethod, read_application_secret};
 use std::path::PathBuf;
-use tokio::sync::OnceCell;
 
-static SHEETS_CLIENT: OnceCell<Sheets> = OnceCell::const_new();
+pub async fn get_sheets_client() -> google_sheets4::Result<Sheets<hyper::Client<hyper_rustls::HttpsConnector<hyper::client::connect::HttpConnector>, hyper::body::Body>>> {
+    // Dokümanda client secret nasıl elde edileceği gösterilmiyor, "some means" diyor.
+    // Biz burada JSON dosyasından okuyoruz.
+    let secret_path = PathBuf::from("client_secret.apps.googleusercontent.com.json");
+    let application_secret = read_application_secret(secret_path).await?;
 
-pub async fn get_sheets_client() -> Result<&'static Sheets> {
-    SHEETS_CLIENT
-        .get_or_try_init(|| async {
-            // Kimlik doğrulama dosyamızın yolunu belirtelim
-            let secret_path = PathBuf::from("./client_secret.apps.googleusercontent.com.json");
-            let auth = InstalledFlowAuthenticator::builder(
-                oauth2::read_application_secret(secret_path).await?,
-                InstalledFlowReturnMethod::HTTPRedirect,
-            )
-            .persist_tokens_to_disk("./tokencache.json")
-            .build()
-            .await?;
+    let auth = InstalledFlowAuthenticator::builder(
+        application_secret,
+        InstalledFlowReturnMethod::HTTPRedirect,
+    )
+    .build()
+    .await
+    .unwrap();  // Dokümanda unwrap kullanılmış. Siz ? ile de hata döndürebilirsiniz.
 
-            let hub = Sheets::new(
-                hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()),
-                auth
-            );
+    let https = hyper_rustls::HttpsConnectorBuilder::new()
+    .with_native_roots()       // Sertifikaları native kök sertifikalar ile doğrula
+    .https_or_http()           // HTTPS veya HTTP bağlantısına izin ver
+    .enable_http1()            // HTTP1 kullanımını etkinleştir
+    .build();
 
-            Ok(hub)
-        })
-        .await
+    let client = Client::builder().build(https);
+
+    let hub = Sheets::new(client, auth);
+    Ok(hub)
 }

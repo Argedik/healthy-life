@@ -1,5 +1,5 @@
 use axum::{Json, extract::Query};
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use crate::models::fridge_item::FridgeItem;
 use crate::services::google_sheets_service::{get_fridge_items_from_sheet, add_fridge_item, update_fridge_item, clear_fridge_item};
 

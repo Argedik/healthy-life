@@ -1,0 +1,1 @@
+Openssl için indirilen open ssl dosya dizinlerini kotnrol et. 3 ortam değişkenlerini tanımla.

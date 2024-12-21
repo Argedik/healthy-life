@@ -1,23 +1,20 @@
 [package]
 name = "nutrition_service"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 
 [dependencies]
-axum = "0.7"
-serde = {version = "1.0", features = ["derive"]}
-serde_json = "1.0"
-sqlx = { version = "0.8.2", features = ["sqlite", "runtime-tokio-native-tls"] }
-redis = "0.27.6"
-anyhow = "1.0.94"
-tracing = "0.1.41"
-tracing-subscriber = "0.3"
-tokio = "1.42.0"
+# Dokümanda belirtildiği gibi Sheets API, Serde ve OAuth kütüphanesi
+google-sheets4 = "6.0.0"
+serde = "1"
+serde_json = "1"
+yup-oauth2 = "11.0"
 
-
-# Google API'leri için gereken bağımlılıklar
-google-sheets4 = "6.0.0+20240621" # Versiyon örnektir, güncel versiyona bakın
-hyper = "1.5"
+# Dokümanda kullanılan Hyper, Rustls, Hyper Util
+hyper = { version = "1.5.2", features = ["client", "http1"] }
 hyper-rustls = "0.27"
-tower = "0.5.2"
-oauth2 = "4"
+hyper-util = "0.1"
+
+# Projenizin geri kalan bağımlılıkları
+axum = "0.7"
+tokio = { version = "1.42", features = ["macros", "io-util", "rt", "rt-multi-thread", "fs"] }

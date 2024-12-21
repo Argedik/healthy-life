@@ -16,3 +16,4 @@ reqwasm = "0.5"
 # web-sys ve wasm-bindgen sayesinde target klasörü içine wasm dosyalarımız oluşturuluyor
 web-sys = { version = "0.3", features = ["Window", "Document", "Element"] }
 wasm-bindgen-futures = "0.4"
+serde_json = "1.0"
