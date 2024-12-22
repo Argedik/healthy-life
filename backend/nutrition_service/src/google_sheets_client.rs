@@ -1,8 +1,9 @@
 use google_sheets4::{Sheets, yup_oauth2, hyper, hyper_rustls, hyper_util};
 use yup_oauth2::{InstalledFlowAuthenticator, InstalledFlowReturnMethod, read_application_secret};
 use std::path::PathBuf;
+use hyper::Body;
 
-pub async fn get_sheets_client() -> google_sheets4::Result<Sheets<hyper::Client<hyper_rustls::HttpsConnector<hyper::client::connect::HttpConnector>, hyper::body::Body>>> {
+pub async fn get_sheets_client() -> google_sheets4::Result<Sheets<hyper::Client<hyper_rustls::HttpsConnector<hyper::client::connect::HttpConnector>, Body>>> {
     // Dokümanda client secret nasıl elde edileceği gösterilmiyor, "some means" diyor.
     // Biz burada JSON dosyasından okuyoruz.
     let secret_path = PathBuf::from("client_secret.apps.googleusercontent.com.json");
