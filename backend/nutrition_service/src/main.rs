@@ -1,7 +1,9 @@
-use axum::{Router, routing::{get, post, put, delete}, extract::Query, Json};
+use axum::{Router, routing::{get, put, delete}, extract::Query, Json};
 use std::net::SocketAddr;
 use serde::Deserialize;
-use hyper::Server;
+use tower::ServiceBuilder;
+use tower_http::trace::TraceLayer;
+use tokio::net::TcpListener;
 
 mod google_sheets_client;
 mod models;
@@ -26,18 +28,22 @@ struct UpdateQuery {
 
 #[tokio::main]
 async fn main() {
+    let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
+
+    let listener = TcpListener::bind(addr).await.unwrap();
+
     let app = Router::new()
         .route("/fridge_items", get(get_items).post(create_item))
         .route("/fridge_items/update", put(update_item))
-        .route("/fridge_items/delete", delete(delete_item));
+        .route("/fridge_items/delete", delete(delete_item))
+        .layer(
+            ServiceBuilder::new()
+                .layer(TraceLayer::new_for_http()) // İsteği izlemek için TraceLayer ekleyebilirsiniz
+        );
 
-    let addr = SocketAddr::from(([127,0,0,1], 8081));
-    println!("Backend çalışıyor: http://{}", addr);
+    println!("Server çalışıyor: http://{}", addr);
 
-    Server::bind(&addr)
-        .serve(app.into_make_service())
-        .await
-        .unwrap();
+    axum::serve(listener, app).await.unwrap();
 }
 
 // GET -> Listele

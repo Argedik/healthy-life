@@ -1,5 +1,5 @@
 use google_sheets4::api::ValueRange;
-use google_sheets4::{Result, Error};
+use google_sheets4::Result;
 use crate::google_sheets_client::get_sheets_client;
 use crate::models::fridge_item::FridgeItem;
 use serde_json::Value;
