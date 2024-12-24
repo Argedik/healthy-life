@@ -129,4 +129,19 @@ clean
 ***Cargo.toml***
 **web-sys** dist klasörüne wasm ve html dosyası oluşturuluyor.
 
+***Ownership / stack and heap***
+Stack, değerleri aldığı sırayla depolar ve ters sırayla kaldırır. Buna son giren ilk çıkar denir. 
+Veri eklemeye yığına itme denir ve veriyi kaldırmaya yığından çıkarma denir.
+Yığında depolanan tüm verilerin bilinen, sabit bir boyutu olmalıdır. Derleme zamanında bilinmeyen bir boyuta sahip olan veya boyutu değişebilecek veriler bunun yerine yığında depolanmalıdır.
+*The stack stores values in the order it gets them and removes the values in the opposite order. This is referred to as last in, first out.*
+*Adding data is called pushing onto the stack, and removing data is called popping off the stack*
+*All data stored on the stack must have a known, fixed size. Data with an unknown size at compile time or a size that might change must be stored on the heap instead.*
+
+Heap, bellek üzerinde alan tahsis etmeyi sağlıyor.
+
+**Ownership Rules**
+- Each value in Rust has an owner. (Rust'taki her değerin bir sahibi vardır.)
+- There can only be one owner at a time. (Aynı anda yalnızca bir sahibi olabilir.)
+- When the owner goes out of scope, the value will be dropped.
+(Sahip kapsam dışına çıktığında değer düşecektir.)
 
