@@ -1,0 +1,4 @@
+{
+	"rust-analyzer.cargo.workspaceRoot": "c:\\Users\\enes.gedik\\Desktop\\fe\\besin-uygulamasi\\backend",
+	"rust-analyzer.checkOnSave.command": "clippy"
+}
