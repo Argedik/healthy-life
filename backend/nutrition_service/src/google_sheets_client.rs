@@ -16,7 +16,7 @@ pub async fn get_sheets_client() -> Result<(), Box<dyn std::error::Error>>{
     let application_secret = read_application_secret(secret_path).await?;
     println!("application_secret: {:?}", application_secret);
 
-    let auth = InstalledFlowAuthenticator::builder();
+    let auth = InstalledFlowAuthenticator::builder(application_secret, ).expect("failed to create authenticator");
     println!("auth: {}", auth);
 
 

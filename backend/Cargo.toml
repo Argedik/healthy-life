@@ -4,3 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+
+[workspace]
+members = [
+    "nutrition_service",  # Bu, backend/nutrition_service crate'ini kapsar
+]
