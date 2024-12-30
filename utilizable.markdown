@@ -145,3 +145,5 @@ Heap, bellek üzerinde alan tahsis etmeyi sağlıyor.
 - When the owner goes out of scope, the value will be dropped.
 (Sahip kapsam dışına çıktığında değer düşecektir.)
 
+***References and Borrowing***
+- & işareti ile bir değişkene referams ya da borrow uygulayabiliyoruz

@@ -1,8 +1,9 @@
 use serde::{Deserialize, Serialize};
+use sqlx::FromRow;
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, FromRow)]
 pub struct FridgeItem {
-    pub number: u32,
+    pub id: Option<i64>,      
     pub image_url: String,
     pub title: String,
 }

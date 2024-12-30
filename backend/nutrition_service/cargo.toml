@@ -4,20 +4,20 @@ version = "0.2.0"
 edition = "2021"
 
 [dependencies]
-# Dokümanda belirtildiği gibi Sheets API, Serde ve OAuth kütüphanesi
-google-sheets4 = "6.0.0"
-serde = "1.0"
-serde_json = "1"
-yup-oauth2 = "11.0"
+# Http Routing
+axum = "0.7.9"
 
-hyper = { version = "1.5.2", features = ["full"] } # Hyper'ı Axum ile uyumlu versiyona güncelledik
-hyper-rustls = "0.27"
-hyper-util = { version = "0.1.10", features = ["client", "client-legacy", "http1"] }
+# Asenkron
+tokio = { version = "1.32", features = ["macros"] }
 
-# Eksik bağımlılıkları ekleyin
-tower = "0.4"
-tower-http = { version = "0.6.2", features = ["trace"] }
+# Veriler to JSON
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 
-# Projenizin geri kalan bağımlılıkları
-axum = "0.7"
-tokio = { version = "1.42", features = ["macros", "io-util", "rt", "rt-multi-thread", "fs"] }
+# Middleware & logging
+tower = "0.5"
+tower-http = "0.6"
+
+# Diesel gibi rust ile sql sorguları yönetimini büyük proje olmadığı için tercih etmedik.
+# Rusqlite gibi sqlx gibi manuelsql yöntemi yetersiz kalabileceği ve async/await eklentilerini de kullanabilmek için sqlx tercih edilmiştir.
+sqlx = { version = "0.8", features = ["runtime-tokio-native-tls", "macros", "sqlite"] }
