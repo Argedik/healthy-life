@@ -11,7 +11,7 @@ use axum::{
 use crate::models::fridge_item::FridgeItem;
 
 //“db_service” modülündeki CRUD fonksiyonları.
-use crate::services::db_service::{
+use crate::services::db_services::{
     add_fridge_item,
     get_all_fridge_items,
     update_fridge_item,

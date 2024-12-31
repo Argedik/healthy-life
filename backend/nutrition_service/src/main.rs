@@ -17,7 +17,7 @@ mod models;
 mod services;
 mod controller;
 
-//“db_service” modülündeki CRUD fonksiyonları.
+//“db_services” modülündeki CRUD fonksiyonları.
 use controller::fridge_items_controller::{
     get_fridge_items,
     create_fridge_item,
@@ -29,7 +29,7 @@ use controller::fridge_items_controller::{
 #[tokio::main]
 async fn main() {
     // db_service.rs veritabanını başlat
-    services::db_service::init_db()
+    services::db_services::init_db()
         .await
         .expect("Veritabanı başlatılamadı!");
 
@@ -49,7 +49,7 @@ async fn main() {
     println!("Sunucu çalışıyor: http://{}", addr);
     
     // Sunucuyu başlat
-    axum::Server::bind(&addr)
+    axum_server::bind(addr)
         .serve(app.into_make_service())
         .await
         .unwrap();
