@@ -23,3 +23,5 @@ tower-http = { version = "0.6", features = ["trace"] }
 sqlx = { version = "0.8", features = ["runtime-tokio-native-tls", "macros", "sqlite"] }
 
 once_cell = "1.17"
+# .env dosyalarından değer okumak için
+dotenvy = "0.15"

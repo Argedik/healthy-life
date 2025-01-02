@@ -147,3 +147,6 @@ Heap, bellek üzerinde alan tahsis etmeyi sağlıyor.
 
 ***References and Borrowing***
 - & işareti ile bir değişkene referams ya da borrow uygulayabiliyoruz
+
+***Errors***
+Proc macros not being expanded / rust-analyzer: Restart Server

@@ -41,3 +41,9 @@ true dönmeli
 
 5- Postman’de DELETE metodu ile http://127.0.0.1:8080/fridge_items/1.
 istek sonucu true dönmeli ve GET /fridge_items yaptığımızda [] dönmeli
+
+//veri ekleme
+Invoke-WebRequest -Uri "http://127.0.0.1:3000/fridge_items" `
+  -Method POST `
+  -ContentType "application/json" `                                                                                  
+  -Body '{"image_url": "http://   example.com/apple.jpg", "title": "Apple"}'   

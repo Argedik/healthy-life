@@ -5,9 +5,9 @@ use std::path::Path;
 
 fn main() {
     // let root_path = "C:\\Users\\enes.gedik\\Desktop\\fe\\besin-uygulamasi";
-    // let root_path = "C:\\Users\\enes.gedik\\Desktop\\fe\\besin-uygulamasi\\frontend\\web";
+    let root_path = "C:\\Users\\enes.gedik\\Desktop\\fe\\besin-uygulamasi\\frontend\\web";
     // let root_path = "C:\\Users\\enes.gedik\\Desktop\\fe\\besin-uygulamasi\\backend\\nutrition_service";
-    let root_path = "C:\\Users\\enes.gedik\\Desktop\\fe\\healthy-life\\backend\\nutrition_service";
+    // let root_path = "C:\\Users\\enes.gedik\\Desktop\\fe\\healthy-life\\backend\\nutrition_service";
     
 
     let mut output = Vec::new(); // Dosya yolu ve içeriğini saklamak için bir koleksiyon
@@ -24,6 +24,7 @@ fn main() {
     ignored.insert("utilizable.markdown".to_string());
     ignored.insert("dist".to_string());
     ignored.insert("create_component.ps1".to_string());
+    ignored.insert("README.md".to_string());
 
     list_files_only(root_path, root_path, &mut ignored, &mut output);
 

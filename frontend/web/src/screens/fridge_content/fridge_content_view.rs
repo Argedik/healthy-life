@@ -3,6 +3,7 @@ use yew::prelude::*;
 use serde::{Serialize, Deserialize};
 use reqwasm::http::Request;
 use web_sys::HtmlInputElement;
+use std::rc::Rc;
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 struct FridgeItem {
@@ -128,20 +129,26 @@ pub fn fridge_content_view() -> Html {
 
     let html_content = include_str!("fridge_content.html");
 
-    let item_list = items.iter().map(|item| {
-        html! {
-            <div class="fridge-item">
-                <div class="item-number">{ item.number }</div>
-                <div class="item-image">
-                    <img src={item.image_url.clone()} alt={item.title.clone()} />
-                </div>
-                <div class="item-title">{ &item.title }</div>
-                <button onclick={on_edit.reform({
-                    let item = item.clone();
-                    move |_| item.clone()
-                })}>{"Düzenle"}</button>
-                <button onclick={on_delete.reform(move |_| item.number)}>{"Sil"}</button>
+    use std::rc::Rc;
+
+let items = use_state(|| Rc::new(Vec::<FridgeItem>::new()));
+
+let items_clone = items.clone();
+
+let item_list = items_clone.iter().map(move |item| {
+    html! {
+        <div class="fridge-item">
+            <div class="item-number">{ item.number }</div>
+            <div class="item-image">
+                <img src={item.image_url.clone()} alt={item.title.clone()} />
             </div>
+            <div class="item-title">{ &item.title }</div>
+            <button onclick={on_edit.reform({
+                let item = item.clone();
+                move |_| item.clone()
+            })}>{"Düzenle"}</button>
+            <button onclick={on_delete.reform(move |_| item.number)}>{"Sil"}</button>
+        </div>
         }
     }).collect::<Html>();
 
