@@ -1,6 +1,62 @@
-﻿<div class="fridge-content-wrapper">
-	<h2>Dolapta ne var?</h2>
-	<div class="fridge-content-list">
-		<!-- Burada RS tarafında dinamik olarak liste render edilecek -->
-	</div>
-</div>
+﻿<!DOCTYPE html>
+<html lang="tr">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Dolapta Ne Var?</title>
+		<!-- Eğer harici CSS dosyanız varsa -->
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<h1>Dolapta Ne Var?</h1>
+
+		<!-- Verileri basacağımız kapsayıcı -->
+		<div id="itemList"></div>
+
+		<script>
+			// Sayfa yüklendiğinde
+			document.addEventListener('DOMContentLoaded', async () => {
+				try {
+					// Backend endpointine istek atıyoruz
+					const response = await fetch('http://127.0.0.1:3000/fridge_items');
+					const data = await response.json(); // JSON -> JS objesi
+
+					// itemList div’ini seç
+					const itemListDiv = document.getElementById('itemList');
+
+					// data bir dizi -> each item: { id, image_url, title }
+					data.forEach((item, index) => {
+						// Her kayıt için bir kapsayıcı <div>
+						const container = document.createElement('div');
+						container.className = 'item-container';
+
+						// Sıra numarası
+						const idxSpan = document.createElement('div');
+						idxSpan.className = 'item-index';
+						idxSpan.textContent = (index + 1).toString();
+
+						// Resim
+						const img = document.createElement('img');
+						img.src = item.image_url;
+						img.alt = 'resim';
+						img.className = 'item-image';
+
+						// Başlık
+						const titleDiv = document.createElement('div');
+						titleDiv.className = 'item-title';
+						titleDiv.textContent = item.title;
+
+						// container içerisine ekle
+						container.appendChild(idxSpan);
+						container.appendChild(img);
+						container.appendChild(titleDiv);
+
+						// itemListDiv içerisine ekle
+						itemListDiv.appendChild(container);
+					});
+				} catch (err) {
+					console.error('Veri çekilirken hata oluştu:', err);
+				}
+			});
+		</script>
+	</body>
+</html>
