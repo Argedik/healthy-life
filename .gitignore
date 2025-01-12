@@ -2,3 +2,4 @@ output.txt
 target
 Cargo.lock
 dist
+k8s

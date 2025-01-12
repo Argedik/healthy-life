@@ -18,3 +18,6 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 
 Kurulumu Doğrulama
 sudo docker run hello-world
+
+➜  ~ docker --version
+Docker version 27.4.1, build b9d17ea
