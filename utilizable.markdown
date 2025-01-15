@@ -144,6 +144,14 @@ Heap, bellek üzerinde alan tahsis etmeyi sağlıyor.
 - There can only be one owner at a time. (Aynı anda yalnızca bir sahibi olabilir.)
 - When the owner goes out of scope, the value will be dropped.
 (Sahip kapsam dışına çıktığında değer düşecektir.)
+- Rust i32 için copy işlemi [uygulayabilirken](https://rust-book.cs.brown.edu/ch04-03-fixing-ownership-errors.html#fixing-an-unsafe-program-aliasing-and-mutating-a-data-structure), string için copy işlemi uygulayamaz.
+- Aynı veriye sahip 2 değiştirilebilir referans, [aynı anda kullanılamaz.](https://rust-book.cs.brown.edu/ch04-03-fixing-ownership-errors.html#fixing-an-unsafe-program-aliasing-and-mutating-a-data-structure)
 
 ***References and Borrowing***
-- & işareti ile bir değişkene referams ya da borrow uygulayabiliyoruz
+- & bir değişkene referams ya da borrow uygulayabiliyoruz
+- ' bir değişkeni sonsuza kadar string literal olur
+- Rc akıllı işaretçi referansı
+
+*String::from ile .to_string() farkı; String::from yalnızca string tipler için .to_string() tüm tipler için*
+
+**unsafe { *x += *y; } iki farklı dizeyi güvenli olmayan bloklar sayesinde error almadan birleştirebiliriz.**
