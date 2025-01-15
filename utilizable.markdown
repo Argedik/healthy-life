@@ -119,8 +119,12 @@ rustup target list --installed *rustup target add wasm32-unknown-unknown ile was
 --open bu seçenek ile çalıştırıldıktan sonra otomatik browserı açıyor
 --watch belirtilen dosyalarda değişiklik yaptıldığında otomatik build almasını sağlıyor
 clean
-***Trunk.toml***
+***Trunk.toml***5478
 
+620
+1180
+1610
+3600
 
 
 ***Cargo***
@@ -155,3 +159,7 @@ Heap, bellek üzerinde alan tahsis etmeyi sağlıyor.
 *String::from ile .to_string() farkı; String::from yalnızca string tipler için .to_string() tüm tipler için*
 
 **unsafe { *x += *y; } iki farklı dizeyi güvenli olmayan bloklar sayesinde error almadan birleştirebiliriz.**
+- & işareti ile bir değişkene referams ya da borrow uygulayabiliyoruz
+
+***Errors***
+Proc macros not being expanded / rust-analyzer: Restart Server

@@ -5,6 +5,9 @@ use sqlx::{SqlitePool, query, query_as};
 // Tek bir global değişkene (ör. static DB_POOL) uygulama boyunca erişebilmek için OnceCell kullanıyoruz. Bu sayede veritabanı bağlantı havuzunu bir kere oluşturup, her yerde kullanabiliyoruz.
 use once_cell::sync::OnceCell; // Global pool tutmak için
 
+//.env değerlerine erişme
+use std::env;
+
 // FridgeItem struct’ını kullanacağız (CRUD fonksiyonlarında parametre olarak, query_as dönüş tipi vb. için).
 use crate::models::fridge_item::FridgeItem;
 
@@ -14,7 +17,10 @@ static DB_POOL: OnceCell<SqlitePool> = OnceCell::new();
 /// Veritabanını başlatıyor. Tabloyu oluşturuyor. Havuzu DB_POOL’a set ediyoruz.
 pub async fn init_db() -> Result<(), sqlx::Error> {
     // sqlx ile nutrition.db dosyasına bağlanıyor (yoksa oluşturuyor).
-    let pool = SqlitePool::connect("sqlite://nutrition.db").await?;
+    let database_url = env::var("DATABASE_URL")
+        .unwrap_or_else(|_| "sqlite://data/nutrition.db".to_string());
+    
+    let pool = SqlitePool::connect(&database_url).await?;
 
     // “Tablo var mı? Yoksa oluştur.” SQL komutu.
     query(r#"
