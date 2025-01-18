@@ -1,1 +1,0 @@
-pub mod fridge_items_controller;
