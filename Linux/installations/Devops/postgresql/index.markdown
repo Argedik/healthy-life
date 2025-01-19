@@ -1,3 +1,5 @@
+***Browser ile bağlantı sağlama***
+
 kok dizine k8s/deployments/backend/pgadmin.yaml dosyasi olustur
 
 pgadmin.yaml dosyasina asagidaki kodlari yaz.
@@ -68,3 +70,19 @@ postgres-release-postgresql-0   1/1     Running   0          11m
 
 hangi service veya IP 
 microk8s kubectl get svc -n postgresql
+
+
+
+***Localde bağlantı sağlama***
+- sudo apt install curl wget ca-certificates gnupg -y
+- 1. Add pgAdmin4 repository
+- curl  -fsSL https://www.pgadmin.org/static/packages_pgadmin_org.pub | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/pgadmin.gpg
+- sudo sh -c 'echo "deb https://ftp.postgresql.org/pub/pgadmin/pgadmin4/apt/$(lsb_release -cs) pgadmin4 main" > /etc/apt/sources.list.d/pgadmin4.list'
+YÜklenip yüklenmediğini teyit ediyoruz.
+- cat /etc/apt/sources.list.d/pgadmin4.list
+- Kaynak: https://computingforgeeks.com/how-to-install-pgadmin-4-on-ubuntu/
+
+- 2. Install pgAdmin4 on Ubuntu
+- sudo apt update
+- sudo apt install pgadmin4
+

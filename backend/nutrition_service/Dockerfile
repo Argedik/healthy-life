@@ -1,8 +1,31 @@
-FROM rust:latest
+# syntax=docker/dockerfile:1
+
+################################################
+# 1. AŞAMA: Derleme (builder)                 #
+################################################
+FROM rust:latest AS builder
 
 WORKDIR /app
-COPY . .
 
+# Cargo.toml ve src içeriğini kopyala
+COPY Cargo.toml .
+COPY src ./src
+
+# Bağımlılıkları indirmek ve derlemek için
 RUN cargo build --release
 
-CMD ["./target/release/nutrition_service"]
+################################################
+# 2. AŞAMA: Minimal runtime imajı             #
+################################################
+FROM debian:bullseye-slim
+
+WORKDIR /app
+
+# Derlenmiş binary'yi builder'dan kopyala
+COPY --from=builder /app/target/release/nutrition_service .
+
+# Uygulamanın dinleyeceği port
+EXPOSE 8080
+
+# Container ayağa kalktığında çalışacak komut
+CMD ["./nutrition_service"]

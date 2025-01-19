@@ -1,0 +1,3 @@
+- systemctl status docker
+- dpkg -l | grep docker
+- sudo docker ps
