@@ -86,3 +86,31 @@ YÜklenip yüklenmediğini teyit ediyoruz.
 - sudo apt update
 - sudo apt install pgadmin4
 
+
+***Kurulum kontrolleri***
+- which psql ==Dosya yolunu gösterir==
+- psql --version ==Yüklüyse sürüm numarası==
+- sudo systemctl status postgresql =="active (running)" görünüyorsa sorunsuz çalışıyordur.== exited görünüyorsa aşağıdaki komutlar çalışıyorsa sorun yok demektir.
+
+sudo -u postgres psql ==Eğer bu komut aşağıdaki gibi çıktı veriyorsa postgresqlimiz sorunsuz çalışıyor demektir.==
+psql (15.10)
+Type "help" for help.
+
+postgres=#
+
+***Postgresql komutları***
+
+\l ==Var olan tüm veri tabanlarını listeler==
+Default hali;
+`
+                                  List of databases
+   Name    |  Owner   | Encoding | Collate |  Ctype  |   Access privileges
+-----------+---------+----------+---------+---------+-----------------------
+ postgres  | postgres | UTF8     | en_US.  | en_US.  |
+ template0 | postgres | UTF8     | en_US.  | en_US.  | =c/postgres          +
+           |          |          |         |         | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.  | en_US.  | =c/postgres          +
+           |          |          |         |         | postgres=CTc/postgres
+(3 rows)
+`
+
