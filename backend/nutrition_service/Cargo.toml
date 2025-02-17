@@ -17,3 +17,4 @@ env_logger = "0.11"
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
 #Postgresql için asenktron ORM tercihi
 sqlx = { version = "0.8", features = ["postgres", "runtime-tokio-native-tls", "macros"] }
+actix-cors = "0.6"

@@ -1,11 +1,13 @@
 [package]
 name = "backend"
 version = "0.1.0"
-edition = "2024"
+edition = "2021"
 
 [dependencies]
 
 [workspace]
 members = [
+    #Aşağıdaki komut ile çalıştırabiliyoruz.
+    #cargo run -p nutrition_service 
     "nutrition_service",  # Bu, backend/nutrition_service crate'ini kapsar
 ]
