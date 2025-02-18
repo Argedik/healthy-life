@@ -1,0 +1,23 @@
+.fridge-crud-wrapper {
+  padding: 20px;
+  background-color: #f0f0f0;
+
+  h2 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .fridge-item {
+    background: white;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+
+    .item-image {
+      width: 80px;
+      height: 50px;
+      margin-right: 10px;
+      border: 1px solid #ccc;
+    }
+  }
+}

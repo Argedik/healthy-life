@@ -1,15 +1,6 @@
-Dosya Yolu: besin-uygulamasi/webpack.config.js
+Dosya Yolu: besin-uygulamasi/.dockerignore
 Dosya İçeriği:
-const path = require('path');
-
-module.exports = {
-	resolve: {
-		alias: {
-			'@images': path.resolve(__dirname, 'static/images'),
-		},
-	},
-};
-
+**/target
 
 Dosya Yolu: besin-uygulamasi/Dockerfile
 Dosya İçeriği:
@@ -39,154 +30,35 @@ RUN cargo fetch
 COPY . .
 
 # Port açıyoruz.
-EXPOSE 8080
+EXPOSE 3001
 
-Dosya Yolu: besin-uygulamasi/index.html
+Dosya Yolu: besin-uygulamasi/versel.json
 Dosya İçeriği:
-<!DOCTYPE html>
-<html lang="tr">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link data-trunk rel="copy-dir" href="static" />
-		<link data-trunk rel="scss" href="./static/styles/index.scss" />
-		<title>Besin Uygulaması</title>
-	</head>
-	<body>
-		<div id="app"></div>
-		<script type="module"></script>
-	</body>
-</html>
-
-
-Dosya Yolu: besin-uygulamasi/static/images/home-page/home-page.png
-Dosya İçeriği:
-Dosya okunamadı veya metin dosyası değil.
-
-Dosya Yolu: besin-uygulamasi/static/styles/_globals.scss
-Dosya İçeriği:
-@use './_variables' as *;
-@use './_mixins' as *;
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-* {
-	box-sizing: border-box;
-	padding: 0;
-}
-
-html {
-	font-size: 16px;
-	margin: 0;
-	padding: 0;
-	width: 100%;
-	height: 100%;
-	font-family: 'Poppins', sans-serif;
-
-	@include respond-to(sm) {
-		font-size: 15px;
-	}
-
-	@include respond-to(xs) {
-		font-size: 14px;
-	}
-}
-
-body {
-	width: 100%;
-	height: 100%;
-	line-height: 1.5;
-	font-family: 'Poppins', sans-serif;
-	color: $craft-color;
-	background-color: transparent;
-	margin: 0;
-	padding: 0;
-}
-
-
-Dosya Yolu: besin-uygulamasi/static/styles/_mixins.scss
-Dosya İçeriği:
-@use './_variables' as *;
-@use 'sass:map';
-
-@mixin flexCenter {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-@mixin respond-to($breakpoint) {
-	$breakpoints: (
-		xs: $breakpoint-xs,
-		sm: $breakpoint-sm,
-		md: $breakpoint-md,
-		lg: $breakpoint-lg,
-	);
-	@if $breakpoint == xs {
-		@media (max-width: $breakpoint-xs) {
-			@content;
+{
+	"rewrites": [
+		{
+			"source": "/pkg/:path*",
+			"destination": "/pkg/:path*"
+		},
+		{
+			"source": "/:path*",
+			"destination": "/index.html"
 		}
-	} @else if $breakpoint == sm {
-		@media (max-width: $breakpoint-sm) {
-			@content;
-		}
-	} @else if $breakpoint == md {
-		@media (max-width: $breakpoint-md) {
-			@content;
-		}
-	} @else if $breakpoint == lg {
-		@media (max-width: $breakpoint-lg) {
-			@content;
-		}
-	}
-
-	@media (max-width: map.get($breakpoints, $breakpoint)) {
-		@content;
-	}
+	]
 }
 
 
-Dosya Yolu: besin-uygulamasi/static/styles/_typography.scss
+Dosya Yolu: besin-uygulamasi/webpack.config.js
 Dosya İçeriği:
-h1,
-h2,
-h3 {
-	font-weight: 700;
-}
+const path = require('path');
 
-p {
-	line-height: 1.6;
-	font-size: 1rem;
-}
-
-
-Dosya Yolu: besin-uygulamasi/static/styles/index.scss
-Dosya İçeriği:
-@use './_variables' as *;
-@use './_mixins' as *;
-@use './_globals' as *;
-@use './typography' as *;
-
-@use '../../src/components/components.scss' as *;
-
-
-Dosya Yolu: besin-uygulamasi/static/styles/_variables.scss
-Dosya İçeriği:
-$light-blue: #add8e6;
-$sky-blue: #87ceeb;
-$cobalt-blue: #0047ab;
-$royal-blue: #4169e1;
-$navy: #000080;
-$sea-blue: #2e8b57;
-$teal: #008080;
-$turquoise: #40e0d0;
-$dark-blue: #00008b;
-$craft-color: #01303b;
-$craft-white: #fff;
-
-$breakpoint-xs: 576px; // X-Small devices (portrait phones)
-$breakpoint-sm: 768px; // Small devices (landscape phones)
-$breakpoint-md: 992px; // Medium devices (tablets)
-$breakpoint-lg: 1200px; // Large devices (desktops)
+module.exports = {
+	resolve: {
+		alias: {
+			'@images': path.resolve(__dirname, 'static/images'),
+		},
+	},
+};
 
 
 Dosya Yolu: besin-uygulamasi/src/main.rs
@@ -204,7 +76,9 @@ fn app() -> Html {
     <>
       // <NavBar />
       // <HomePage />
-      <FridgeContent />
+      <FridgeCrud />
+
+      // <FridgeContent />
       // <Card />
     </>
   }
@@ -213,103 +87,6 @@ fn app() -> Html {
 fn main() {
   yew::Renderer::<App>::new().render();
 }
-
-Dosya Yolu: besin-uygulamasi/src/screens/analysis_result/analysis_result.scss
-Dosya İçeriği:
-﻿.analysis_result-container {
-    background-color: #f0f0f0;
-    padding: 20px;
-    h1 {
-        color: #333;
-    }
-}
-
-
-Dosya Yolu: besin-uygulamasi/src/screens/analysis_result/analysis_result.rs
-Dosya İçeriği:
-﻿use yew::prelude::*;
-
-#[function_component(AnalysisResult)]
-pub fn analysis_result_component() -> Html {
-    let html_content = include_str!("analysis_result.html"); 
-    html! {
-        <div>
-            { Html::from_html_unchecked(html_content.into()) }
-        </div>
-    }
-}
-
-
-Dosya Yolu: besin-uygulamasi/src/screens/analysis_result/analysis_result.html
-Dosya İçeriği:
-﻿<div class="analysis_result-container">
-    <h1>analysis_result Component</h1>
-</div>
-
-
-Dosya Yolu: besin-uygulamasi/src/screens/analysis_result/mod.rs
-Dosya İçeriği:
-pub mod analysis_result;
-pub use analysis_result::AnalysisResult;
-
-
-Dosya Yolu: besin-uygulamasi/src/screens/healthy_diets/healthy_diets.scss
-Dosya İçeriği:
-﻿.healthy_diets-container {
-    background-color: #f0f0f0;
-    padding: 20px;
-    h1 {
-        color: #333;
-    }
-}
-
-
-Dosya Yolu: besin-uygulamasi/src/screens/healthy_diets/healthy_diets.html
-Dosya İçeriği:
-﻿<div class="healthy_diets-container">
-    <h1>healthy_diets Component</h1>
-</div>
-
-
-Dosya Yolu: besin-uygulamasi/src/screens/healthy_diets/mod.rs
-Dosya İçeriği:
-pub mod healthy_diets;
-pub use healthy_diets::HealthyDiets;
-
-
-Dosya Yolu: besin-uygulamasi/src/screens/healthy_diets/healthy_diets.rs
-Dosya İçeriği:
-﻿use yew::prelude::*;
-
-#[function_component(HealthyDiets)]
-pub fn healthy_diets_component() -> Html {
-    let html_content = include_str!("healthy_diets.html"); 
-    html! {
-        <div>
-            { Html::from_html_unchecked(html_content.into()) }
-        </div>
-    }
-}
-
-
-Dosya Yolu: besin-uygulamasi/src/screens/screens.scss
-Dosya İçeriği:
-@use './analysis-result/analysis-result.scss' as *;
-@use './fridge-content/fridge-content.scss' as *;
-@use './daily-menu/daily-menu.scss' as *;
-@use './special-meal/special-meal.scss' as *;
-@use './healthy-diets/healthy-diets.scss' as *;
-@use './healthy_diets/healthy_diets.scss' as *;
-@use './special_meal/special_meal.scss' as *;
-@use './daily_menu/daily_menu.scss' as *;
-@use './fridge_content/fridge_content.scss' as *;
-@use './analysis_result/analysis_result.scss' as *;
-
-
-Dosya Yolu: besin-uygulamasi/src/screens/fridge_content/mod.rs
-Dosya İçeriği:
-pub mod fridge_content_view;
-pub use fridge_content_view::FridgeContent;
 
 Dosya Yolu: besin-uygulamasi/src/screens/fridge_content/fridge_content_view.rs
 Dosya İçeriği:
@@ -323,6 +100,64 @@ pub fn fridge_content_component() -> Html {
             { Html::from_html_unchecked(html_content.into()) }
         </div>
     }
+}
+
+
+Dosya Yolu: besin-uygulamasi/src/screens/fridge_content/fridge_content.scss
+Dosya İçeriği:
+﻿.fridge-content-wrapper {
+	padding: 20px;
+	background-color: #f0f0f0;
+	min-height: 100vh;
+
+	h2 {
+		color: #333;
+		margin-bottom: 20px;
+		font-size: 24px;
+		font-weight: bold;
+	}
+
+	.fridge-content-list {
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+	}
+
+	.fridge-item {
+		display: flex;
+		align-items: center;
+		background: white;
+		border-radius: 10px;
+		padding: 10px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+		.item-number {
+			font-weight: bold;
+			color: #2e8b57;
+			font-size: 20px;
+			margin-right: 20px;
+		}
+
+		.item-image {
+			width: 50px;
+			height: 50px;
+			margin-right: 20px;
+			border-radius: 8px;
+			overflow: hidden;
+
+			img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+		}
+
+		.item-title {
+			font-size: 18px;
+			color: #333;
+			flex: 1;
+		}
+	}
 }
 
 
@@ -392,77 +227,24 @@ Dosya İçeriği:
 </html>
 
 
-Dosya Yolu: besin-uygulamasi/src/screens/fridge_content/fridge_content.scss
+Dosya Yolu: besin-uygulamasi/src/screens/fridge_content/mod.rs
 Dosya İçeriği:
-﻿.fridge-content-wrapper {
-	padding: 20px;
-	background-color: #f0f0f0;
-	min-height: 100vh;
+pub mod fridge_content_view;
+pub use fridge_content_view::FridgeContent;
 
-	h2 {
-		color: #333;
-		margin-bottom: 20px;
-		font-size: 24px;
-		font-weight: bold;
-	}
-
-	.fridge-content-list {
-		display: flex;
-		flex-direction: column;
-		gap: 15px;
-	}
-
-	.fridge-item {
-		display: flex;
-		align-items: center;
-		background: white;
-		border-radius: 10px;
-		padding: 10px;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-		.item-number {
-			font-weight: bold;
-			color: #2e8b57;
-			font-size: 20px;
-			margin-right: 20px;
-		}
-
-		.item-image {
-			width: 50px;
-			height: 50px;
-			margin-right: 20px;
-			border-radius: 8px;
-			overflow: hidden;
-
-			img {
-				width: 100%;
-				height: 100%;
-				object-fit: cover;
-			}
-		}
-
-		.item-title {
-			font-size: 18px;
-			color: #333;
-			flex: 1;
-		}
-	}
-}
-
-
-Dosya Yolu: besin-uygulamasi/src/screens/mod.rs
+Dosya Yolu: besin-uygulamasi/src/screens/screens.scss
 Dosya İçeriği:
-pub mod healthy_diets;
-pub mod special_meal;
-pub mod daily_menu;
-pub mod analysis_result;
-pub mod fridge_content;
+@use './analysis-result/analysis-result.scss' as *;
+@use './fridge-content/fridge-content.scss' as *;
+@use './daily-menu/daily-menu.scss' as *;
+@use './special-meal/special-meal.scss' as *;
+@use './healthy-diets/healthy-diets.scss' as *;
+@use './healthy_diets/healthy_diets.scss' as *;
+@use './special_meal/special_meal.scss' as *;
+@use './daily_menu/daily_menu.scss' as *;
+@use './fridge_content/fridge_content.scss' as *;
+@use './analysis_result/analysis_result.scss' as *;
 
-pub use analysis_result::AnalysisResult;
-pub use fridge_content::FridgeContent;
-pub use healthy_diets::HealthyDiets;
-pub use special_meal::SpecialMenu;
-pub use daily_menu::DailyMenu;
 
 Dosya Yolu: besin-uygulamasi/src/screens/special_meal/special_meal.rs
 Dosya İçeriği:
@@ -486,12 +268,6 @@ Dosya İçeriği:
 </div>
 
 
-Dosya Yolu: besin-uygulamasi/src/screens/special_meal/mod.rs
-Dosya İçeriği:
-pub mod special_meal;
-pub use special_meal::SpecialMenu;
-
-
 Dosya Yolu: besin-uygulamasi/src/screens/special_meal/special_meal.scss
 Dosya İçeriği:
 ﻿.special_meal-container {
@@ -503,26 +279,10 @@ Dosya İçeriği:
 }
 
 
-Dosya Yolu: besin-uygulamasi/src/screens/daily_menu/daily_menu.rs
+Dosya Yolu: besin-uygulamasi/src/screens/special_meal/mod.rs
 Dosya İçeriği:
-﻿use yew::prelude::*;
-
-#[function_component(DailyMenu)]
-pub fn daily_menu_component() -> Html {
-    let html_content = include_str!("daily_menu.html"); 
-    html! {
-        <div>
-            { Html::from_html_unchecked(html_content.into()) }
-        </div>
-    }
-}
-
-
-Dosya Yolu: besin-uygulamasi/src/screens/daily_menu/daily_menu.html
-Dosya İçeriği:
-﻿<div class="daily_menu-container">
-    <h1>daily_menu Component</h1>
-</div>
+pub mod special_meal;
+pub use special_meal::SpecialMenu;
 
 
 Dosya Yolu: besin-uygulamasi/src/screens/daily_menu/daily_menu.scss
@@ -542,44 +302,416 @@ pub mod daily_menu;
 pub use daily_menu::DailyMenu;
 
 
-Dosya Yolu: besin-uygulamasi/src/components/nav_bar/mod.rs
+Dosya Yolu: besin-uygulamasi/src/screens/daily_menu/daily_menu.html
 Dosya İçeriği:
-pub mod nav_bar;
-pub use nav_bar::NavBar;
+﻿<div class="daily_menu-container">
+    <h1>daily_menu Component</h1>
+</div>
 
-Dosya Yolu: besin-uygulamasi/src/components/nav_bar/nav_bar.scss
+
+Dosya Yolu: besin-uygulamasi/src/screens/daily_menu/daily_menu.rs
 Dosya İçeriği:
+﻿use yew::prelude::*;
 
-
-Dosya Yolu: besin-uygulamasi/src/components/nav_bar/nav_bar.html
-Dosya İçeriği:
-
-
-Dosya Yolu: besin-uygulamasi/src/components/nav_bar/nav_bar.rs
-Dosya İçeriği:
-use yew::prelude::*;
-
-#[function_component(NavBar)]
-pub fn nav_bar_component() -> Html {
-  html! {
-    <nav>
-      <ul>
-        <li>
-          <a href="/"> {"Ana Sayfa"} </a>
-        </li>
-        <li>
-          <a href="/stats"> {"İstatistikler"} </a>
-        </li>
-      </ul>
-    </nav>
-  }
+#[function_component(DailyMenu)]
+pub fn daily_menu_component() -> Html {
+    let html_content = include_str!("daily_menu.html"); 
+    html! {
+        <div>
+            { Html::from_html_unchecked(html_content.into()) }
+        </div>
+    }
 }
 
-Dosya Yolu: besin-uygulamasi/src/components/components.scss
+
+Dosya Yolu: besin-uygulamasi/src/screens/healthy_diets/healthy_diets.rs
 Dosya İçeriği:
-@use './card/card.scss' as *;
-@use './home_page/home_page.scss' as *;
-@use './nav_bar/nav_bar.scss' as *;
+﻿use yew::prelude::*;
+
+#[function_component(HealthyDiets)]
+pub fn healthy_diets_component() -> Html {
+    let html_content = include_str!("healthy_diets.html"); 
+    html! {
+        <div>
+            { Html::from_html_unchecked(html_content.into()) }
+        </div>
+    }
+}
+
+
+Dosya Yolu: besin-uygulamasi/src/screens/healthy_diets/healthy_diets.html
+Dosya İçeriği:
+﻿<div class="healthy_diets-container">
+    <h1>healthy_diets Component</h1>
+</div>
+
+
+Dosya Yolu: besin-uygulamasi/src/screens/healthy_diets/mod.rs
+Dosya İçeriği:
+pub mod healthy_diets;
+pub use healthy_diets::HealthyDiets;
+
+
+Dosya Yolu: besin-uygulamasi/src/screens/healthy_diets/healthy_diets.scss
+Dosya İçeriği:
+﻿.healthy_diets-container {
+    background-color: #f0f0f0;
+    padding: 20px;
+    h1 {
+        color: #333;
+    }
+}
+
+
+Dosya Yolu: besin-uygulamasi/src/screens/fridge_crud/fridge_crud.rs
+Dosya İçeriği:
+use yew::prelude::*;
+use serde::{Deserialize, Serialize};
+use reqwasm::http::Request;
+use web_sys::HtmlInputElement;
+use yew::functional::use_effect_with;
+use crate::screens::FridgeCrud; 
+
+#[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
+pub struct FridgeItem {
+    pub id: Option<u32>,       // ID boş (None) ise henüz veritabanına kaydedilmemiş
+    pub title: String,
+    pub image_url: String,
+}
+
+#[function_component(FridgeCrud)]
+pub fn fridge_crud() -> Html {
+    // -- State tanımları --
+    let fridge_items = use_state(|| Vec::<FridgeItem>::new()); 
+    let editing_item = use_state(|| None as Option<FridgeItem>); // Düzenlenen item
+
+    // Formdan gelecek verileri tutmak için:
+    let input_title = use_state(|| "".to_string());
+    let input_image_url = use_state(|| "".to_string());
+
+    // -- İlk açılışta verileri çekelim (component mount olduğunda) --
+    {
+        let fridge_items = fridge_items.clone();
+        use_effect_with(
+            move |_| {
+                wasm_bindgen_futures::spawn_local(async move {
+                    // GET isteği ile kayıtları al
+                    match Request::get("http://127.0.0.1:3000/fridge_items")
+                        .send()
+                        .await
+                    {
+                        Ok(response) => {
+                            if response.ok() {
+                                if let Ok(json) = response.json::<Vec<FridgeItem>>().await {
+                                    fridge_items.set(json);
+                                }
+                            } else {
+                                gloo::console::error!("Sunucudan geçerli cevap alınamadı!");
+                            }
+                        }
+                        Err(err) => {
+                            gloo::console::error!(format!("Fetch error: {:?}", err));
+                        }
+                    }
+                });
+                || ()
+            },
+            (), // Bu effect, sadece ilk render’da (component mount) çalışsın
+        );
+    }
+
+    // -- Yeni öğe ekleme ya da var olanı güncelleme butonuna basınca --
+    let on_submit = {
+        let fridge_items = fridge_items.clone();
+        let editing_item = editing_item.clone();
+        let title_state = input_title.clone();
+        let image_url_state = input_image_url.clone();
+
+        Callback::from(move |event: MouseEvent| {
+            event.prevent_default();
+
+            let title = (*title_state).clone();
+            let image_url = (*image_url_state).clone();
+
+            // Eğer editing_item None ise => CREATE, aksi halde UPDATE yap
+            if let Some(item_being_edited) = (*editing_item).clone() {
+                // UPDATE
+                let update_id = item_being_edited.id.unwrap_or(0);
+                let updated_item = FridgeItem {
+                    id: Some(update_id),
+                    title,
+                    image_url,
+                };
+
+                let fridge_items = fridge_items.clone();
+                let editing_item = editing_item.clone();
+                wasm_bindgen_futures::spawn_local(async move {
+                    let url = format!("http://127.0.0.1:3000/fridge_items/{}", update_id);
+                    let resp = Request::put(&url)
+                        .header("Content-Type", "application/json")
+                        .body(serde_json::to_string(&updated_item).unwrap())
+                        .send()
+                        .await;
+
+                    match resp {
+                        Ok(response) if response.ok() => {
+                            // Başarılı güncelleme sonrası listedeki öğeyi de güncelle
+                            let mut items = (*fridge_items).clone();
+                            if let Some(idx) = items.iter().position(|x| x.id == Some(update_id)) {
+                                items[idx] = updated_item;
+                                fridge_items.set(items);
+                            }
+                            // Formu temizle, editing_item'ı sıfırla
+                            editing_item.set(None);
+                        }
+                        _ => gloo::console::error!("Güncelleme işlemi başarısız!"),
+                    }
+                });
+            } else {
+                // CREATE
+                let new_item = FridgeItem {
+                    id: None,
+                    title,
+                    image_url,
+                };
+
+                let fridge_items = fridge_items.clone();
+                wasm_bindgen_futures::spawn_local(async move {
+                    let resp = Request::post("http://127.0.0.1:3000/fridge_items")
+                        .header("Content-Type", "application/json")
+                        .body(serde_json::to_string(&new_item).unwrap())
+                        .send()
+                        .await;
+
+                    match resp {
+                        Ok(response) if response.ok() => {
+                            if let Ok(created_item) = response.json::<FridgeItem>().await {
+                                // Dönen öğeyi listeye ekle
+                                let mut items = (*fridge_items).clone();
+                                items.push(created_item);
+                                fridge_items.set(items);
+                            }
+                        }
+                        _ => gloo::console::error!("Kayıt oluşturma işlemi başarısız!"),
+                    }
+                });
+            }
+
+            // Formu temizlemek için inputları sıfırla
+            title_state.set("".to_string());
+            image_url_state.set("".to_string());
+        })
+    };
+
+    // -- Silme işlemi (her öğenin yanında bir buton olacak) --
+    let on_delete = {
+        let fridge_items = fridge_items.clone();
+        Callback::from(move |id: u32| {
+            let fridge_items = fridge_items.clone();
+            wasm_bindgen_futures::spawn_local(async move {
+                let url = format!("http://127.0.0.1:3000/fridge_items/{}", id);
+                let resp = Request::delete(&url).send().await;
+
+                match resp {
+                    Ok(response) if response.ok() => {
+                        // Silinen kaydı listeden çıkar
+                        let mut items = (*fridge_items).clone();
+                        items.retain(|x| x.id != Some(id));
+                        fridge_items.set(items);
+                    }
+                    _ => gloo::console::error!("Silme işlemi başarısız!"),
+                }
+            });
+        })
+    };
+
+    // -- Düzenleme işlemi (her öğenin yanında bir buton olacak) --
+    let on_edit = {
+        let editing_item = editing_item.clone();
+        let title_state = input_title.clone();
+        let image_url_state = input_image_url.clone();
+        Callback::from(move |item: FridgeItem| {
+            // Seçilen item'i state'e koy
+            editing_item.set(Some(item.clone()));
+            // Form alanlarını dolduralım
+            title_state.set(item.title.clone());
+            image_url_state.set(item.image_url.clone());
+        })
+    };
+
+    // -- Text inputlar için oninput eventleri --
+    let on_title_input = {
+        let title_state = input_title.clone();
+        Callback::from(move |e: InputEvent| {
+            let input = e.target_dyn_into::<HtmlInputElement>().unwrap();
+            title_state.set(input.value());
+        })
+    };
+    let on_image_url_input = {
+        let image_url_state = input_image_url.clone();
+        Callback::from(move |e: InputEvent| {
+            let input = e.target_dyn_into::<HtmlInputElement>().unwrap();
+            image_url_state.set(input.value());
+        })
+    };
+
+    // -- Arayüz --
+    html! {
+        <div style="padding:20px; font-family: sans-serif;">
+            <h1>{"Dolap CRUD İşlemleri"}</h1>
+
+            // Form
+            <div style="margin-bottom: 20px;">
+                <input
+                    type="text"
+                    placeholder="Başlık"
+                    value={(*input_title).clone()}
+                    oninput={on_title_input}
+                    style="margin-right: 10px;"
+                />
+                <input
+                    type="text"
+                    placeholder="Resim URL"
+                    value={(*input_image_url).clone()}
+                    oninput={on_image_url_input}
+                    style="margin-right: 10px;"
+                />
+
+                <button onclick={on_submit.clone()} >
+                    {
+                        if editing_item.is_some() {
+                            "Güncelle"
+                        } else {
+                            "Ekle"
+                        }
+                    }
+                </button>
+
+                // Düzenleme modundan çıkmak için bir iptal butonu
+                if editing_item.is_some() {
+                    let editing_item_clone = editing_item.clone();
+                    html! {
+                        <button style="margin-left:10px;" onclick={
+                            Callback::from(move |_| {
+                              editing_item_clone.set(None);
+                            })
+                        }>
+                            {"İptal"}
+                        </button>
+                    }
+                } else {
+                    html! {}
+                }
+            </div>
+
+            // Kayıt listesi
+            <div>
+                <h2>{"Dolaptaki Öğeler"}</h2>
+                {
+                    (*fridge_items).iter().map(|item| {
+                        let item_id = item.id.unwrap_or_default();
+                        let edit_item = item.clone();
+                        html! {
+                            <div key={item_id} style="background:#f7f7f7; margin-bottom:10px; padding:10px; border-radius:8px;">
+                                <div>
+                                    <strong>{"ID: "}</strong>{ item_id }
+                                </div>
+                                <div>
+                                    <strong>{"Başlık: "}</strong>{ &item.title }
+                                </div>
+                                <div>
+                                    <strong>{"Resim: "}</strong>
+                                    <img src={item.image_url.clone()} style="width:80px; height:50px; margin-left:10px;" />
+                                </div>
+                                <button onclick={
+                                    let on_delete = on_delete.clone();
+                                    move |_| on_delete.emit(item_id)
+                                } style="margin-right: 10px;">
+                                    {"Sil"}
+                                </button>
+                                <button onclick={
+                                    let on_edit = on_edit.clone();
+                                    move |_| on_edit.emit(edit_item.clone())
+                                }>
+                                    {"Düzenle"}
+                                </button>
+                            </div>
+                        }
+                    }).collect::<Html>()
+                }
+            </div>
+        </div>
+    }
+}
+
+
+Dosya Yolu: besin-uygulamasi/src/screens/fridge_crud/mod.rs
+Dosya İçeriği:
+pub mod fridge_crud;
+pub use fridge_crud::FridgeCrud;
+
+
+Dosya Yolu: besin-uygulamasi/src/screens/mod.rs
+Dosya İçeriği:
+pub mod healthy_diets;
+pub mod special_meal;
+pub mod daily_menu;
+pub mod analysis_result;
+pub mod fridge_content;
+
+// Yeni eklenen:
+pub mod fridge_crud;
+
+pub use analysis_result::AnalysisResult;
+pub use fridge_content::FridgeContent;
+pub use healthy_diets::HealthyDiets;
+pub use special_meal::SpecialMenu;
+pub use daily_menu::DailyMenu;
+
+// Yeni eklenen
+pub use fridge_crud::FridgeCrud;
+
+Dosya Yolu: besin-uygulamasi/src/screens/analysis_result/analysis_result.html
+Dosya İçeriği:
+﻿<div class="analysis_result-container">
+    <h1>analysis_result Component</h1>
+</div>
+
+
+Dosya Yolu: besin-uygulamasi/src/screens/analysis_result/analysis_result.scss
+Dosya İçeriği:
+﻿.analysis_result-container {
+    background-color: #f0f0f0;
+    padding: 20px;
+    h1 {
+        color: #333;
+    }
+}
+
+
+Dosya Yolu: besin-uygulamasi/src/screens/analysis_result/analysis_result.rs
+Dosya İçeriği:
+﻿use yew::prelude::*;
+
+#[function_component(AnalysisResult)]
+pub fn analysis_result_component() -> Html {
+    let html_content = include_str!("analysis_result.html"); 
+    html! {
+        <div>
+            { Html::from_html_unchecked(html_content.into()) }
+        </div>
+    }
+}
+
+
+Dosya Yolu: besin-uygulamasi/src/screens/analysis_result/mod.rs
+Dosya İçeriği:
+pub mod analysis_result;
+pub use analysis_result::AnalysisResult;
+
+
+Dosya Yolu: besin-uygulamasi/src/components/fridge_content/mod.rs
+Dosya İçeriği:
 
 
 Dosya Yolu: besin-uygulamasi/src/components/home_page/home_page.html
@@ -595,27 +727,6 @@ Dosya İçeriği:
 	<a href="/healthy-diets" class="label healthy-diets">Sağlıklı diyetler</a>
 </div>
 
-
-Dosya Yolu: besin-uygulamasi/src/components/home_page/home_page.rs
-Dosya İçeriği:
-use yew::prelude::*;
-  // <div class={css!("color: blue;")}>{"Hello blue!"}</div
-
-#[function_component(HomePage)]
-pub fn home_page_component() -> Html {
-  let html_content = include_str!("home_page.html"); 
-
-  html! {
-      <div>
-          { Html::from_html_unchecked(html_content.into()) }
-      </div>
-  }
-}
-
-Dosya Yolu: besin-uygulamasi/src/components/home_page/mod.rs
-Dosya İçeriği:
-pub mod home_page;
-pub use home_page::HomePage;
 
 Dosya Yolu: besin-uygulamasi/src/components/home_page/home_page.scss
 Dosya İçeriği:
@@ -687,8 +798,86 @@ div:has(.container) {
 }
 
 
-Dosya Yolu: besin-uygulamasi/src/components/fridge_content/mod.rs
+Dosya Yolu: besin-uygulamasi/src/components/home_page/home_page.rs
 Dosya İçeriği:
+use yew::prelude::*;
+  // <div class={css!("color: blue;")}>{"Hello blue!"}</div
+
+#[function_component(HomePage)]
+pub fn home_page_component() -> Html {
+  let html_content = include_str!("home_page.html"); 
+
+  html! {
+      <div>
+          { Html::from_html_unchecked(html_content.into()) }
+      </div>
+  }
+}
+
+Dosya Yolu: besin-uygulamasi/src/components/home_page/mod.rs
+Dosya İçeriği:
+pub mod home_page;
+pub use home_page::HomePage;
+
+Dosya Yolu: besin-uygulamasi/src/components/nav_bar/nav_bar.html
+Dosya İçeriği:
+
+
+Dosya Yolu: besin-uygulamasi/src/components/nav_bar/nav_bar.rs
+Dosya İçeriği:
+use yew::prelude::*;
+
+#[function_component(NavBar)]
+pub fn nav_bar_component() -> Html {
+  html! {
+    <nav>
+      <ul>
+        <li>
+          <a href="/"> {"Ana Sayfa"} </a>
+        </li>
+        <li>
+          <a href="/stats"> {"İstatistikler"} </a>
+        </li>
+      </ul>
+    </nav>
+  }
+}
+
+Dosya Yolu: besin-uygulamasi/src/components/nav_bar/mod.rs
+Dosya İçeriği:
+pub mod nav_bar;
+pub use nav_bar::NavBar;
+
+Dosya Yolu: besin-uygulamasi/src/components/nav_bar/nav_bar.scss
+Dosya İçeriği:
+
+
+Dosya Yolu: besin-uygulamasi/src/components/card/card_view.rs
+Dosya İçeriği:
+use yew::prelude::*;
+
+#[function_component(Card)]
+pub fn card_view() -> Html {
+    let card_container = include_str!("card.html");
+    html! {
+        <div>
+            { Html::from_html_unchecked(card_container.into()) }
+        </div>
+    }
+}
+
+
+Dosya Yolu: besin-uygulamasi/src/components/card/card.html
+Dosya İçeriği:
+<div class="card">
+	<div class="image-container">
+		<p>Yemek resmi</p>
+	</div>
+	<div class="info-container">
+		<p>Resim Açıklaması</p>
+		<p>Puanı, Maliyeti</p>
+	</div>
+</div>
 
 
 Dosya Yolu: besin-uygulamasi/src/components/card/three_d_cards/three_d_cards_view.rs
@@ -735,76 +924,6 @@ fn add_script(file_path: &str) -> io::Result<()> {
         Err(io::Error::new(io::ErrorKind::NotFound, "Script not found"))
     }
 }
-
-
-Dosya Yolu: besin-uygulamasi/src/components/card/three_d_cards/three_d_cards_view.html
-Dosya İçeriği:
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Document</title>
-		<link rel="stylesheet" href="css/style.css" />
-	</head>
-	<body>
-		<div class="three-d-list-container">
-			<ul>
-				<li style="--i: 1">
-					<img
-						src="https://fastly.picsum.photos/id/123/400/200.jpg?hmac=bjWqtYzEF3fJaLLsW59yPr3QH9Cmu8rGPUK8nBKlCTM"
-					/>
-					<div class="content">
-						<h4></h4>
-						<p>
-							Lorem ipsum dolor sit amet<br />
-							consectetur adipisicing elit.
-						</p>
-					</div>
-				</li>
-				<li style="--i: 2">
-					<img
-						src="https://fastly.picsum.photos/id/588/400/200.jpg?hmac=cx5Kq84rDLT0Dc2dYYSoZP3PCROBKPayd1dAVtEyx44"
-					/>
-					<div class="content">
-						<h4></h4>
-						<p>
-							Lorem ipsum dolor sit amet<br />
-							consectetur adipisicing elit.
-						</p>
-					</div>
-				</li>
-				<li style="--i: 3">
-					<img
-						src="https://fastly.picsum.photos/id/275/400/200.jpg?hmac=iJ3-rO7j2MiwDCAHDOcoVH3q_5J0Z4ry0rTg3QWyG2s"
-					/>
-					<div class="content">
-						<h4></h4>
-						<p>
-							Lorem ipsum dolor sit amet<br />
-							consectetur adipisicing elit.
-						</p>
-					</div>
-				</li>
-				<li style="--i: 4">
-					<img
-						src="https://fastly.picsum.photos/id/851/400/200.jpg?hmac=Yk7CGS-p0BQhvfjGvjue86sS6ja03oKw0JKPMR4ImWI"
-					/>
-					<div class="content">
-						<h4></h4>
-						<p>
-							Lorem ipsum dolor sit amet<br />
-							consectetur adipisicing elit.
-						</p>
-					</div>
-				</li>
-			</ul>
-		</div>
-		<div id="embeddedContent"></div>
-		<script src="js/index.js"></script>
-	</body>
-</html>
 
 
 Dosya Yolu: besin-uygulamasi/src/components/card/three_d_cards/three_d_cards.scss
@@ -903,45 +1022,87 @@ ul li .content span {
 }
 
 
+Dosya Yolu: besin-uygulamasi/src/components/card/three_d_cards/three_d_cards_view.html
+Dosya İçeriği:
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<div class="three-d-list-container">
+			<ul>
+				<li style="--i: 1">
+					<img
+						src="https://fastly.picsum.photos/id/123/400/200.jpg?hmac=bjWqtYzEF3fJaLLsW59yPr3QH9Cmu8rGPUK8nBKlCTM"
+					/>
+					<div class="content">
+						<h4></h4>
+						<p>
+							Lorem ipsum dolor sit amet<br />
+							consectetur adipisicing elit.
+						</p>
+					</div>
+				</li>
+				<li style="--i: 2">
+					<img
+						src="https://fastly.picsum.photos/id/588/400/200.jpg?hmac=cx5Kq84rDLT0Dc2dYYSoZP3PCROBKPayd1dAVtEyx44"
+					/>
+					<div class="content">
+						<h4></h4>
+						<p>
+							Lorem ipsum dolor sit amet<br />
+							consectetur adipisicing elit.
+						</p>
+					</div>
+				</li>
+				<li style="--i: 3">
+					<img
+						src="https://fastly.picsum.photos/id/275/400/200.jpg?hmac=iJ3-rO7j2MiwDCAHDOcoVH3q_5J0Z4ry0rTg3QWyG2s"
+					/>
+					<div class="content">
+						<h4></h4>
+						<p>
+							Lorem ipsum dolor sit amet<br />
+							consectetur adipisicing elit.
+						</p>
+					</div>
+				</li>
+				<li style="--i: 4">
+					<img
+						src="https://fastly.picsum.photos/id/851/400/200.jpg?hmac=Yk7CGS-p0BQhvfjGvjue86sS6ja03oKw0JKPMR4ImWI"
+					/>
+					<div class="content">
+						<h4></h4>
+						<p>
+							Lorem ipsum dolor sit amet<br />
+							consectetur adipisicing elit.
+						</p>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div id="embeddedContent"></div>
+		<script src="js/index.js"></script>
+	</body>
+</html>
+
+
 Dosya Yolu: besin-uygulamasi/src/components/card/three_d_cards/mod.rs
 Dosya İçeriği:
 pub mod three_d_cards_view;
 pub use three_d_cards_view::*;
-
-Dosya Yolu: besin-uygulamasi/src/components/card/Card.html
-Dosya İçeriği:
-<div class="card">
-	<div class="image-container">
-		<p>Yemek resmi</p>
-	</div>
-	<div class="info-container">
-		<p>Resim Açıklaması</p>
-		<p>Puanı, Maliyeti</p>
-	</div>
-</div>
-
-
-Dosya Yolu: besin-uygulamasi/src/components/card/card_view.rs
-Dosya İçeriği:
-use yew::prelude::*;
-
-#[function_component(Card)]
-pub fn card_view() -> Html {
-    let card_container = include_str!("card.html");
-    html! {
-        <div>
-            { Html::from_html_unchecked(card_container.into()) }
-        </div>
-    }
-}
-
 
 Dosya Yolu: besin-uygulamasi/src/components/card/mod.rs
 Dosya İçeriği:
 pub mod card_view;
 pub use card_view::Card;
 
-Dosya Yolu: besin-uygulamasi/src/components/card/Card.scss
+Dosya Yolu: besin-uygulamasi/src/components/card/card.scss
 Dosya İçeriği:
 .card {
 	width: 200px;
@@ -979,6 +1140,13 @@ Dosya İçeriği:
 }
 
 
+Dosya Yolu: besin-uygulamasi/src/components/components.scss
+Dosya İçeriği:
+@use './card/card.scss' as *;
+@use './home_page/home_page.scss' as *;
+@use './nav_bar/nav_bar.scss' as *;
+
+
 Dosya Yolu: besin-uygulamasi/src/components/mod.rs
 Dosya İçeriği:
 pub mod nav_bar;
@@ -989,6 +1157,176 @@ pub use nav_bar::NavBar;
 pub use home_page::HomePage;
 pub use card::Card;
 
+
+Dosya Yolu: besin-uygulamasi/index.html
+Dosya İçeriği:
+<!DOCTYPE html>
+<html lang="tr">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link data-trunk rel="copy-dir" href="static" />
+		<link data-trunk rel="scss" href="./static/styles/index.scss" />
+		<title>Besin Uygulaması</title>
+	</head>
+	<body>
+		<div id="app"></div>
+		<script type="module"></script>
+	</body>
+</html>
+
+
+Dosya Yolu: besin-uygulamasi/static/styles/_mixins.scss
+Dosya İçeriği:
+@use './_variables' as *;
+@use 'sass:map';
+
+@mixin flexCenter {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+@mixin respond-to($breakpoint) {
+	$breakpoints: (
+		xs: $breakpoint-xs,
+		sm: $breakpoint-sm,
+		md: $breakpoint-md,
+		lg: $breakpoint-lg,
+	);
+	@if $breakpoint == xs {
+		@media (max-width: $breakpoint-xs) {
+			@content;
+		}
+	} @else if $breakpoint == sm {
+		@media (max-width: $breakpoint-sm) {
+			@content;
+		}
+	} @else if $breakpoint == md {
+		@media (max-width: $breakpoint-md) {
+			@content;
+		}
+	} @else if $breakpoint == lg {
+		@media (max-width: $breakpoint-lg) {
+			@content;
+		}
+	}
+
+	@media (max-width: map.get($breakpoints, $breakpoint)) {
+		@content;
+	}
+}
+
+
+Dosya Yolu: besin-uygulamasi/static/styles/_variables.scss
+Dosya İçeriği:
+$light-blue: #add8e6;
+$sky-blue: #87ceeb;
+$cobalt-blue: #0047ab;
+$royal-blue: #4169e1;
+$navy: #000080;
+$sea-blue: #2e8b57;
+$teal: #008080;
+$turquoise: #40e0d0;
+$dark-blue: #00008b;
+$craft-color: #01303b;
+$craft-white: #fff;
+
+$breakpoint-xs: 576px; // X-Small devices (portrait phones)
+$breakpoint-sm: 768px; // Small devices (landscape phones)
+$breakpoint-md: 992px; // Medium devices (tablets)
+$breakpoint-lg: 1200px; // Large devices (desktops)
+
+
+Dosya Yolu: besin-uygulamasi/static/styles/_typography.scss
+Dosya İçeriği:
+h1,
+h2,
+h3 {
+	font-weight: 700;
+}
+
+p {
+	line-height: 1.6;
+	font-size: 1rem;
+}
+
+
+Dosya Yolu: besin-uygulamasi/static/styles/index.scss
+Dosya İçeriği:
+@use './_variables' as *;
+@use './_mixins' as *;
+@use './_globals' as *;
+@use './typography' as *;
+
+@use '../../src/components/components.scss' as *;
+
+
+Dosya Yolu: besin-uygulamasi/static/styles/_globals.scss
+Dosya İçeriği:
+@use './_variables' as *;
+@use './_mixins' as *;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+	box-sizing: border-box;
+	padding: 0;
+}
+
+html {
+	font-size: 16px;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	font-family: 'Poppins', sans-serif;
+
+	@include respond-to(sm) {
+		font-size: 15px;
+	}
+
+	@include respond-to(xs) {
+		font-size: 14px;
+	}
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	line-height: 1.5;
+	font-family: 'Poppins', sans-serif;
+	color: $craft-color;
+	background-color: transparent;
+	margin: 0;
+	padding: 0;
+}
+
+
+Dosya Yolu: besin-uygulamasi/static/images/home-page/home-page.png
+Dosya İçeriği:
+Dosya okunamadı veya metin dosyası değil.
+
+Dosya Yolu: besin-uygulamasi/Trunk.toml
+Dosya İçeriği:
+[build]
+# cargo trunk ya da trunk serve ile proje başlatıldığında oluşturulacak klasör ve dosyaların kaydedileceği dizin
+output = "dist"
+watcher_ignore = [
+    "dist/*",       # trunk'ın kendi build çıktıları
+    "target/*",     # Rust'ın derleme çıktıları
+    ".git/*",       # Git dosyaları
+    "Dockerfile",   # Docker dosyaları
+    "docker-compose.yml" # Compose dosyaları
+]
+
+# trunk serve komutunun 127.0.0.1 adresinde ve 3001 portunda çalışmasını sağlıyoruz
+[serve]
+addresses = ["127.0.0.1"]
+port = 3001
+
+# [[copy]]
+# source = "static"
+# dest = "."
 
 Dosya Yolu: besin-uygulamasi/Cargo.toml
 Dosya İçeriği:
@@ -1011,46 +1349,6 @@ reqwasm = "0.5"
 web-sys = { version = "0.3", features = ["Window", "Document", "Element"] }
 wasm-bindgen-futures = "0.4"
 serde_json = "1.0"
+gloo = "0.11"
 
-Dosya Yolu: besin-uygulamasi/versel.json
-Dosya İçeriği:
-{
-	"rewrites": [
-		{
-			"source": "/pkg/:path*",
-			"destination": "/pkg/:path*"
-		},
-		{
-			"source": "/:path*",
-			"destination": "/index.html"
-		}
-	]
-}
-
-
-Dosya Yolu: besin-uygulamasi/Trunk.toml
-Dosya İçeriği:
-[build]
-# cargo trunk ya da trunk serve ile proje başlatıldığında oluşturulacak klasör ve dosyaların kaydedileceği dizin
-output = "dist"
-watcher_ignore = [
-    "dist/*",       # trunk'ın kendi build çıktıları
-    "target/*",     # Rust'ın derleme çıktıları
-    ".git/*",       # Git dosyaları
-    "Dockerfile",   # Docker dosyaları
-    "docker-compose.yml" # Compose dosyaları
-]
-
-# trunk serve komutunun 127.0.0.1 adresinde ve 8080 portunda çalışmasını sağlıyoruz
-[serve]
-addresses = ["127.0.0.1"]
-port = 8080
-
-# [[copy]]
-# source = "static"
-# dest = "."
-
-Dosya Yolu: besin-uygulamasi/.dockerignore
-Dosya İçeriği:
-**/target
 

@@ -24,4 +24,4 @@ RUN cargo fetch
 COPY . .
 
 # Port açıyoruz.
-EXPOSE 8080
+EXPOSE 3001

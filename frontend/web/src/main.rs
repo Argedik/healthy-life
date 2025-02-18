@@ -1,6 +1,7 @@
 use yew::prelude::*;
 mod components;
 mod screens;
+use crate::screens::FridgeCrud;
 
 use components::{NavBar, HomePage, Card};
 use screens::fridge_content::FridgeContent;
@@ -11,7 +12,8 @@ fn app() -> Html {
     <>
       // <NavBar />
       // <HomePage />
-      <FridgeContent />
+      <FridgeCrud />
+      // <FridgeContent />
       // <Card />
     </>
   }

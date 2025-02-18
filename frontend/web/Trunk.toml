@@ -9,10 +9,10 @@ watcher_ignore = [
     "docker-compose.yml" # Compose dosyaları
 ]
 
-# trunk serve komutunun 127.0.0.1 adresinde ve 8080 portunda çalışmasını sağlıyoruz
+# trunk serve komutunun 127.0.0.1 adresinde ve 3001 portunda çalışmasını sağlıyoruz
 [serve]
 addresses = ["127.0.0.1"]
-port = 8080
+port = 3001
 
 # [[copy]]
 # source = "static"
