@@ -6,9 +6,9 @@ use std::path::Path;
 fn main() {
     // Linux ortamı için örnek bir dizin yolu
     // Kendi dizin yapınıza göre güncelleyin
-    // let root_path = "/home/argedik/fe/healthy-life/backend/nutrition_service";
-    let root_path = "/home/argedik/fe/healthy-life/backend";
-    // let root_path = "/home/argedik/fe/healthy-life/frontend/web";
+    let root_path = "/home/argedik/Desktop/fe/healthy-life/backend/nutrition_service";
+    // let root_path = "/home/argedik/Desktop/fe/healthy-life/backend";
+    // let root_path = "/home/argedik/Desktop/fe/healthy-life/frontend/web";
 
     let mut output = Vec::new();
     let mut ignored = HashSet::new();

@@ -3,3 +3,7 @@ target
 Cargo.lock
 dist
 k8s
+frontend/web/output.txt
+Linux_debian_raspbery_pi_os/installations/Devops/nginx/control.md
+tools/directory-lister/src/main.rs
+tools/directory-lister/src/main.rs
