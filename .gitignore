@@ -5,5 +5,10 @@ dist
 k8s
 frontend/web/output.txt
 Linux_debian_raspbery_pi_os/installations/Devops/nginx/control.md
-tools/directory-lister/src/main.rs
-tools/directory-lister/src/main.rs
+tools/directory-lister/src/main.rscd
+docker-compose.yml
+docker-compose.yml
+Linux_debian_raspbery_pi_os/installations/Devops/ip_control
+Linux_debian_raspbery_pi_os/installations/Devops/web-server
+Linux_debian_raspbery_pi_os/installations/Devops/security/ssh
+Linux_debian_raspbery_pi_os/installations/Devops/security/ufw

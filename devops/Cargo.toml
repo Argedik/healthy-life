@@ -1,0 +1,18 @@
+[package]
+name = "devops"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix-web = { version = "4", features = ["rustls"] }
+actix-rt = "2"
+openssl = "0.10"
+actix-service = "2.0"
+actix-tls = { version = "3.4", features = ["rustls-0_20"] }
+tokio = { version = "1", features = ["full"] }
+rustls = "0.20"
+rustls-pemfile = "1.0"
+futures = "0.3"
+tokio-rustls = "0.26.1"
+# Certificate and Privatekey için
+rustls-pki-types = "1.11.0"

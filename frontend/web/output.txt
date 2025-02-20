@@ -29,8 +29,16 @@ RUN cargo fetch
 # Tüm projeyş kopyala
 COPY . .
 
-# Port açıyoruz.
+# Build komutumuz
+# trunk build --release --public-url="./" 
+# (İsterseniz trunk serve ile anlık sunum da yapabilirsiniz)
+RUN trunk build --release
+
+# 3001 portu (trunk serve içindir, ancak build alıp dosya sunmak istiyorsanız
+# statik bir dosya sunucusuna ihtiyaç var. Ör: miniserve)
 EXPOSE 3001
+
+CMD ["trunk", "serve", "--release", "--port", "3001", "--address", "0.0.0.0"]
 
 Dosya Yolu: besin-uygulamasi/versel.json
 Dosya İçeriği:
@@ -66,6 +74,7 @@ Dosya İçeriği:
 use yew::prelude::*;
 mod components;
 mod screens;
+use crate::screens::FridgeCrud;
 
 use components::{NavBar, HomePage, Card};
 use screens::fridge_content::FridgeContent;
@@ -77,7 +86,6 @@ fn app() -> Html {
       // <NavBar />
       // <HomePage />
       <FridgeCrud />
-
       // <FridgeContent />
       // <Card />
     </>
@@ -368,280 +376,214 @@ Dosya İçeriği:
 use yew::prelude::*;
 use serde::{Deserialize, Serialize};
 use reqwasm::http::Request;
-use web_sys::HtmlInputElement;
-use yew::functional::use_effect_with;
-use crate::screens::FridgeCrud; 
+use wasm_bindgen_futures::spawn_local; // async/await kullanımı için
+use gloo::console::{log, error};      // console.log / console.error
 
+// Veri modeli
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
 pub struct FridgeItem {
-    pub id: Option<u32>,       // ID boş (None) ise henüz veritabanına kaydedilmemiş
+    pub id: Option<u32>,
     pub title: String,
     pub image_url: String,
 }
 
 #[function_component(FridgeCrud)]
-pub fn fridge_crud() -> Html {
-    // -- State tanımları --
-    let fridge_items = use_state(|| Vec::<FridgeItem>::new()); 
-    let editing_item = use_state(|| None as Option<FridgeItem>); // Düzenlenen item
+pub fn fridge_crud_component() -> Html {
+    // --- State tanımları ---
+    let items = use_state(|| Vec::<FridgeItem>::new());
+    let loaded = use_state(|| false);           // Veriler ilk kez yüklendi mi?
+    let new_title = use_state(|| "".to_string());
+    let new_image = use_state(|| "".to_string());
+    let backend_url = "http://127.0.0.1:8080/fridge_items";
 
-    // Formdan gelecek verileri tutmak için:
-    let input_title = use_state(|| "".to_string());
-    let input_image_url = use_state(|| "".to_string());
-
-    // -- İlk açılışta verileri çekelim (component mount olduğunda) --
+    // --- Bileşen ilk render olduğunda verileri çek ---
     {
-        let fridge_items = fridge_items.clone();
-        use_effect_with(
-            move |_| {
-                wasm_bindgen_futures::spawn_local(async move {
-                    // GET isteği ile kayıtları al
-                    match Request::get("http://127.0.0.1:3000/fridge_items")
-                        .send()
-                        .await
-                    {
-                        Ok(response) => {
-                            if response.ok() {
-                                if let Ok(json) = response.json::<Vec<FridgeItem>>().await {
-                                    fridge_items.set(json);
-                                }
-                            } else {
-                                gloo::console::error!("Sunucudan geçerli cevap alınamadı!");
+        let items = items.clone();
+        let loaded = loaded.clone();
+        use_effect(move || {
+            // Eğer daha önce yüklenmemişse sunucudan çek
+            if !*loaded {
+                spawn_local(async move {
+                    match Request::get(backend_url).send().await {
+                        Ok(resp) if resp.ok() => {
+                            if let Ok(data) = resp.json::<Vec<FridgeItem>>().await {
+                                items.set(data);
                             }
+                            loaded.set(true);
+                        }
+                        Ok(_) => {
+                            error!("Sunucudan geçerli yanıt alınamadı!");
                         }
                         Err(err) => {
-                            gloo::console::error!(format!("Fetch error: {:?}", err));
+                            error!(format!("Fetch error: {:?}", err));
                         }
-                    }
-                });
-                || ()
-            },
-            (), // Bu effect, sadece ilk render’da (component mount) çalışsın
-        );
-    }
-
-    // -- Yeni öğe ekleme ya da var olanı güncelleme butonuna basınca --
-    let on_submit = {
-        let fridge_items = fridge_items.clone();
-        let editing_item = editing_item.clone();
-        let title_state = input_title.clone();
-        let image_url_state = input_image_url.clone();
-
-        Callback::from(move |event: MouseEvent| {
-            event.prevent_default();
-
-            let title = (*title_state).clone();
-            let image_url = (*image_url_state).clone();
-
-            // Eğer editing_item None ise => CREATE, aksi halde UPDATE yap
-            if let Some(item_being_edited) = (*editing_item).clone() {
-                // UPDATE
-                let update_id = item_being_edited.id.unwrap_or(0);
-                let updated_item = FridgeItem {
-                    id: Some(update_id),
-                    title,
-                    image_url,
-                };
-
-                let fridge_items = fridge_items.clone();
-                let editing_item = editing_item.clone();
-                wasm_bindgen_futures::spawn_local(async move {
-                    let url = format!("http://127.0.0.1:3000/fridge_items/{}", update_id);
-                    let resp = Request::put(&url)
-                        .header("Content-Type", "application/json")
-                        .body(serde_json::to_string(&updated_item).unwrap())
-                        .send()
-                        .await;
-
-                    match resp {
-                        Ok(response) if response.ok() => {
-                            // Başarılı güncelleme sonrası listedeki öğeyi de güncelle
-                            let mut items = (*fridge_items).clone();
-                            if let Some(idx) = items.iter().position(|x| x.id == Some(update_id)) {
-                                items[idx] = updated_item;
-                                fridge_items.set(items);
-                            }
-                            // Formu temizle, editing_item'ı sıfırla
-                            editing_item.set(None);
-                        }
-                        _ => gloo::console::error!("Güncelleme işlemi başarısız!"),
-                    }
-                });
-            } else {
-                // CREATE
-                let new_item = FridgeItem {
-                    id: None,
-                    title,
-                    image_url,
-                };
-
-                let fridge_items = fridge_items.clone();
-                wasm_bindgen_futures::spawn_local(async move {
-                    let resp = Request::post("http://127.0.0.1:3000/fridge_items")
-                        .header("Content-Type", "application/json")
-                        .body(serde_json::to_string(&new_item).unwrap())
-                        .send()
-                        .await;
-
-                    match resp {
-                        Ok(response) if response.ok() => {
-                            if let Ok(created_item) = response.json::<FridgeItem>().await {
-                                // Dönen öğeyi listeye ekle
-                                let mut items = (*fridge_items).clone();
-                                items.push(created_item);
-                                fridge_items.set(items);
-                            }
-                        }
-                        _ => gloo::console::error!("Kayıt oluşturma işlemi başarısız!"),
                     }
                 });
             }
+            || () // cleanup
+        });
+    }
 
-            // Formu temizlemek için inputları sıfırla
-            title_state.set("".to_string());
-            image_url_state.set("".to_string());
+    // --- Ekle (POST) Butonu ---
+    let on_add = {
+        let items = items.clone();
+        let title_state = new_title.clone();
+        let image_state = new_image.clone();
+
+        Callback::from(move |_| {
+            let title = (*title_state).clone();
+            let image_url = (*image_state).clone();
+
+            if title.trim().is_empty() || image_url.trim().is_empty() {
+                error!("Title ve Image URL boş olamaz!");
+                return;
+            }
+
+            let new_item = FridgeItem {
+                id: None,
+                title,
+                image_url,
+            };
+            let items = items.clone();
+
+            spawn_local(async move {
+                match Request::post(backend_url)
+                    .header("Content-Type", "application/json")
+                    .body(serde_json::to_string(&new_item).unwrap())
+                    .send()
+                    .await
+                {
+                    Ok(resp) if resp.ok() => {
+                        if let Ok(created_item) = resp.json::<FridgeItem>().await {
+                            let mut current = (*items).clone();
+                            current.push(created_item);
+                            items.set(current);
+                            log!("Yeni kayıt eklendi!");
+                        }
+                    }
+                    _ => {
+                        error!("Ekleme işlemi başarısız!");
+                    }
+                }
+            });
+
+            // formu temizle
+            title_state.set("".into());
+            image_state.set("".into());
         })
     };
 
-    // -- Silme işlemi (her öğenin yanında bir buton olacak) --
+    // --- Sil Butonu ---
     let on_delete = {
-        let fridge_items = fridge_items.clone();
+        let items = items.clone();
         Callback::from(move |id: u32| {
-            let fridge_items = fridge_items.clone();
-            wasm_bindgen_futures::spawn_local(async move {
-                let url = format!("http://127.0.0.1:3000/fridge_items/{}", id);
-                let resp = Request::delete(&url).send().await;
-
-                match resp {
-                    Ok(response) if response.ok() => {
-                        // Silinen kaydı listeden çıkar
-                        let mut items = (*fridge_items).clone();
-                        items.retain(|x| x.id != Some(id));
-                        fridge_items.set(items);
+            let items = items.clone();
+            spawn_local(async move {
+                let delete_url = format!("{}/{}", backend_url, id);
+                match Request::delete(&delete_url).send().await {
+                    Ok(resp) if resp.ok() => {
+                        let mut current = (*items).clone();
+                        current.retain(|x| x.id != Some(id));
+                        items.set(current);
+                        log!("Kayıt silindi!");
                     }
-                    _ => gloo::console::error!("Silme işlemi başarısız!"),
+                    _ => {
+                        error!("Silme işlemi başarısız!");
+                    }
                 }
             });
         })
     };
 
-    // -- Düzenleme işlemi (her öğenin yanında bir buton olacak) --
-    let on_edit = {
-        let editing_item = editing_item.clone();
-        let title_state = input_title.clone();
-        let image_url_state = input_image_url.clone();
-        Callback::from(move |item: FridgeItem| {
-            // Seçilen item'i state'e koy
-            editing_item.set(Some(item.clone()));
-            // Form alanlarını dolduralım
-            title_state.set(item.title.clone());
-            image_url_state.set(item.image_url.clone());
-        })
-    };
-
-    // -- Text inputlar için oninput eventleri --
+    // --- Input eventleri ---
     let on_title_input = {
-        let title_state = input_title.clone();
+        let title_state = new_title.clone();
         Callback::from(move |e: InputEvent| {
-            let input = e.target_dyn_into::<HtmlInputElement>().unwrap();
-            title_state.set(input.value());
+            if let Some(input) = e.target_dyn_into::<web_sys::HtmlInputElement>() {
+                title_state.set(input.value());
+            }
         })
     };
-    let on_image_url_input = {
-        let image_url_state = input_image_url.clone();
+    let on_image_input = {
+        let image_state = new_image.clone();
         Callback::from(move |e: InputEvent| {
-            let input = e.target_dyn_into::<HtmlInputElement>().unwrap();
-            image_url_state.set(input.value());
+            if let Some(input) = e.target_dyn_into::<web_sys::HtmlInputElement>() {
+                image_state.set(input.value());
+            }
         })
     };
 
-    // -- Arayüz --
+    // --- HTML Arayüz ---
+    // Ayrıca fridge_crud.html dosyasını istersen include_str! ile gömebilirsin.
     html! {
-        <div style="padding:20px; font-family: sans-serif;">
-            <h1>{"Dolap CRUD İşlemleri"}</h1>
+        <div class="fridge-crud-wrapper">
+            <h2>{"Fridge CRUD (Yeni Klasör Örneği)"}</h2>
 
-            // Form
-            <div style="margin-bottom: 20px;">
-                <input
-                    type="text"
-                    placeholder="Başlık"
-                    value={(*input_title).clone()}
-                    oninput={on_title_input}
-                    style="margin-right: 10px;"
-                />
-                <input
-                    type="text"
-                    placeholder="Resim URL"
-                    value={(*input_image_url).clone()}
-                    oninput={on_image_url_input}
-                    style="margin-right: 10px;"
-                />
-
-                <button onclick={on_submit.clone()} >
-                    {
-                        if editing_item.is_some() {
-                            "Güncelle"
-                        } else {
-                            "Ekle"
-                        }
-                    }
-                </button>
-
-                // Düzenleme modundan çıkmak için bir iptal butonu
-                if editing_item.is_some() {
-                    let editing_item_clone = editing_item.clone();
-                    html! {
-                        <button style="margin-left:10px;" onclick={
-                            Callback::from(move |_| {
-                              editing_item_clone.set(None);
-                            })
-                        }>
-                            {"İptal"}
-                        </button>
-                    }
-                } else {
-                    html! {}
-                }
-            </div>
-
-            // Kayıt listesi
+            // Ekleme Formu
             <div>
-                <h2>{"Dolaptaki Öğeler"}</h2>
-                {
-                    (*fridge_items).iter().map(|item| {
-                        let item_id = item.id.unwrap_or_default();
-                        let edit_item = item.clone();
-                        html! {
-                            <div key={item_id} style="background:#f7f7f7; margin-bottom:10px; padding:10px; border-radius:8px;">
-                                <div>
-                                    <strong>{"ID: "}</strong>{ item_id }
-                                </div>
-                                <div>
-                                    <strong>{"Başlık: "}</strong>{ &item.title }
-                                </div>
-                                <div>
-                                    <strong>{"Resim: "}</strong>
-                                    <img src={item.image_url.clone()} style="width:80px; height:50px; margin-left:10px;" />
-                                </div>
-                                <button onclick={
-                                    let on_delete = on_delete.clone();
-                                    move |_| on_delete.emit(item_id)
-                                } style="margin-right: 10px;">
-                                    {"Sil"}
-                                </button>
-                                <button onclick={
-                                    let on_edit = on_edit.clone();
-                                    move |_| on_edit.emit(edit_item.clone())
-                                }>
-                                    {"Düzenle"}
-                                </button>
-                            </div>
-                        }
-                    }).collect::<Html>()
-                }
+                <input
+                    type="text"
+                    placeholder="Title"
+                    value={(*new_title).clone()}
+                    oninput={on_title_input}
+                />
+                <input
+                    type="text"
+                    placeholder="Image URL"
+                    value={(*new_image).clone()}
+                    oninput={on_image_input}
+                />
+                <button onclick={on_add}>{"EKLE"}</button>
             </div>
+
+            // Liste
+            <hr/>
+            {
+                (*items).iter().map(|item| {
+                    let delete_id = item.id.unwrap_or_default();
+                    let image_url = item.image_url.clone();
+
+                    html! {
+                        <div class="fridge-item">
+                            <div>{"ID: "} {delete_id} {" | "} { &item.title }</div>
+                            <img class="item-image" src={image_url} alt="image" />
+                            <button onclick={
+                                let on_delete = on_delete.clone();
+                                move |_| on_delete.emit(delete_id)
+                            }>{"Sil"}</button>
+                        </div>
+                    }
+                }).collect::<Html>()
+            }
         </div>
     }
+}
+
+
+Dosya Yolu: besin-uygulamasi/src/screens/fridge_crud/fridge_crud.scss
+Dosya İçeriği:
+.fridge-crud-wrapper {
+  padding: 20px;
+  background-color: #f0f0f0;
+
+  h2 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .fridge-item {
+    background: white;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+
+    .item-image {
+      width: 80px;
+      height: 50px;
+      margin-right: 10px;
+      border: 1px solid #ccc;
+    }
+  }
 }
 
 
@@ -651,6 +593,21 @@ pub mod fridge_crud;
 pub use fridge_crud::FridgeCrud;
 
 
+Dosya Yolu: besin-uygulamasi/src/screens/fridge_crud/fridge_crud.html
+Dosya İçeriği:
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Fridge CRUD</title>
+</head>
+<body>
+    <h1>Fridge CRUD - HTML içeriği (opsiyonel)</h1>
+    <p>Bu dosya, <code>include_str!</code> ile bileşene gömülebilir veya hiç kullanılmayabilir.</p>
+</body>
+</html>
+
+
 Dosya Yolu: besin-uygulamasi/src/screens/mod.rs
 Dosya İçeriği:
 pub mod healthy_diets;
@@ -658,8 +615,6 @@ pub mod special_meal;
 pub mod daily_menu;
 pub mod analysis_result;
 pub mod fridge_content;
-
-// Yeni eklenen:
 pub mod fridge_crud;
 
 pub use analysis_result::AnalysisResult;
@@ -667,9 +622,8 @@ pub use fridge_content::FridgeContent;
 pub use healthy_diets::HealthyDiets;
 pub use special_meal::SpecialMenu;
 pub use daily_menu::DailyMenu;
-
-// Yeni eklenen
 pub use fridge_crud::FridgeCrud;
+
 
 Dosya Yolu: besin-uygulamasi/src/screens/analysis_result/analysis_result.html
 Dosya İçeriği:

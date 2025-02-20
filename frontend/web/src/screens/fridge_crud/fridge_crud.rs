@@ -1,36 +1,42 @@
 use yew::prelude::*;
 use serde::{Deserialize, Serialize};
 use reqwasm::http::Request;
-use wasm_bindgen_futures::spawn_local; // async/await kullanımı için
-use gloo::console::{log, error};      // console.log / console.error
+use wasm_bindgen_futures::spawn_local; // Asenkron işlemler için
+use gloo::console::{log, error};      // Tarayıcı konsoluna loglama ve hata yazdırma
 
-// Veri modeli
+// --- Veri Modeli ---
+// Bu yapı, veritabanından gelen ve gönderilen "buzdolabı" kayıtlarını temsil eder.
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
 pub struct FridgeItem {
-    pub id: Option<u32>,
+    pub id: Option<u32>,  // Backend, yeni kayıt eklerken id'yi atayacak
     pub title: String,
     pub image_url: String,
 }
 
 #[function_component(FridgeCrud)]
 pub fn fridge_crud_component() -> Html {
-    // --- State tanımları ---
+    // --- State Tanımları ---
+    // items: Sunucudan çekilen tüm buzdolabı kayıtlarını tutar.
     let items = use_state(|| Vec::<FridgeItem>::new());
-    let loaded = use_state(|| false);           // Veriler ilk kez yüklendi mi?
+    // loaded: Verilerin ilk kez çekilip çekilmediğini kontrol eder.
+    let loaded = use_state(|| false);
+    // new_title ve new_image: Kullanıcıdan alınan yeni kayıt bilgilerini tutar.
     let new_title = use_state(|| "".to_string());
     let new_image = use_state(|| "".to_string());
+    // Backend URL: CRUD işlemlerinde kullanılacak endpoint.
     let backend_url = "http://127.0.0.1:8080/fridge_items";
 
-    // --- Bileşen ilk render olduğunda verileri çek ---
+    // --- Bileşen İlk Render Olduğunda Verileri Çekme ---
     {
         let items = items.clone();
         let loaded = loaded.clone();
         use_effect(move || {
-            // Eğer daha önce yüklenmemişse sunucudan çek
+            // Eğer veriler daha önce yüklenmediyse, backend'e GET isteği gönder.
             if !*loaded {
                 spawn_local(async move {
                     match Request::get(backend_url).send().await {
                         Ok(resp) if resp.ok() => {
+                            // Gelen JSON veriyi FridgeItem vektörüne parse ediyoruz.
                             if let Ok(data) = resp.json::<Vec<FridgeItem>>().await {
                                 items.set(data);
                             }
@@ -45,25 +51,28 @@ pub fn fridge_crud_component() -> Html {
                     }
                 });
             }
-            || () // cleanup
+            || () // Cleanup fonksiyonu (gerekmiyorsa boş bırakıyoruz)
         });
     }
 
-    // --- Ekle (POST) Butonu ---
+    // --- Yeni Kayıt Ekleme (POST) ---
     let on_add = {
         let items = items.clone();
         let title_state = new_title.clone();
         let image_state = new_image.clone();
 
         Callback::from(move |_| {
+            // Inputlardan gelen değerleri alıyoruz.
             let title = (*title_state).clone();
             let image_url = (*image_state).clone();
 
+            // Boş giriş kontrolü
             if title.trim().is_empty() || image_url.trim().is_empty() {
                 error!("Title ve Image URL boş olamaz!");
                 return;
             }
 
+            // Yeni kayıt oluşturuyoruz (id: None, çünkü backend id atayacak)
             let new_item = FridgeItem {
                 id: None,
                 title,
@@ -71,6 +80,7 @@ pub fn fridge_crud_component() -> Html {
             };
             let items = items.clone();
 
+            // POST isteği gönderiyoruz.
             spawn_local(async move {
                 match Request::post(backend_url)
                     .header("Content-Type", "application/json")
@@ -79,6 +89,7 @@ pub fn fridge_crud_component() -> Html {
                     .await
                 {
                     Ok(resp) if resp.ok() => {
+                        // Başarılı olursa, backend tarafından dönen yeni kaydı state'e ekle.
                         if let Ok(created_item) = resp.json::<FridgeItem>().await {
                             let mut current = (*items).clone();
                             current.push(created_item);
@@ -92,21 +103,23 @@ pub fn fridge_crud_component() -> Html {
                 }
             });
 
-            // formu temizle
+            // İşlem sonrası input alanlarını temizle.
             title_state.set("".into());
             image_state.set("".into());
         })
     };
 
-    // --- Sil Butonu ---
+    // --- Kayıt Silme (DELETE) ---
     let on_delete = {
         let items = items.clone();
         Callback::from(move |id: u32| {
             let items = items.clone();
             spawn_local(async move {
+                // DELETE isteği için URL oluşturulur.
                 let delete_url = format!("{}/{}", backend_url, id);
                 match Request::delete(&delete_url).send().await {
                     Ok(resp) if resp.ok() => {
+                        // Başarılı olursa, state'teki ilgili kaydı çıkar.
                         let mut current = (*items).clone();
                         current.retain(|x| x.id != Some(id));
                         items.set(current);
@@ -120,7 +133,8 @@ pub fn fridge_crud_component() -> Html {
         })
     };
 
-    // --- Input eventleri ---
+    // --- Input Event Handler'ları ---
+    // Title input alanındaki değişiklikleri state'e aktarmak için.
     let on_title_input = {
         let title_state = new_title.clone();
         Callback::from(move |e: InputEvent| {
@@ -129,6 +143,7 @@ pub fn fridge_crud_component() -> Html {
             }
         })
     };
+    // Image URL input alanındaki değişiklikleri state'e aktarmak için.
     let on_image_input = {
         let image_state = new_image.clone();
         Callback::from(move |e: InputEvent| {
@@ -138,13 +153,12 @@ pub fn fridge_crud_component() -> Html {
         })
     };
 
-    // --- HTML Arayüz ---
-    // Ayrıca fridge_crud.html dosyasını istersen include_str! ile gömebilirsin.
+    // --- HTML Arayüzü (Görsel Tasarım) ---
     html! {
         <div class="fridge-crud-wrapper">
             <h2>{"Fridge CRUD (Yeni Klasör Örneği)"}</h2>
 
-            // Ekleme Formu
+            // Kayıt ekleme formu: Title ve Image URL giriş alanları ve ekleme butonu.
             <div>
                 <input
                     type="text"
@@ -161,10 +175,12 @@ pub fn fridge_crud_component() -> Html {
                 <button onclick={on_add}>{"EKLE"}</button>
             </div>
 
-            // Liste
+            // Ayırıcı çizgi
             <hr/>
+            // Mevcut kayıtların listesi
             {
                 (*items).iter().map(|item| {
+                    // Her bir kayıt için; id, title ve resim gösterimi ile silme butonu.
                     let delete_id = item.id.unwrap_or_default();
                     let image_url = item.image_url.clone();
 

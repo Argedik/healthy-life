@@ -1,13 +1,49 @@
-version: '3.9'
+version: "3.9"
 services:
-  web:
-    build:
-      context: ./frontend/web
-      dockerfile: Dockerfile
+  db:
+    image: postgres:15
+    container_name: argedik_postgres
+    environment:
+      - POSTGRES_USER=argedik_server
+      - POSTGRES_PASSWORD=Ae_g343661
+      - POSTGRES_DB=argedik_db
     ports:
-      - '8080:8080'
+      - "5432:5432"
     volumes:
-      - ./frontend/web:/app
-    container_name: web-1
-    restart: always
-    command: ['trunk', 'serve', '--address', '0.0.0.0', '--port', '8080']
+      - besin_data:/var/lib/postgresql/data
+    networks:
+      - besin-net
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile_backend
+    container_name: besin-backend
+    environment:
+      # Actix Web, sqlx için
+      - DATABASE_URL=postgres://argedik_server:Ae_g343661@db:5432/argedik_db
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - besin-net
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile_frontend
+    container_name: besin-frontend
+    ports:
+      - "3001:3001"
+    networks:
+      - besin-net
+    restart: unless-stopped
+
+networks:
+  besin-net:
+
+volumes:
+  besin_data:

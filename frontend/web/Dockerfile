@@ -23,5 +23,13 @@ RUN cargo fetch
 # Tüm projeyş kopyala
 COPY . .
 
-# Port açıyoruz.
+# Build komutumuz
+# trunk build --release --public-url="./" 
+# (İsterseniz trunk serve ile anlık sunum da yapabilirsiniz)
+RUN trunk build --release
+
+# 3001 portu (trunk serve içindir, ancak build alıp dosya sunmak istiyorsanız
+# statik bir dosya sunucusuna ihtiyaç var. Ör: miniserve)
 EXPOSE 3001
+
+CMD ["trunk", "serve", "--release", "--port", "3001", "--address", "0.0.0.0"]

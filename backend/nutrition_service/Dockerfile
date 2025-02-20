@@ -11,6 +11,9 @@ WORKDIR /app
 COPY Cargo.toml .
 COPY src ./src
 
+# Bağımlılıkları (derleme öncesi) getirelim
+RUN cargo fetch
+
 # Bağımlılıkları indirmek ve derlemek için
 RUN cargo build --release
 
