@@ -4,46 +4,20 @@ Ubuntu Linux'ta Nginx Nasıl Kurulur ve Test Edilir?
 Bu döküman, Ubuntu Linux sisteminizde Nginx web sunucusunun nasıl kurulacağını ve kurulum sonrası test işlemlerinin nasıl yapılacağını açıklamaktadır.
 
 1. Depoları Güncelleyin
-
 İlk olarak, sistemdeki paketlerin güncel olduğundan emin olun:
-
 sudo apt update
 
 2. Nginx'i Yükleyin
-
 Ubuntu depolarından Nginx'i yüklemek için şu komutu çalıştırın:
-
 sudo apt install nginx -y
-
 Bu komut, Nginx'in son kararlı sürümünü sisteminize kurar.
 
 3. Nginx Hizmetini Başlatın
-
 Kurulumdan sonra Nginx hizmetini başlatın:
-
 sudo systemctl start nginx
-
 Nginx'in her sistem başlatıldığında otomatik olarak çalışması için:
-
 sudo systemctl enable nginx
 
-4. Nginx'in Çalışıp Çalışmadığını Kontrol Edin
-
-Hizmetin durumunu kontrol etmek için şu komutu kullanabilirsiniz:
-
-sudo systemctl status nginx
-
-Eğer active (running) görüyorsanız, Nginx başarılı bir şekilde çalışıyor demektir.
-
-5. Varsayılan Nginx Web Sayfasını Test Edin
-
-Tarayıcınızı açın ve şu adresi ziyaret edin:
-
-http://localhost
-
-Eğer "Welcome to Nginx!" mesajını içeren varsayılan Nginx sayfasını görüyorsanız, kurulum başarılıdır.
-
----
 
 6. Firewall Ayarlarını Kontrol Edin (Opsiyonel)
 
