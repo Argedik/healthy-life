@@ -1,29 +1,34 @@
-use actix_web::{get, App, HttpRequest, HttpServer, Responder};
-use openssl::ssl::{SslAcceptor, SslFiletype, SslMethod};
+use actix_web::{web, App, HttpServer, Responder, HttpResponse, get};
+use std::env;
+use dotenv::dotenv;
 
 #[get("/")]
-async fn index(_req: HttpRequest) -> impl Responder {
-    "Welcome to Secure Site!"
+async fn index() -> impl Responder {
+    HttpResponse::Ok().body("Rust Web Sunucusu Çalışıyor!")
+}
+
+#[get("/health")]
+async fn health() -> impl Responder {
+    HttpResponse::Ok().json(serde_json::json!({ "status": "OK" }))
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    // OpenSSL için TLS yapılandırmasını oluştur
-    let mut builder = SslAcceptor::mozilla_intermediate(SslMethod::tls()).unwrap();
+    dotenv().ok();
 
-    // Özel anahtar (Let's Encrypt privkey.pem)
-    builder
-        .set_private_key_file("/etc/letsencrypt/live/argedik.com/privkey.pem", SslFiletype::PEM)
-        .unwrap();
+    let port: u16 = env::var("PORT")
+        .unwrap_or_else(|_| "8080".to_string())
+        .parse()
+        .expect("PORT env değişkeni sayı olmalı");
 
-    // Sertifika (Let's Encrypt fullchain.pem)
-    builder
-        .set_certificate_chain_file("/etc/letsencrypt/live/argedik.com/fullchain.pem")
-        .unwrap();
+    println!("🔵 Sunucu {} portunda çalışıyor...", port);
 
-    // HTTPS Sunucusunu 443 portunda çalıştır
-    HttpServer::new(|| App::new().service(index))
-        .bind_openssl("0.0.0.0:443", builder)? // HTTPS portu
-        .run()
-        .await
+    HttpServer::new(|| {
+        App::new()
+            .service(index)
+            .service(health)
+    })
+    .bind(("0.0.0.0", port))?
+    .run()
+    .await
 }

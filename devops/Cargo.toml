@@ -16,3 +16,5 @@ futures = "0.3"
 tokio-rustls = "0.26.1"
 # Certificate and Privatekey için
 rustls-pki-types = "1.11.0"
+dotenv = "0.15"
+serde_json = "1.0.139"
